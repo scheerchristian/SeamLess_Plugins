@@ -24,6 +24,8 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 {
 
     setSize (1070, 780);
+    setResizable(true, true);
+    setResizeLimits(700, 780, 7000, 8000);
     addAndMakeVisible(settingComponent);
 
     addAndMakeVisible(sendBox);
@@ -103,18 +105,23 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
+    sendBox.setBounds(getWidth()-320,20,300,getHeight()-180);
+    
+    const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
+   
+    topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
+    zSlider.setBounds(-10, 20, 100, maxTopViewSize);
+    sendBox.setBounds(maxTopViewSize+120,20,maxTopViewSize/2,maxTopViewSize);
+   
 
-    topView.setBounds(100,20,600,600);
-
-    sendBox.setBounds(750,20,300,600);
+    
 
     //xSlider.setBounds(210, -10, 400, 120);
     //ySlider.setBounds(-10, 200, 120, 400);
-    zSlider.setBounds(-10, 20, 100, 600);
 
-    connectionComponent.setBounds(750, 640, 300, 120);
+    connectionComponent.setBounds(getWidth()-320, 640, 300, 120);
 
-    settingComponent.setBounds(100, 640, 375, 120);
+    settingComponent.setBounds(100, getHeight()-140, 375, 120);
 
 }
 
