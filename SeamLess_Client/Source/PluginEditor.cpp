@@ -24,7 +24,6 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 {
 
     setSize (1070, 780);
-
     addAndMakeVisible(settingComponent);
 
     addAndMakeVisible(sendBox);

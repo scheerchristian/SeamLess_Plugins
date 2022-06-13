@@ -52,9 +52,10 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
 
     addAndMakeVisible(oscTargetPortText);
     oscTargetPortText.setText("mot", juce::dontSendNotification);
-    oscTargetPortText.setColour (juce::Label::textColourId, juce::Colours::black);
-    oscTargetPortText.setColour (juce::Label::backgroundColourId, juce::Colours::grey);
-    //oscTargetPortText.setJustificationType (juce::Justification::right);
+    oscTargetPortText.setColour (juce::TextEditor::textColourId, juce::Colours::black);
+    oscTargetPortText.setColour (juce::TextEditor::backgroundColourId, juce::Colours::grey);
+    oscTargetPortText.setSelectAllWhenFocused(true);
+    oscTargetPortText.setJustification(juce::Justification::centredRight);
     //oscTargetPortText.setEditable (true);
     oscTargetPortText.setInputRestrictions(5, "0123456789");
     
@@ -62,9 +63,7 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     {
         audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
     };
-
-
-
+ 
     addAndMakeVisible(sendButton);
     sendButton.onClick = [this]
     {
