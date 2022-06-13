@@ -37,7 +37,7 @@ private:
 
     juce::Label inputLabel;
     juce::Label sourceIndText;
-    juce::AudioProcessorParameter& sourceIndex;
+    //juce::AudioProcessorParameter& sourceIndex;
 
     juce::TextButton mainConnectionButton;
 

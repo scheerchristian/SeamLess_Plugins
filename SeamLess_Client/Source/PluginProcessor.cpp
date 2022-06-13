@@ -6,7 +6,7 @@
 // initialize static members
 juce::String SeamLess_ClientAudioProcessor::oscTargetAddress("127.0.0.1");
 int SeamLess_ClientAudioProcessor::oscTargetPort(9001);
-
+int SeamLess_ClientAudioProcessor::sourceIdx(-1);
 
 bool SeamLess_ClientAudioProcessor::isSending   = false;
 bool SeamLess_ClientAudioProcessor::playSending = false;
@@ -23,7 +23,7 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     sender1.connect(oscTargetAddress, 9001);
 
     // get pointers to individual parameters from the ValueTreeState
-    sourceIdx = (juce::AudioParameterInt*) parameters.getParameter("sourceIdx");
+    //sourceIdx = (juce::AudioParameterInt*) parameters.getParameter("sourceIdx");
 
     xPos      = parameters.getRawParameterValue("xPos");
     yPos      = parameters.getRawParameterValue("yPos");
@@ -152,6 +152,9 @@ void SeamLess_ClientAudioProcessor::getStateInformation (juce::MemoryBlock& dest
     // for additional parameters:
     std::unique_ptr<juce::XmlElement> xml2 (new juce::XmlElement ("HoFo_Client"));
 
+    xml2->setAttribute("sourceIdx", (int) sourceIdx);
+    copyXmlToBinary(*xml2, destData);
+
     xml2->setAttribute ("oscTargetAddress", (juce::String) oscTargetAddress);
     copyXmlToBinary (*xml2, destData);
 
@@ -177,6 +180,7 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
     {
         if (xmlState2->hasTagName ("HoFo_Client"))
         {
+            setOscTargetPort(xmlState2->getIntAttribute("sourceIdx"));
             oscTargetAddress = (juce::String) xmlState2->getStringAttribute("oscTargetAddress");
             setOscTargetPort((int) xmlState2->getIntAttribute("oscTargetPort", 1.0));
         }
@@ -193,7 +197,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainWFS", "Send Gain: WFS", 0, 1.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainHOA", "Send Gain: HOA", 0, 1.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainREV", "Send Gain: REV", 0, 1.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("sourceIdx", "Source Index", -1, 128, -1));
+    //params.push_back(std::make_unique<juce::AudioParameterInt>("sourceIdx", "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
 
     return { params.begin(), params.end() };
 }
@@ -266,7 +270,7 @@ void SeamLess_ClientAudioProcessor::zPosSend()
 
 void SeamLess_ClientAudioProcessor::xyzPosSend()
 {
-    int i = (int) *sourceIdx;
+    int i = (int) sourceIdx;
     float x = (float) *xPos;
     float y = (float) *yPos;
     float z = (float) *zPos;
@@ -278,7 +282,7 @@ void SeamLess_ClientAudioProcessor::xyzPosSend()
 
 void SeamLess_ClientAudioProcessor::sendGainSend()
 {
-    int i = (int) *sourceIdx;
+    int i = (int) sourceIdx;
     juce::OSCMessage m = juce::OSCMessage("/send/gain",i, 0, 0);
 
     float in = (float) *sendGainHOA;
@@ -333,13 +337,13 @@ void SeamLess_ClientAudioProcessor::setSendGain(int sendIndex, float in)
 void SeamLess_ClientAudioProcessor::setSourceIndex(int i)
 {
     juce::Identifier id ("sourceIdx");
-    *sourceIdx = i;
-    std::cout << "Switched source index: " << *parameters.getRawParameterValue("sourceIdx") << '\n';
+    sourceIdx = i;
+    std::cout << "Switched source index: " << i << '\n';
 }
 
 int SeamLess_ClientAudioProcessor::getSourceIndex()
 {
-    return *sourceIdx;
+    return sourceIdx;
 }
 
 

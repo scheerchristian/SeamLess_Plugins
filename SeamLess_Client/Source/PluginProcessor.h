@@ -113,6 +113,7 @@ private:
     // IP address and port are used by all instances
     static juce::String oscTargetAddress;
     static int oscTargetPort;
+    static int sourceIdx;
 
     // used to detect play-state
     juce::AudioPlayHead::CurrentPositionInfo playInfo;
@@ -137,7 +138,7 @@ private:
     std::atomic<float>* sendGainLFE = nullptr;
 
 
-    juce::AudioParameterInt* sourceIdx;
+    //juce::AudioParameterInt* sourceIdx;
 
     // The AudioProcessorValueTreeState connects parameters to the GUI
     // and manages serialization

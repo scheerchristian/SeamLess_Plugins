@@ -11,8 +11,7 @@
 #include <JuceHeader.h>
 #include "SourceSettingsComponent.h"
 
-SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *a, juce::AudioProcessorValueTreeState &apvts):
-    sourceIndex(*apvts.getParameter("sourceIdx"))
+SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *a, juce::AudioProcessorValueTreeState &apvts)
 {
     processor = a;
 
@@ -39,7 +38,7 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     // xSliderAttachment     = new juce::AudioProcessorValueTreeState::SliderAttachment ();
 
     //*valueTreeState.getParameter("sourceIdx"),
-    sourceIndText.setText(sourceIndex.getCurrentValueAsText(),juce::dontSendNotification);
+    sourceIndText.setText(std::to_string(a->getSourceIndex()), juce::NotificationType::dontSendNotification);
 
 
 
