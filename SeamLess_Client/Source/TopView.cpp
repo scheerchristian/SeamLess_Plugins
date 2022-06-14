@@ -21,6 +21,8 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p): source()
 
     addAndMakeVisible(source);
     startTimer(50);
+
+    
 }
 
 
@@ -38,12 +40,26 @@ void TopView::paint (juce::Graphics& g)
     g.setColour(seamlessBlue);
     g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,15);
 
+
+    g.setColour(seamlessBlue);
+    g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
+    //g.drawLine(juce::Line<float>(convertMeterToPixel(3.5, 10), convertMeterToPixel(16.5, 10)));
     // g.drawImageAt(background.rescaled(700,400,juce::Graphics::mediumResamplingQuality), 0, 0);
 }
 
 void TopView::resized()
 {
     source.setBounds(0,0,getWidth(),getHeight() );
+    polygonPath.clear();
+    polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY() + 10);
+    polygonPath.startNewSubPath(polygonPixel[0]);
+    for (int i = 1; i <= 33; i++)
+    {
+        polygonPixel[i] = convertMeterToPixel(polygonMeter[i].getX() + 10, polygonMeter[i].getY() + 10);
+        polygonPath.lineTo(polygonPixel[i]);
+    }
+    polygonPath.closeSubPath();
+
 }
 
 void TopView::mouseDown(const juce::MouseEvent& e)
@@ -73,6 +89,20 @@ void TopView::changePosition(juce::Point <int> p)
 
 void TopView::mouseUp(const juce::MouseEvent& e)
 {
+}
+
+juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
+{
+    float xPixel = getLocalBounds().getWidth() * (xMeter/20);
+    float yPixel = getLocalBounds().getHeight() * (yMeter/20);
+    return juce::Point<float>(xPixel, yPixel);
+}
+
+juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
+{
+    double xMeter = (xPixel / getLocalBounds().getWidth()) * 20;
+    double yMeter = (yPixel / getLocalBounds().getHeight()) * 20;
+    return juce::Point<double>(xMeter, yMeter);
 }
 
 
