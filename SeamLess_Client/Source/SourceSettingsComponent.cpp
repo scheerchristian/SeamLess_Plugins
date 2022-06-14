@@ -25,6 +25,10 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     sourceIndText.setEditable (true);
     sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
 
+    addAndMakeVisible(nameLabel);
+    nameLabel.setText("SeamLess Client", juce::NotificationType::dontSendNotification);
+    nameLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+    
     addAndMakeVisible (mainConnectionButton);
     mainConnectionButton.setButtonText ("Not Connected!");
     mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
@@ -60,8 +64,6 @@ void SourceSettingsComponent::paint (juce::Graphics& g)
 
     g.setColour (seamlessBlue);
     g.setFont (14.0f);
-    g.drawText ("SeamLess Client Plugin", 20, 20, 200, 20,
-                juce::Justification::left, true);   // draw some placeholder text
 
 
 
@@ -69,8 +71,17 @@ void SourceSettingsComponent::paint (juce::Graphics& g)
 
 void SourceSettingsComponent::resized()
 {
-    sourceIndText.setBounds(270, getHeight()/2 -10, 50, 20);
-    mainConnectionButton.setBounds(35,50,100,50);
+    nameLabel.setBounds(getWidth()*0.07, getHeight() *0.15, 200, 20);
+    if(getWidth()<290)
+    {
+        nameLabel.setVisible(false);
+        sourceIndText.setBounds(getWidth()*0.5+25, getHeight() *0.15, 50, 20);
+    }
+    else {
+        nameLabel.setVisible(true);
+        sourceIndText.setBounds(getWidth()*0.92-50, getHeight() *0.15, 50, 20);
+    }
+    mainConnectionButton.setBounds(getWidth()*0.1,50,getWidth()*0.8,50);
 }
 
 

@@ -25,7 +25,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 
     setSize (1070, 780);
     setResizable(true, true);
-    setResizeLimits(700, 780, 7000, 8000);
+    setResizeLimits(675, 550, 7000, 8000);
     addAndMakeVisible(settingComponent);
 
     addAndMakeVisible(sendBox);
@@ -110,18 +110,17 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
    
     topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
-    zSlider.setBounds(-10, 20, 100, maxTopViewSize);
-    sendBox.setBounds(maxTopViewSize+120,20,maxTopViewSize/2,maxTopViewSize);
-   
-
     
-
+    zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
+    
+    sendBox.setBounds(maxTopViewSize+120,20,getWidth()-140-maxTopViewSize,maxTopViewSize);
+   
     //xSlider.setBounds(210, -10, 400, 120);
     //ySlider.setBounds(-10, 200, 120, 400);
 
-    connectionComponent.setBounds(getWidth()-320, 640, 300, 120);
+    connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
 
-    settingComponent.setBounds(100, getHeight()-140, 375, 120);
+    settingComponent.setBounds(20, getHeight()-140, maxTopViewSize*0.55, 120);
 
 }
 

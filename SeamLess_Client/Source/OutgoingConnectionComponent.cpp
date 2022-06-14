@@ -48,7 +48,9 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
         // setOscTargetAddressText(this, s);
 
     };
-
+    
+    addAndMakeVisible(titleLabel);
+    titleLabel.setText("Outgoing Connection (All Client Plugins)", juce::NotificationType::dontSendNotification);
 
     addAndMakeVisible(oscTargetPortText);
     oscTargetPortText.setText("mot", juce::dontSendNotification);
@@ -87,16 +89,25 @@ void OutgoingConnectionComponent::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("Outgoing Connection (All Client Plugins)", 20, 20, 200, 20,
-                juce::Justification::left, true);   // draw some placeholder text
+    
 
 }
 
 void OutgoingConnectionComponent::resized()
 {
-    oscTargetAddressText.setBounds(40, 80, 120, 20);
-    oscTargetPortText.setBounds(180, 80, 80, 20);
-    sendButton.setBounds(40,50,80,20);
+    if(getWidth()<297)
+    {
+        titleLabel.setBounds(getWidth()/2-70, 20, 140, 20);
+        titleLabel.setText("Outgoing Connection", juce::NotificationType::dontSendNotification);
+    }
+    else
+    {
+        titleLabel.setBounds(getWidth()/2-125, 20, 250, 20);
+        titleLabel.setText("Outgoing Connection (All Client Plugins)", juce::NotificationType::dontSendNotification);
+    }
+    oscTargetAddressText.setBounds(getWidth()*0.1, 80, getWidth()*0.45, 20);
+    oscTargetPortText.setBounds(getWidth()*0.55+10, 80, getWidth()*0.3, 20);
+    sendButton.setBounds(getWidth()*0.1,50,80,20);
 }
 
 

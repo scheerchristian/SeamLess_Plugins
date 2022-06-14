@@ -36,6 +36,7 @@ private:
 
     juce::Label oscTargetAddressText;
     juce::TextEditor oscTargetPortText;
+    juce::Label titleLabel;
 
     juce::ToggleButton sendButton   {"Send OSC"};
 

@@ -46,16 +46,20 @@ void SendFaderBox::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("Send Levels", 20, 20, 200, 20, juce::Justification::left, true);
+    g.drawText ("Send Levels", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
 }
 
 
 void SendFaderBox::resized()
 {
-    sendFaderWFS.setBounds(120, 60,60,460);
-    sendFaderHOA.setBounds(30,60,60,460);
-    sendFaderREV.setBounds(210,60,60,460);
+    const int &maxFaderWidth = std::min<int>(getWidth()/6, 60);
+    
+        sendFaderHOA.setBounds(getWidth()/8,                60,maxFaderWidth,getHeight()-90);
+        sendFaderWFS.setBounds(getWidth()/2-maxFaderWidth/2,60,maxFaderWidth,getHeight()-90);
+        sendFaderREV.setBounds(getWidth()*7/8-maxFaderWidth,60,maxFaderWidth,getHeight()-90);
+    
 //    sendFaderLFE.setBounds(370,60,60,460);
+        
 }
 
 
