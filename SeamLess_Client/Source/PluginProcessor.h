@@ -111,9 +111,9 @@ private:
     bool connectedToMain = false;
 
     // IP address and port are used by all instances
-    static juce::String oscTargetAddress;
-    static int oscTargetPort;
-    static int sourceIdx;
+    juce::Value oscTargetAddress;
+    juce::Value oscTargetPort;
+    juce::Value sourceIdx;
 
     // used to detect play-state
     juce::AudioPlayHead::CurrentPositionInfo playInfo;
@@ -143,6 +143,7 @@ private:
     // The AudioProcessorValueTreeState connects parameters to the GUI
     // and manages serialization
     juce::AudioProcessorValueTreeState parameters;
+    juce::ValueTree settings;
 
     std::unique_ptr<ClientConnection> client;
 
