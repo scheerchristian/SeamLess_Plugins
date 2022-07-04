@@ -215,14 +215,15 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
 
 juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcessor::createParameters()
 {
+    
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("xPos", "X Position", -10.0, 10.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("yPos", "Y Position", -10.0, 10.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("zPos", "Z Position", -10.0, 10.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainWFS", "Send Gain: WFS", 0, 1.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainHOA", "Send Gain: HOA", 0, 1.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("sendGainREV", "Send Gain: REV", 0, 1.0, 0.0));
-    //params.push_back(std::make_unique<juce::AudioParameterInt>("sourceIdx", "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xPos", 1), "X Position", -10.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yPos", 1), "Y Position", -10.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zPos", 1), "Z Position", -10.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", 0, 1.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", 0, 1.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", 0, 1.0, 0.0));
+    //params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID("sourceIdx", 1), "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
 
     return { params.begin(), params.end() };
 }
