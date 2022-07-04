@@ -129,6 +129,7 @@ private:
     std::atomic<float>* revLpRs   = nullptr;
     std::atomic<float>* revLpDb   = nullptr;
 
+
     /// \brief oscMessageReceived
     /// \param message
     ///

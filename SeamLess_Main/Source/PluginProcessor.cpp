@@ -14,19 +14,19 @@ SeamLess_MainAudioProcessor::SeamLess_MainAudioProcessor()
     : parameters (*this, nullptr, juce::Identifier ("SeamLess_Main"),
 {
                   std::make_unique<juce::AudioParameterFloat> ("revGain", "Reverb Gain", 0.0, 1.0, 0.0),
-                  std::make_unique<juce::AudioParameterFloat> ("revFreq1", "Reverb Freq 1", 10.0, 20000.0, 500),
-                  std::make_unique<juce::AudioParameterFloat> ("revFreq2", "Reverb Freq 2", 10.0, 20000.0, 1500.0),
+                  std::make_unique<juce::AudioParameterFloat> ("revFreq1", "Reverb Freq 1", juce::NormalisableRange<float>(10, 20000, 0.01, 0.2, false), 500),
+                  std::make_unique<juce::AudioParameterFloat> ("revFreq2", "Reverb Freq 2", juce::NormalisableRange<float>(10, 20000, 0.01, 0.2, false), 500),
                   std::make_unique<juce::AudioParameterFloat> ("revRdel", "Reverb Delay", 0.0, 100.0, 0.0),
                   std::make_unique<juce::AudioParameterFloat> ("revRgxyz", "Reverb Width", -9.0, 9.0, 0.0),
                   std::make_unique<juce::AudioParameterFloat> ("revT60dc", "Reverb T60 DC", 0.0, 10.0, 2.0),
                   std::make_unique<juce::AudioParameterFloat> ("revT60m", "Reverb T60 MID", 0.0, 10.0, 2.0),
-                  std::make_unique<juce::AudioParameterFloat> ("revLpFreq", "Reverb LP Freq", 10.0, 10000.0, 1000.0),
+                  std::make_unique<juce::AudioParameterFloat> ("revLpFreq", "Reverb LP Freq", juce::NormalisableRange<float>(10, 10000, 0.01, 0.2, false), 500),
                   std::make_unique<juce::AudioParameterFloat> ("revLpRs", "Reverb LP Slope", 0.0, 1.0, 0.5),
                   std::make_unique<juce::AudioParameterFloat> ("revLpDb", "Reverb Gain", -24.0, 6.0, -9.0)
                   }),
       AudioProcessor (BusesProperties())
 {
-
+ 
     revGain   = parameters.getRawParameterValue("revGain");
     revFreq1  = parameters.getRawParameterValue("revFreq1");
     revFreq2  = parameters.getRawParameterValue("revFreq2");
