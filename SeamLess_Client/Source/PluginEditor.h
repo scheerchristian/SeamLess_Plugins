@@ -14,6 +14,8 @@
 #include "OutgoingConnectionComponent.h"
 #include "SendFaderBox.h"
 #include "SourceSettingsComponent.h"
+#include "SphericalBox.h"
+
 
 //==============================================================================
 
@@ -38,6 +40,8 @@ private:
     juce::AudioProcessorValueTreeState& treeState;
 
     SendFaderBox sendBox;
+    
+    SphericalBox sphericalBox;
 
     OutgoingConnectionComponent connectionComponent;
 
@@ -51,12 +55,17 @@ private:
     juce::Slider zSlider;
 
     juce::Label zSliderLabel;
+    
+    // juce::Slider rSlider;
+    
+    // juce::Label rSliderLabel;
 
     void sliderValueChanged(juce::Slider* slider) override;
 
     //juce::AudioProcessorValueTreeState::SliderAttachment xSliderAttachment;
     //juce::AudioProcessorValueTreeState::SliderAttachment ySliderAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment zSliderAttachment;
+    // juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_ClientAudioProcessorEditor)
 };
