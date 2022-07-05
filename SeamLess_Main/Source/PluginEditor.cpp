@@ -14,15 +14,12 @@
 SeamLess_MainAudioProcessorEditor::SeamLess_MainAudioProcessorEditor (SeamLess_MainAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts)
     : AudioProcessorEditor (&p), audioProcessor (p), oscConnectionBox(p), reverbFaderBox(p,apvts), connectionComponent(&p)
 {
-
-    setSize (1400,800);
-
+    setSize (1000,400);
+    setResizable(true, true);
     addAndMakeVisible(oscConnectionBox);
 
     addAndMakeVisible(reverbFaderBox);
-
     addAndMakeVisible(connectionComponent);
-
 }
 
 SeamLess_MainAudioProcessorEditor::~SeamLess_MainAudioProcessorEditor()
@@ -44,13 +41,20 @@ void SeamLess_MainAudioProcessorEditor::paint (juce::Graphics& g)
 
 void SeamLess_MainAudioProcessorEditor::resized()
 {
+    auto box = getLocalBounds().reduced(40, 40);
+    auto r = box;
+    auto reverbFaderSection = r.removeFromRight(r.getWidth() * 4 / 5);
+    reverbFaderBox.setBounds(reverbFaderSection);
 
-    oscConnectionBox.setBounds(60,60,200,180);
+    auto oscConnectionSection = r.removeFromTop(r.getHeight() / 4);
+    oscConnectionSection = oscConnectionSection.removeFromLeft(300);
+    oscConnectionBox.setBounds(oscConnectionSection);
 
-    reverbFaderBox.setBounds(360,60,940,600);
+    r.removeFromTop(box.getHeight() / 6);
 
-    connectionComponent.setBounds(40, 640, 300, 120);
-
+    auto connectionSection = r.removeFromTop(r.getHeight() / 4);
+    connectionSection = connectionSection.removeFromLeft(300);
+    connectionComponent.setBounds(connectionSection);
 }
 
 

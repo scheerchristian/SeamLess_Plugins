@@ -44,7 +44,10 @@ void ReverbFader::paint (juce::Graphics& g)
 
 void ReverbFader::resized()
 {
-    slider.setBounds(0,40,60,400);
+    auto r = getLocalBounds();
+    auto sliderWidth = r.getWidth();
+    auto sliderHeight = r.getHeight() * 2 / 3;
+    slider.setBounds(r.getWidth()/2 - sliderWidth / 2, r.getHeight() / 2 - sliderHeight / 2, sliderWidth, sliderHeight);
 }
 
 void ReverbFader::setText(juce::String s)

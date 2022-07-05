@@ -52,7 +52,7 @@ private:
     ReverbFader revLpRsFader;
     ReverbFader revLpDbFader;
 
-
+    ReverbFader* faders[10] = { &revGainFader, &revFreq1Fader, &revFreq2Fader, &revRdelFader, &revRgxyzFader, &revT60dcFader, &revT60mFader, &revLpFreqFader, &revLpRsFader, &revLpDbFader};
 
     //    SendFader sendFaderLFE;
 

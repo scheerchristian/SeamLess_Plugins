@@ -69,8 +69,15 @@ void ReverbFaderBox::paint (juce::Graphics& g)
 
 void ReverbFaderBox::resized()
 {
-
-
+    auto box = getLocalBounds().reduced(20, 40);
+    auto r = getLocalBounds().reduced(20, 40);
+    for (int i = 0; i < 10; i++)
+    {   
+        if (i != 0)
+            r.removeFromRight((box.getWidth()/10)/10);
+        faders[i]->setBounds(r.removeFromRight(box.getWidth() / 11));
+    }
+    /*
     revGainFader.setBounds(30, 60,60,460);
     revFreq1Fader.setBounds(120,60,60,460);
     revFreq2Fader.setBounds(210,60,60,460);
@@ -81,7 +88,7 @@ void ReverbFaderBox::resized()
     revLpFreqFader.setBounds(660,60,60,460);
     revLpRsFader.setBounds(750,60,60,460);
     revLpDbFader.setBounds(840,60,60,460);
-
+    */
 
 }
 
