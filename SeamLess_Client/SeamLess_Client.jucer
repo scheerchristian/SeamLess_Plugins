@@ -14,6 +14,9 @@
       <FILE id="tQWjsj" name="HuFo.png" compile="0" resource="1" file="Resources/HuFo.png"/>
     </GROUP>
     <GROUP id="{430F3EF1-34BE-76D3-9328-5006156D1F39}" name="Source">
+      <FILE id="PkvkzQ" name="SphericalBox.cpp" compile="1" resource="0"
+            file="Source/SphericalBox.cpp"/>
+      <FILE id="UJk5dT" name="SphericalBox.h" compile="0" resource="0" file="Source/SphericalBox.h"/>
       <FILE id="snD8JS" name="SendFader.cpp" compile="1" resource="0" file="Source/SendFader.cpp"/>
       <FILE id="rHiBMC" name="SendFader.h" compile="0" resource="0" file="Source/SendFader.h"/>
       <FILE id="GJSi1n" name="SourceSettingsComponent.cpp" compile="1" resource="0"
@@ -29,8 +32,8 @@
       <FILE id="eTKZTM" name="SendFaderBox.h" compile="0" resource="0" file="Source/SendFaderBox.h"/>
       <FILE id="zOIUM5" name="ClientConnection.cpp" compile="1" resource="0"
             file="Source/ClientConnection.cpp"/>
-      <FILE id="f2fV4h" name="TopView.cpp" compile="1" resource="0" file="Source/TopView.cpp"/>
       <FILE id="EnHeya" name="TopView.h" compile="0" resource="0" file="Source/TopView.h"/>
+      <FILE id="f2fV4h" name="TopView.cpp" compile="1" resource="0" file="Source/TopView.cpp"/>
       <FILE id="wwErDg" name="ClientConnection.h" compile="0" resource="0"
             file="Source/ClientConnection.h"/>
       <FILE id="gNaFnM" name="SoundSource.cpp" compile="1" resource="0" file="Source/SoundSource.cpp"/>

@@ -131,6 +131,7 @@ private:
     std::atomic<float>* xPos = nullptr;
     std::atomic<float>* yPos = nullptr;
     std::atomic<float>* zPos = nullptr;
+    
 
     std::atomic<float>* sendGainWFS = nullptr;
     std::atomic<float>* sendGainHOA = nullptr;
