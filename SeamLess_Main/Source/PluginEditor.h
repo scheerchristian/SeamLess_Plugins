@@ -14,7 +14,7 @@
 #include "ConnectionBox.h"
 #include "ReverbFaderBox.h"
 #include "OutgoingConnectionComponent.h"
-
+#include"TopView.h"
 //==============================================================================
 /**
 */
@@ -25,7 +25,7 @@ public:
     ~SeamLess_MainAudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint (juce::Graphics&) override; 
     void resized() override;
 
 private:
@@ -37,9 +37,11 @@ private:
     ReverbFaderBox reverbFaderBox;
 
     OutgoingConnectionComponent connectionComponent;
+    
+    TopView sourceViewer;
+    
 
-
-     void timerCallback();
+    void timerCallback();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_MainAudioProcessorEditor)
 };

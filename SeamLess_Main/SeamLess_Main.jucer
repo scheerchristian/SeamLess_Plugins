@@ -5,6 +5,12 @@
               pluginFormats="buildStandalone,buildVST3" pluginManufacturer="TU Studio"
               companyName="TU Studio" displaySplashScreen="1">
   <MAINGROUP id="VAkndo" name="SeamLess_MainPlugin">
+    <GROUP id="{758FD121-19F0-C289-EC40-F5A8B9030DC5}" name="Resources">
+      <FILE id="ZVMsmm" name="HuFo.png" compile="0" resource="1" file="Resources/HuFo.png"/>
+      <FILE id="CBnU02" name="HuFo_Logo.bmp" compile="0" resource="1" file="Resources/HuFo_Logo.bmp"/>
+      <FILE id="QkP4z1" name="HuFo_Logo.png" compile="0" resource="1" file="Resources/HuFo_Logo.png"/>
+      <FILE id="Lxw2ab" name="top_view.png" compile="0" resource="1" file="Resources/top_view.png"/>
+    </GROUP>
     <GROUP id="{5E0E9B09-F129-C295-6118-F0694B2F959F}" name="Common">
       <FILE id="ELNS5D" name="SeamLess.h" compile="0" resource="0" file="../Common/SeamLess.h"/>
     </GROUP>
@@ -33,6 +39,10 @@
       <FILE id="lPXF1X" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="tLA8iu" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="X2H6yX" name="SoundSource.cpp" compile="1" resource="0" file="Source/SoundSource.cpp"/>
+      <FILE id="suywhP" name="SoundSource.h" compile="0" resource="0" file="Source/SoundSource.h"/>
+      <FILE id="V40N3n" name="TopView.cpp" compile="1" resource="0" file="Source/TopView.cpp"/>
+      <FILE id="GYXyQA" name="TopView.h" compile="0" resource="0" file="Source/TopView.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

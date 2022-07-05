@@ -8,8 +8,8 @@
       <FILE id="IXrrTa" name="SeamLess.h" compile="0" resource="0" file="../Common/SeamLess.h"/>
     </GROUP>
     <GROUP id="{26827123-0244-B915-E85F-A652B1B3F034}" name="Resources">
-      <FILE id="Kzhfnz" name="HuFo_Logo.png" compile="0" resource="1" file="Resources/HuFo_Logo.png"/>
       <FILE id="ckfowz" name="top_view.png" compile="0" resource="1" file="Resources/top_view.png"/>
+      <FILE id="Kzhfnz" name="HuFo_Logo.png" compile="0" resource="1" file="Resources/HuFo_Logo.png"/>
       <FILE id="Ig2exI" name="HuFo_Logo.bmp" compile="0" resource="1" file="Resources/HuFo_Logo.bmp"/>
       <FILE id="tQWjsj" name="HuFo.png" compile="0" resource="1" file="Resources/HuFo.png"/>
     </GROUP>

@@ -50,10 +50,9 @@ void ConnectionBox::paint (juce::Graphics& g)
 void ConnectionBox::resized()
 {
 
-    incomingPortLabel.setBounds(15, 20, 220, 20);
+    incomingPortLabel.setBounds(10, 20, 220, 20);
     incomingPortText.setBounds(30, 50, 120, 20);
-
-    receiveOscButton.setBounds(60,100,60,30);
+    receiveOscButton.setBounds(180, 20, 70, 50);   
 }
 
 

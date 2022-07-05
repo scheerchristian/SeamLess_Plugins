@@ -12,14 +12,16 @@
 
 //==============================================================================
 SeamLess_MainAudioProcessorEditor::SeamLess_MainAudioProcessorEditor (SeamLess_MainAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts)
-    : AudioProcessorEditor (&p), audioProcessor (p), oscConnectionBox(p), reverbFaderBox(p,apvts), connectionComponent(&p)
+    : AudioProcessorEditor (&p), audioProcessor (p), oscConnectionBox(p), reverbFaderBox(p,apvts), connectionComponent(&p), sourceViewer(&p)
 {
-    setSize (1000,400);
+    setSize (930,520);
     setResizable(true, true);
+    setResizeLimits(930, 260, 2000, 600);
     addAndMakeVisible(oscConnectionBox);
 
     addAndMakeVisible(reverbFaderBox);
     addAndMakeVisible(connectionComponent);
+    addAndMakeVisible(sourceViewer);
 }
 
 SeamLess_MainAudioProcessorEditor::~SeamLess_MainAudioProcessorEditor()
@@ -41,20 +43,25 @@ void SeamLess_MainAudioProcessorEditor::paint (juce::Graphics& g)
 
 void SeamLess_MainAudioProcessorEditor::resized()
 {
-    auto box = getLocalBounds().reduced(40, 40);
+    const auto box = getLocalBounds().reduced(20, 20);
     auto r = box;
-    auto reverbFaderSection = r.removeFromRight(r.getWidth() * 4 / 5);
+    r.removeFromTop(30);
+    auto reverbFaderSection = r.removeFromRight(box.getWidth() * 2 / 3);
     reverbFaderBox.setBounds(reverbFaderSection);
 
-    auto oscConnectionSection = r.removeFromTop(r.getHeight() / 4);
-    oscConnectionSection = oscConnectionSection.removeFromLeft(300);
+    auto oscConnectionSection = r.removeFromTop(95);
+    oscConnectionSection = oscConnectionSection.removeFromLeft(270);
     oscConnectionBox.setBounds(oscConnectionSection);
 
-    r.removeFromTop(box.getHeight() / 6);
+    r.removeFromTop(10);
 
-    auto connectionSection = r.removeFromTop(r.getHeight() / 4);
-    connectionSection = connectionSection.removeFromLeft(300);
+    auto connectionSection = r.removeFromTop(95);
+    connectionSection = connectionSection.removeFromLeft(270);
     connectionComponent.setBounds(connectionSection);
+    
+    r.removeFromTop(10);
+    sourceViewer.setBounds(20, r.getY(), r.getHeight(), r.getHeight());
+
 }
 
 

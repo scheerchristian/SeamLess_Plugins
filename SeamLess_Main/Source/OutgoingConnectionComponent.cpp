@@ -62,7 +62,7 @@ void OutgoingConnectionComponent::paint (juce::Graphics& g)
 
     g.setColour (seamlessBlue);
     g.setFont (14.0f);
-    g.drawText ("Outgoing Connection (Main Plugin)", 20, 20, 200, 20,
+    g.drawText ("Outgoing Connection (Main Plugin)", 10, 10, 250, 10,
                 juce::Justification::left, true);   // draw some placeholder text
 
 
@@ -70,9 +70,9 @@ void OutgoingConnectionComponent::paint (juce::Graphics& g)
 
 void OutgoingConnectionComponent::resized()
 {
-    oscTargetAddressText.setBounds(40, 80, 120, 20);
-    oscTargetPortText.setBounds(180, 80, 80, 20);
-    sendButton.setBounds(40,50,80,20);
+    sendButton.setBounds(30, 30, 80, 20);
+    oscTargetAddressText.setBounds(30, 60, 120, 20);
+    oscTargetPortText.setBounds(180, 60, 80, 20);
 }
 
 
