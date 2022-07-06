@@ -18,9 +18,9 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_MainAudioProce
 
     addAndMakeVisible(oscTargetAddressText);
     oscTargetAddressText.setText("loco", juce::dontSendNotification);
-    oscTargetAddressText.setColour (juce::Label::textColourId, juce::Colours::black);
+    oscTargetAddressText.setColour (juce::Label::textColourId, juce::Colours::white);
     oscTargetAddressText.setColour (juce::Label::backgroundColourId, seamlessBlue);
-    oscTargetAddressText.setJustificationType (juce::Justification::right);
+    //oscTargetAddressText.setJustificationType (juce::Justification::right);
     oscTargetAddressText.setEditable (true);
     oscTargetAddressText.onTextChange = [this]
     {
@@ -31,9 +31,9 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_MainAudioProce
 
     addAndMakeVisible(oscTargetPortText);
     oscTargetPortText.setText("mot", juce::dontSendNotification);
-    oscTargetPortText.setColour (juce::Label::textColourId, juce::Colours::black);
+    oscTargetPortText.setColour (juce::Label::textColourId, juce::Colours::white);
     oscTargetPortText.setColour (juce::Label::backgroundColourId, seamlessBlue);
-    oscTargetPortText.setJustificationType (juce::Justification::right);
+    //oscTargetPortText.setJustificationType (juce::Justification::right);
     oscTargetPortText.setEditable (true);
     oscTargetPortText.onTextChange = [this]
     {

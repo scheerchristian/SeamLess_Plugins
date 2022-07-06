@@ -12,14 +12,16 @@
 #include "SendFader.h"
 
 //==============================================================================
-SendFader::SendFader(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts,juce::String s):
+SendFader::SendFader(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts,juce::String s, bool endless, juce::Slider::RotaryParameters rotaryParameters):
     sliderAttachment(p.getState(),s,this->slider)
 {
-
-    slider.setSliderStyle (juce::Slider::LinearVertical);
-    slider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 90, 30);
+    slider.setSliderStyle(juce::Slider::Rotary);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
     slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::grey);
+    slider.setTextValueSuffix(" dB");
+    if (endless == true)
+        slider.setRotaryParameters(rotaryParameters);
     addAndMakeVisible(slider);
 
     // sendNameLabel.attachToComponent (&slider, false);

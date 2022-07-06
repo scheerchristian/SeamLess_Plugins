@@ -1,6 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-
+#include <math.h>
 
 //==============================================================================
 
@@ -221,9 +221,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xPos", 1), "X Position", -10.0, 10.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yPos", 1), "Y Position", -10.0, 10.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zPos", 1), "Z Position", -10.0, 10.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", 0, 1.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", 0, 1.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", 0, 1.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", -60.0, 0.0, -60.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", -60.0, 0.0, -60.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", -60.0, 0.0, -60.0));
     //params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID("sourceIdx", 1), "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
 
     return { params.begin(), params.end() };
@@ -286,15 +286,15 @@ void SeamLess_ClientAudioProcessor::sendGainSend()
     int i = (int) sourceIdx.getValue();
     juce::OSCMessage m = juce::OSCMessage("/send/gain",i, 0, 0);
 
-    float in = (float) *sendGainHOA;
+    float in = 20*log10((float) *sendGainHOA);
     m = juce::OSCMessage("/send/gain",i, 0, in);
     sender1.send(m);
 
-    in = (float) *sendGainWFS;
+    in = 20*log10((float) *sendGainWFS);
     m = juce::OSCMessage("/send/gain",i, 1, in);
     sender1.send(m);
 
-    in = (float) *sendGainREV;
+    in = 20*log10((float) *sendGainREV);
     m = juce::OSCMessage("/send/gain",i, 2, in);
     sender1.send(m);
 

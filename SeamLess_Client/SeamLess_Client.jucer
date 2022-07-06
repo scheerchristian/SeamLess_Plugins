@@ -14,6 +14,12 @@
       <FILE id="tQWjsj" name="HuFo.png" compile="0" resource="1" file="Resources/HuFo.png"/>
     </GROUP>
     <GROUP id="{430F3EF1-34BE-76D3-9328-5006156D1F39}" name="Source">
+      <FILE id="xLHZOI" name="SquericalFunctions.cpp" compile="1" resource="0"
+            file="Source/SquericalFunctions.cpp"/>
+      <FILE id="fZuZve" name="SphericalFader.cpp" compile="1" resource="0"
+            file="Source/SphericalFader.cpp"/>
+      <FILE id="izBz0Z" name="SphericalFader.h" compile="0" resource="0"
+            file="Source/SphericalFader.h"/>
       <FILE id="PkvkzQ" name="SphericalBox.cpp" compile="1" resource="0"
             file="Source/SphericalBox.cpp"/>
       <FILE id="UJk5dT" name="SphericalBox.h" compile="0" resource="0" file="Source/SphericalBox.h"/>
@@ -25,11 +31,11 @@
             file="Source/SourceSettingsComponent.h"/>
       <FILE id="kAUCPT" name="SendFaderBox.cpp" compile="1" resource="0"
             file="Source/SendFaderBox.cpp"/>
+      <FILE id="eTKZTM" name="SendFaderBox.h" compile="0" resource="0" file="Source/SendFaderBox.h"/>
       <FILE id="TZoBQP" name="OutgoingConnectionComponent.cpp" compile="1"
             resource="0" file="Source/OutgoingConnectionComponent.cpp"/>
       <FILE id="yiY13o" name="OutgoingConnectionComponent.h" compile="0"
             resource="0" file="Source/OutgoingConnectionComponent.h"/>
-      <FILE id="eTKZTM" name="SendFaderBox.h" compile="0" resource="0" file="Source/SendFaderBox.h"/>
       <FILE id="zOIUM5" name="ClientConnection.cpp" compile="1" resource="0"
             file="Source/ClientConnection.cpp"/>
       <FILE id="EnHeya" name="TopView.h" compile="0" resource="0" file="Source/TopView.h"/>

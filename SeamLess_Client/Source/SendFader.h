@@ -19,7 +19,7 @@
 class SendFader  : public juce::Slider
 {
 public:
-    SendFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, juce::String s);
+    SendFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, juce::String s, bool endless,  juce::Slider::RotaryParameters rotaryParameters);
     ~SendFader() override;
 
     void paint (juce::Graphics&) override;

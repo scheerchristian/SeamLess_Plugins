@@ -63,7 +63,7 @@ void ReverbFaderBox::paint (juce::Graphics& g)
 
     g.setColour (seamlessBlue);
     g.setFont (14.0f);
-    g.drawText ("Reverb Parameters", 20, 20, 200, 20, juce::Justification::left, true);
+    g.drawText ("Reverb Parameters", 10, 10, 200, 20, juce::Justification::left, true);
 }
 
 

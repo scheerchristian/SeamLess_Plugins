@@ -127,9 +127,7 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
-    sendBox.setBounds(getWidth()-320,20,300,getHeight()-180);
-    
-    sphericalBox.setBounds(getWidth()-320,20,300,getHeight()-180);
+    auto r = getLocalBounds();
     
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
    
@@ -137,9 +135,9 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     
     zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
     
-    sendBox.setBounds(maxTopViewSize+120,20,getWidth()-140-maxTopViewSize,maxTopViewSize);
+    sendBox.setBounds(maxTopViewSize + 120, 20, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
     
-    sphericalBox.setBounds(maxTopViewSize+120,20,getWidth()-140-maxTopViewSize,maxTopViewSize);
+    sphericalBox.setBounds(maxTopViewSize + 120, 20 + maxTopViewSize / 2 + 10, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
     
 
     

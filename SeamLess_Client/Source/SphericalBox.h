@@ -14,7 +14,8 @@
 
 #include "../../Common/SeamLess.h"
 #include "PluginProcessor.h"
-
+#include "SendFader.h"
+#include "SphericalFader.h"
 class SphericalBox  : public juce::Component, juce::Slider::Listener
 {
 public:
@@ -33,12 +34,16 @@ private:
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
 
-    juce::Slider rSlider;
-    juce::Label rSliderLabel;
-    juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
-    
+    SphericalFader rSlider;
+    SphericalFader azimutSlider;
+    SphericalFader elevationSlider;
 
+    juce::String names[3] = { "radius", "azimuth", "elevation" };
+    SphericalFader* faders[3] = { &rSlider, &azimutSlider, &elevationSlider };
+    juce::Range<double> ranges[3] = { {0.0, 14.14}, {0.0, 360.0}, {0.0, 360.0} };
+    juce::String suffixes[3] = { " m",juce::CharPointer_UTF8("\xc2\xb0"), juce::CharPointer_UTF8("\xc2\xb0") };
 
-
+    //juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
+   
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SphericalBox)
 };

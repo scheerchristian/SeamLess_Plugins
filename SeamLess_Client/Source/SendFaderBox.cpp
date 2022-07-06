@@ -7,17 +7,18 @@
 
   ==============================================================================
 */
+#define _USE_MATH_DEFINES
 
 #include <JuceHeader.h>
 #include "SendFaderBox.h"
 #include "PluginProcessor.h"
-
+#include <math.h>
 //==============================================================================
 SendFaderBox::SendFaderBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts):
     audioProcessor(p), treeState(apvts),
-    sendFaderHOA(p,apvts,"sendGainHOA"),
-    sendFaderWFS(p,apvts,"sendGainWFS"),
-    sendFaderREV(p,apvts,"sendGainREV")
+    sendFaderHOA(p, apvts, "sendGainHOA", false, { 0, 1, true }),
+    sendFaderWFS(p, apvts, "sendGainWFS", false, { 0, 1, true }),
+    sendFaderREV(p, apvts, "sendGainREV", false, { 0, 1, true })
 //    sendFaderLFE(p,apvts,"sendGainLFE")
 {
 
@@ -52,14 +53,34 @@ void SendFaderBox::paint (juce::Graphics& g)
 
 void SendFaderBox::resized()
 {
+    auto r = getLocalBounds().reduced(20, 20);
+
+    auto sliderWidth = (r.getWidth()-40)/3 ;
+
+    r.removeFromTop(40);
+
+    auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
+    sendFaderHOA.setBounds(sendFaderFOASection);
+
+    r.removeFromLeft(20);
+
+    auto sendFaderWFSSection = r.removeFromLeft(sliderWidth);
+    sendFaderWFS.setBounds(sendFaderWFSSection);
+
+    r.removeFromLeft(20);
+
+    auto sendFaderREVSection = r.removeFromLeft(sliderWidth);
+    sendFaderREV.setBounds(sendFaderREVSection);
+
+    /*
     const int &maxFaderWidth = std::min<int>(getWidth()/6, 60);
     
-        sendFaderHOA.setBounds(getWidth()/8,                60,maxFaderWidth,getHeight()-90);
-        sendFaderWFS.setBounds(getWidth()/2-maxFaderWidth/2,60,maxFaderWidth,getHeight()-90);
-        sendFaderREV.setBounds(getWidth()*7/8-maxFaderWidth,60,maxFaderWidth,getHeight()-90);
+        sendFaderHOA.setBounds(20, 60, maxFaderWidth, getHeight() - 90);
+        sendFaderWFS.setBounds(20 + getWidth()/3 + 10 - maxFaderWidth/2, 60, maxFaderWidth, getHeight() - 90);
+        sendFaderREV.setBounds(20 + getWidth()/3 + 20 + getWidth() / 3 + 10 - maxFaderWidth, 60, maxFaderWidth, getHeight() - 90);
     
 //    sendFaderLFE.setBounds(370,60,60,460);
-        
+        */
 }
 
 

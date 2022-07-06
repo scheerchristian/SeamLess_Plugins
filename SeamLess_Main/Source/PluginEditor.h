@@ -40,6 +40,7 @@ private:
     
     TopView sourceViewer;
     
+    juce::Rectangle<float> sourceViewerSection;
 
     void timerCallback();
 

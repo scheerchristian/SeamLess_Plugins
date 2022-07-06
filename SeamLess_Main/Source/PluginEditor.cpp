@@ -16,7 +16,7 @@ SeamLess_MainAudioProcessorEditor::SeamLess_MainAudioProcessorEditor (SeamLess_M
 {
     setSize (930,520);
     setResizable(true, true);
-    setResizeLimits(930, 260, 2000, 600);
+    setResizeLimits(930, 260, 2000, 1000);
     addAndMakeVisible(oscConnectionBox);
 
     addAndMakeVisible(reverbFaderBox);
@@ -44,6 +44,7 @@ void SeamLess_MainAudioProcessorEditor::paint (juce::Graphics& g)
 void SeamLess_MainAudioProcessorEditor::resized()
 {
     const auto box = getLocalBounds().reduced(20, 20);
+
     auto r = box;
     r.removeFromTop(30);
     auto reverbFaderSection = r.removeFromRight(box.getWidth() * 2 / 3);
@@ -60,8 +61,11 @@ void SeamLess_MainAudioProcessorEditor::resized()
     connectionComponent.setBounds(connectionSection);
     
     r.removeFromTop(10);
-    sourceViewer.setBounds(20, r.getY(), r.getHeight(), r.getHeight());
 
+    if (r.getHeight() <= r.getWidth())
+        sourceViewer.setBounds(15, r.getY(), r.getHeight(), r.getHeight() + 5);
+    else
+        sourceViewer.setBounds(15, r.getY(), r.getWidth(), r.getWidth() + 5);
 }
 
 
