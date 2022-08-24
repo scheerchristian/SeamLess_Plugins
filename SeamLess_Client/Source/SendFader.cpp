@@ -46,7 +46,8 @@ void SendFader::paint (juce::Graphics& g)
 
 void SendFader::resized()
 {
-    slider.setBounds(getWidth()*-0.1,40,getWidth()*1.2,getHeight()*0.85);
+    slider.setBounds(0,30,getWidth(),getHeight()*0.85);
+    //slider.setBounds(getWidth()*-0.1,40,getWidth()*1.2,getHeight()*0.85);
 }
 
 void SendFader::setText(juce::String s)

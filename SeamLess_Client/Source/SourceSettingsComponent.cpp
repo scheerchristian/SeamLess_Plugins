@@ -56,11 +56,11 @@ SourceSettingsComponent::~SourceSettingsComponent()
 
 void SourceSettingsComponent::paint (juce::Graphics& g)
 {
-    g.setColour(juce::Colour (220,220,220));
+    g.setColour(seamlessBlue);
     g.fillRoundedRectangle(0,0,getWidth(),getHeight(),30);
 
-    g.setColour(seamlessBlue);
-    g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,15);
+    g.setColour(juce::Colour (220,220,220));
+    g.fillRoundedRectangle(5,5,getWidth()-10,getHeight()-10,25);
 
     g.setColour (seamlessBlue);
     g.setFont (14.0f);

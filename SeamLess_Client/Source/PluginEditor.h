@@ -22,7 +22,8 @@
 /**
 */
 class SeamLess_ClientAudioProcessorEditor  : public juce::AudioProcessorEditor,
-        public juce::Slider::Listener
+                                             public juce::Slider::Listener,
+                                             public juce::Button::Listener
 {
 public:
     SeamLess_ClientAudioProcessorEditor (SeamLess_ClientAudioProcessor&, juce::AudioProcessorValueTreeState&);
@@ -31,8 +32,9 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    
     // static void setOscTargetAddressText(SeamLess_ClientAudioProcessorEditor *p, juce::String a);
+
 
 private:
 
@@ -48,6 +50,8 @@ private:
     SourceSettingsComponent settingComponent;
 
     TopView topView;
+    
+    
 
     //    juce::Slider xSlider;
     //    juce::Slider ySlider;
@@ -56,11 +60,16 @@ private:
 
     juce::Label zSliderLabel;
     
+    juce::TextButton button1;
+    juce::TextButton button2;
+    juce::TextButton button3;
+    
     // juce::Slider rSlider;
     
     // juce::Label rSliderLabel;
 
     void sliderValueChanged(juce::Slider* slider) override;
+    void buttonClicked(juce::Button* button) override;
 
     //juce::AudioProcessorValueTreeState::SliderAttachment xSliderAttachment;
     //juce::AudioProcessorValueTreeState::SliderAttachment ySliderAttachment;
@@ -68,4 +77,5 @@ private:
     // juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_ClientAudioProcessorEditor)
+
 };

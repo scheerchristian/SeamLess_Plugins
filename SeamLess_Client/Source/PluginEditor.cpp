@@ -20,15 +20,16 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
       zSliderAttachment(p.getState(),"zPos",this->zSlider),
       treeState(apvts),
       topView(&p),
+      //buttonBox(),
       connectionComponent(&p),
       settingComponent(&p,apvts),
       sendBox(p,apvts),
       sphericalBox(p, apvts)
 {
-
+    
     setSize (1070, 780);
     setResizable(true, true);
-    setResizeLimits(675, 550, 7000, 8000);
+    setResizeLimits(675, 600, 7000, 8000);
     addAndMakeVisible(settingComponent);
 
     addAndMakeVisible(sendBox);
@@ -38,7 +39,6 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     addAndMakeVisible(topView);
 
     // ===========================================================================
-
     //    xSlider.setRange (-10, 10, 0.01);
     //    xSlider.setTextBoxStyle (juce::Slider::TextBoxRight, true, 60, 30);
     //    xSlider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
@@ -97,6 +97,26 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     zSliderLabel.setColour (juce::Label::textColourId, seamlessBlue);
     zSliderLabel.attachToComponent(&zSlider,false);
 
+    addAndMakeVisible(button1);
+    button1.addListener(this);
+    button1.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    button1.setComponentID("settings");
+    button1.setButtonText ("Settings");
+    
+    addAndMakeVisible(button2);
+    button2.addListener(this);
+    button2.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    button2.setComponentID("send");
+    button2.setButtonText ("Send");
+    
+    addAndMakeVisible(button3);
+    button3.addListener(this);
+    button3.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    button3.setComponentID("spherical");
+    button3.setButtonText ("Spherical");
+    
+    sphericalBox.setVisible(false);
+    
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
 
@@ -129,29 +149,63 @@ void SeamLess_ClientAudioProcessorEditor::resized()
 {
     auto r = getLocalBounds();
     
-    const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
-   
+    const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
+    //const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
+
     topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
     
     zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
     
-    sendBox.setBounds(maxTopViewSize + 120, 20, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
+    sendBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight() - 380);
+    //sendBox.setBounds(maxTopViewSize + 120, 20, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
     
-    sphericalBox.setBounds(maxTopViewSize + 120, 20 + maxTopViewSize / 2 + 10, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
+    sphericalBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight() - 380);
     
+    connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
+    //connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
 
-    
-    
+    settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, getWidth()-maxTopViewSize-140, 120);
+    //settingComponent.setBounds(20, getHeight()-140, maxTopViewSize*0.55, 120);
    
+    button1.setBounds(maxTopViewSize+120, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    button2.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    button3.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    
+    
+    
     //xSlider.setBounds(210, -10, 400, 120);
     //ySlider.setBounds(-10, 200, 120, 400);
     
     //rSlider.setBounds(1000, 40, 100, maxTopViewSize-20);
 
-    connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
 
-    settingComponent.setBounds(20, getHeight()-140, maxTopViewSize*0.55, 120);
+    
+    const float &aspectRatio = (float)getWidth()/(float)getHeight();
+    if (aspectRatio>1.6){
+    const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
+        topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
+        settingComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-10, 120);
+        connectionComponent.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)*0.5, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-20, 120);
+        sendBox.setBounds(     maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight()-240);
+        sphericalBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight()-240);
+        zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
+        button1.setBounds(maxTopViewSize+120,                                     20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        button2.setBounds(maxTopViewSize+120+  (getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        button3.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    }
+    if (aspectRatio<1.2){
+    const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
+        topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
+        settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, (getWidth()-maxTopViewSize-140), 120);
+        connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-140), 120);
+        sendBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
+        sphericalBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
+        zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
+        button1.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
+        button2.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
+        button3.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
 
+    }
 }
 
 
@@ -167,7 +221,40 @@ void SeamLess_ClientAudioProcessorEditor::sliderValueChanged (juce::Slider* slid
     //  if (slider == &zSlider)
     zSlider.setValue (zSlider.getValue(), juce::dontSendNotification);
 }
+void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
+{
+    if (button->getComponentID() == "settings")
+    {
+        if (settingComponent.isVisible() == true)
+        {
+            settingComponent.setVisible(false);
+            connectionComponent.setVisible(false);
+            button1.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+            
+        } else {
+        settingComponent.setVisible(true);
+        connectionComponent.setVisible(true);
+        button1.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+            }
+    
+    } else
+    if (button->getComponentID() == "send")
+    {
+        sendBox.setVisible(true);
+        sphericalBox.setVisible(false);
 
+        button2.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+        button3.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        
+    } else
+    if (button->getComponentID() == "spherical")
+    {
+        sendBox.setVisible(false);
+        sphericalBox.setVisible(true);
+        button2.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        button3.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    }
+}
 
 //void SeamLess_ClientAudioProcessorEditor::setOscTargetAddressText(SeamLess_ClientAudioProcessorEditor* p, juce::String s)
 //{
