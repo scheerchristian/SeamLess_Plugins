@@ -97,23 +97,36 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     zSliderLabel.setColour (juce::Label::textColourId, seamlessBlue);
     zSliderLabel.attachToComponent(&zSlider,false);
 
-    addAndMakeVisible(button1);
-    button1.addListener(this);
-    button1.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
-    button1.setComponentID("settings");
-    button1.setButtonText ("Settings");
+    addAndMakeVisible(buttonSettings);
+    buttonSettings.addListener(this);
+    buttonSettings.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    buttonSettings.setComponentID("settings");
+    buttonSettings.setButtonText ("Settings");
     
-    addAndMakeVisible(button2);
-    button2.addListener(this);
-    button2.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
-    button2.setComponentID("send");
-    button2.setButtonText ("Send");
+    addAndMakeVisible(buttonSend);
+    buttonSend.addListener(this);
+    buttonSend.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    buttonSend.setComponentID("send");
+    buttonSend.setButtonText ("Send");
     
-    addAndMakeVisible(button3);
-    button3.addListener(this);
-    button3.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-    button3.setComponentID("spherical");
-    button3.setButtonText ("Spherical");
+    addAndMakeVisible(buttonSpherical);
+    buttonSpherical.addListener(this);
+    buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    buttonSpherical.setComponentID("spherical");
+    buttonSpherical.setButtonText ("Spherical");
+    
+    addAndMakeVisible(buttonLayout);
+    buttonLayout.addListener(this);
+    buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    buttonLayout.setComponentID("layout");
+    buttonLayout.setButtonText ("Studio");
+    
+    addAndMakeVisible(buttonGrid);
+    buttonGrid.addListener(this);
+    buttonGrid.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    buttonGrid.setComponentID("grid");
+    buttonGrid.setButtonText ("Grid OFF");
+
     
     sphericalBox.setVisible(false);
     
@@ -147,30 +160,24 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
-    auto r = getLocalBounds();
     
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
     //const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-180);
 
     topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
-    
-    zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
+    zSlider.setBounds(0, 40, 100, getHeight()-210);
     
     sendBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight() - 380);
-    //sendBox.setBounds(maxTopViewSize + 120, 20, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
-    
     sphericalBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight() - 380);
-    
-    connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
-    //connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
 
     settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, getWidth()-maxTopViewSize-140, 120);
-    //settingComponent.setBounds(20, getHeight()-140, maxTopViewSize*0.55, 120);
-   
-    button1.setBounds(maxTopViewSize+120, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
-    button2.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
-    button3.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
     
+    buttonSettings.setBounds(maxTopViewSize+120, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    buttonSend.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    buttonSpherical.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+    buttonLayout.setBounds(20, getHeight()-80, 60, 60);
+    buttonGrid.setBounds(20, getHeight()-160, 60, 60);
     
     
     //xSlider.setBounds(210, -10, 400, 120);
@@ -184,26 +191,31 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     if (aspectRatio>1.6){
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
         topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
+        
         settingComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-10, 120);
         connectionComponent.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)*0.5, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-20, 120);
+        
         sendBox.setBounds(     maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight()-240);
         sphericalBox.setBounds(maxTopViewSize + 120, 80, getWidth() - 140 - maxTopViewSize, getHeight()-240);
-        zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
-        button1.setBounds(maxTopViewSize+120,                                     20, (getWidth()-maxTopViewSize-120)/3-20, 40);
-        button2.setBounds(maxTopViewSize+120+  (getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
-        button3.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        
+        buttonSettings.setBounds(maxTopViewSize+120,                                     20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        buttonSend.setBounds(maxTopViewSize+120+  (getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        buttonSpherical.setBounds(maxTopViewSize+120+2*(getWidth()-maxTopViewSize-120)/3, 20, (getWidth()-maxTopViewSize-120)/3-20, 40);
+        
     }
     if (aspectRatio<1.2){
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.5, getHeight()-40);
         topView.setBounds(100,20,maxTopViewSize,maxTopViewSize);
+        
         settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, (getWidth()-maxTopViewSize-140), 120);
         connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-140), 120);
+        
         sendBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
         sphericalBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
-        zSlider.setBounds(0, 40, 100, maxTopViewSize-20);
-        button1.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
-        button2.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
-        button3.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
+        
+        buttonSettings.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
+        buttonSend.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
+        buttonSpherical.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
 
     }
 }
@@ -229,12 +241,12 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         {
             settingComponent.setVisible(false);
             connectionComponent.setVisible(false);
-            button1.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+            buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
             
         } else {
-        settingComponent.setVisible(true);
-        connectionComponent.setVisible(true);
-        button1.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+            settingComponent.setVisible(true);
+            connectionComponent.setVisible(true);
+            buttonSettings.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
             }
     
     } else
@@ -242,17 +254,42 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
     {
         sendBox.setVisible(true);
         sphericalBox.setVisible(false);
-
-        button2.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
-        button3.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        topView.changeGrid(true); //true for xyz
+        buttonSend.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+        buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         
     } else
     if (button->getComponentID() == "spherical")
     {
         sendBox.setVisible(false);
         sphericalBox.setVisible(true);
-        button2.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        button3.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+        topView.changeGrid(false); //false for spherical grid
+        buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        buttonSpherical.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    } else
+    if (button->getComponentID() == "layout")
+    {
+        if (button->getButtonText() == "Studio") {
+            topView.changeLayout(false);
+            buttonLayout.setButtonText("HuFo");
+        } else {
+            topView.changeLayout(true);
+            buttonLayout.setButtonText("Studio");
+
+        }
+        
+    } else
+    if (button->getComponentID() == "grid")
+    {
+        if (button->getButtonText() == "Grid OFF") {
+            topView.showGrid(true);
+            buttonGrid.setButtonText("Grid \nON");
+        } else {
+            topView.showGrid(false);
+            buttonGrid.setButtonText("Grid OFF");
+
+        }
+        
     }
 }
 

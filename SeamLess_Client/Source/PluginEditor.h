@@ -21,6 +21,7 @@
 
 /**
 */
+
 class SeamLess_ClientAudioProcessorEditor  : public juce::AudioProcessorEditor,
                                              public juce::Slider::Listener,
                                              public juce::Button::Listener
@@ -60,9 +61,11 @@ private:
 
     juce::Label zSliderLabel;
     
-    juce::TextButton button1;
-    juce::TextButton button2;
-    juce::TextButton button3;
+    juce::TextButton buttonSettings;
+    juce::TextButton buttonSend;
+    juce::TextButton buttonSpherical;
+    juce::TextButton buttonLayout;
+    juce::TextButton buttonGrid;
     
     // juce::Slider rSlider;
     

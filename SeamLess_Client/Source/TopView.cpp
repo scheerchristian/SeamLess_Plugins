@@ -21,7 +21,6 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p): source()
 
     addAndMakeVisible(source);
     startTimer(50);
-
     
 }
 
@@ -34,6 +33,7 @@ TopView::~TopView()
 
 void TopView::paint (juce::Graphics& g)
 {
+    
     g.setColour(seamlessBlue);
     g.fillRoundedRectangle(0,0,getWidth(),getHeight(),30);
 
@@ -42,10 +42,36 @@ void TopView::paint (juce::Graphics& g)
 
     //g.setColour(seamlessBlue);
     //g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,10);
-
-
+    if (enableGrid == true){
+        g.setColour(juce::Colours::grey);
+         if (grid == "spherical"){
+            for (int i = 1; i <= 13; i++) {
+                g.drawRoundedRectangle(juce::Rectangle<float>(convertMeterToPixel(10-i, 10-i), convertMeterToPixel(10+i, 10+i)), 100*i, 1);
+            }
+             g.drawLine(juce::Line<float>(convertMeterToPixel(10, 0), convertMeterToPixel(10, 20)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 10), convertMeterToPixel(20, 10)), 0.8f);
+             
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.23, 20), convertMeterToPixel(15.77, 0)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.23, 0), convertMeterToPixel(15.77, 20)), 0.8f);
+             
+             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 4.23), convertMeterToPixel(20, 15.77)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(20, 4.23), convertMeterToPixel(0, 15.77)), 0.8f);
+        } else {
+            for (int i = 1; i<=19; i++) {
+                g.drawLine(juce::Line<float>(convertMeterToPixel(0, i), convertMeterToPixel(20, i)));
+                g.drawLine(juce::Line<float>(convertMeterToPixel(i, 0), convertMeterToPixel(i, 20)));
+            }
+        }
+    g.setColour(seamlessBlue);
+        
+    g.drawRoundedRectangle(juce::Rectangle<float>(juce::Point<float>(3,3), juce::Point<float>(getWidth()-3,getHeight()-3)),25,5);
+    }
     g.setColour(seamlessBlue);
     g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
+    g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));
+   
+    
+    
     //g.drawLine(juce::Line<float>(convertMeterToPixel(3.5, 10), convertMeterToPixel(16.5, 10)));
     // g.drawImageAt(background.rescaled(700,400,juce::Graphics::mediumResamplingQuality), 0, 0);
 }
@@ -54,6 +80,7 @@ void TopView::resized()
 {
     source.setBounds(0,0,getWidth(),getHeight() );
     polygonPath.clear();
+    TUStudioPath.clear();
     polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY() + 10);
     polygonPath.startNewSubPath(polygonPixel[0]);
     for (int i = 1; i <= 33; i++)
@@ -62,7 +89,18 @@ void TopView::resized()
         polygonPath.lineTo(polygonPixel[i]);
     }
     polygonPath.closeSubPath();
-
+    if (layout == "Studio") {
+        polygonPath.clear();
+        TUStudioPath.clear();
+        TUStudioPixel[0] = convertMeterToPixel(TUStudioMeter[0].getX() + 10, TUStudioMeter[0].getY() + 10);
+        TUStudioPath.startNewSubPath(TUStudioPixel[0]);
+        for (int i = 1; i <= 3; i++)
+        {
+            TUStudioPixel[i] = convertMeterToPixel(TUStudioMeter[i].getX() + 10, TUStudioMeter[i].getY() + 10);
+            TUStudioPath.lineTo(TUStudioPixel[i]);
+        }
+        TUStudioPath.closeSubPath();
+    } 
 }
 
 void TopView::mouseDown(const juce::MouseEvent& e)
@@ -121,3 +159,15 @@ void TopView::timerCallback()
     }
 }
 
+void TopView::changeLayout(bool HuFoSelected) {
+    if (HuFoSelected == true) {layout = "HuFo";} else {layout = "Studio";}
+}
+
+void TopView::changeGrid(bool xyzGrid) {
+    if (xyzGrid == true) {grid = "xyz";} else {grid = "spherical";}
+    
+}
+void TopView::showGrid(bool showGrid) {
+    if (showGrid == true) {enableGrid = true;} else {enableGrid = false;};
+    resized();
+}
