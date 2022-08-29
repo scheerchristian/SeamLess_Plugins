@@ -68,7 +68,7 @@ void TopView::paint (juce::Graphics& g)
     }
     g.setColour(seamlessBlue);
     g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
-    g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));
+    if (layout == "Studio") {g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));}
    
     
     
@@ -161,13 +161,15 @@ void TopView::timerCallback()
 
 void TopView::changeLayout(bool HuFoSelected) {
     if (HuFoSelected == true) {layout = "HuFo";} else {layout = "Studio";}
+    repaint();
+    resized();
 }
 
 void TopView::changeGrid(bool xyzGrid) {
     if (xyzGrid == true) {grid = "xyz";} else {grid = "spherical";}
-    
+    repaint();
 }
 void TopView::showGrid(bool showGrid) {
     if (showGrid == true) {enableGrid = true;} else {enableGrid = false;};
-    resized();
+    repaint();
 }
