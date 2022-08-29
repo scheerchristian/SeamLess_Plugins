@@ -79,7 +79,7 @@ private:
     juce::String layout;
     juce::String grid;
     bool enableGrid;
-
+    
     ///
     /// \brief timerCallback
     /// set source position

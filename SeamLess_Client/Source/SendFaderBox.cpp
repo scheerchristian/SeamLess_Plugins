@@ -33,7 +33,7 @@ SendFaderBox::SendFaderBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
    // addAndMakeVisible(sendFaderLFE);
 
     // sendFaderWFS.addListener(this);
-
+    addAndMakeVisible(faderBoxName);
 }
 
 SendFaderBox::~SendFaderBox()
@@ -47,20 +47,26 @@ void SendFaderBox::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("Send Levels", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
+    //g.drawText ("Send Levels", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
 }
 
 
 void SendFaderBox::resized()
 {
+    if (showText == true) {
+        faderBoxName.setJustificationType(juce::Justification::centred);
+        faderBoxName.setText("Send Levels", juce::dontSendNotification);
+        faderBoxName.setBounds(getWidth()/2-100, 20, 200, 20);
+    }
+    
     auto r = getLocalBounds().reduced(20, 20);
-
+    
     auto sliderWidth = (r.getWidth()-40)/3 ;
 
     r.removeFromTop(40);
 
-    auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
-    sendFaderHOA.setBounds(sendFaderFOASection);
+    auto sendFaderHOASection = r.removeFromLeft(sliderWidth);
+    sendFaderHOA.setBounds(sendFaderHOASection);
 
     r.removeFromLeft(20);
 
@@ -94,4 +100,7 @@ void SendFaderBox::sliderValueChanged (juce::Slider* slider)
 
     //    if (slider == &zSlider)
     //        zSlider.setValue (zSlider.getValue(), juce::dontSendNotification);
+}
+void SendFaderBox::boxOrientation(bool landscape) {
+    if (landscape == true) {showText = false;} else {showText = true;};
 }

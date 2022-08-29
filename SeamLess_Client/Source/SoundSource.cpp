@@ -29,76 +29,44 @@ SoundSource::~SoundSource()
 void SoundSource::paint (juce::Graphics& g)
 {
   //auto area = getLocalBounds().reduced (2);
-  g.setColour (juce::Colours::lightblue);
-  g.fillEllipse (xPos, yPos, width,height);
+    
+    auto ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, xPos+width/3, yPos+width/3, juce::Colours::black, xPos+width, yPos+width, true);
+    auto shadowgrad = juce::ColourGradient(juce::Colours::darkgrey, xPos+(width-shadowWidth)/2+shadowWidth/2+7, yPos+(width-shadowWidth)/2+shadowWidth/2+7, juce::Colours::white, xPos+(width-shadowWidth)/2+shadowWidth+7, yPos+(width-shadowWidth)/2+shadowWidth+7, true);
+    
+    g.setColour (juce::Colours::silver);
+    g.setGradientFill(shadowgrad);
+    g.setOpacity(shadowOpacity);
+    g.fillEllipse (xPos+(width-shadowWidth)/2+5, yPos+(width-shadowWidth)/2+5, shadowWidth,shadowWidth);
+    g.setColour (juce::Colours::lightblue);
+    g.setGradientFill(ballgrad);
+    g.fillEllipse (xPos, yPos, width,width);
 }
 
-void SoundSource::resized ()
-{
-
-}
-
-
-void SoundSource::mouseDown (const juce::MouseEvent& e)
-{
-}
-
-
-void SoundSource::mouseDrag (const juce::MouseEvent& e)
-{
-}
-
-
-void SoundSource::moveX(double x)
-{
-  setTopLeftPosition(x*10+300,this->getY());
+void SoundSource::resized (){
+    
 }
 
 
-void SoundSource::moveY(double y)
-{
-  setTopLeftPosition(this->getX(),y*10+400);
-}
+void SoundSource::mouseDown (const juce::MouseEvent& e){}
+
+void SoundSource::mouseDrag (const juce::MouseEvent& e){}
+
+void SoundSource::moveX(double x){}
 
 
-void SoundSource::moveXY(float x, float y)
-{
+void SoundSource::moveY(double y){}
 
-    // repaint(xPos,yPos, 40,40);
-    xPos = x*getWidth()  - (int) ((float) width/ 2.0);
-    yPos = (1-y)*getHeight() - (int) ((float) height/2.0);
 
-    // repaint(xPos,yPos, 40,40);
-    repaint();
-
-}
+void SoundSource::moveXY(float x, float y){}
 
 
 void SoundSource::moveXYZ(float x, float y, float z)
 {
-
-    // shift and enlarge area to repaint
-    int shift = 5;
-    int pad   = 10;
-
-    // helper values for clearing the area at the old position
-    // (maybe obsolete)
-    int tmpWidth  = width;
-    int tmpHeight = height;
-
-    width  = 0;
-    height = 0;
-
-    repaint(xPos-shift,yPos-shift, tmpWidth+pad,tmpHeight+pad);
-
-
-    xPos  = x*getWidth()      - (int) ((float) tmpWidth/ 2.0);
-    yPos  = (1-y)*getHeight() - (int) ((float) tmpWidth/2.0);
-
-    width  = 5+z*50;
-    height = 5+z*50;
-
-    // repaint(xPos,yPos, 40,40);
-    repaint(xPos-shift,yPos-shift, width+pad,height+pad);
-
+    xPos  = x*getWidth()      - (int) ((float) width/2.0);
+    yPos  = (1-y)*getHeight() - (int) ((float) width/2.0);
+    
+    width = getWidth()*0.0015*(20+z*15);
+    shadowWidth  = width*1.2*(z+1);
+    shadowOpacity = 1-(float)z*0.7;
+    repaint();
 }

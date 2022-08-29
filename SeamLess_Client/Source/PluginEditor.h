@@ -36,8 +36,7 @@ public:
     
     // static void setOscTargetAddressText(SeamLess_ClientAudioProcessorEditor *p, juce::String a);
 
-
-private:
+    private:
 
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
@@ -67,6 +66,8 @@ private:
     juce::TextButton buttonLayout;
     juce::TextButton buttonGrid;
     
+    bool landscape;
+
     // juce::Slider rSlider;
     
     // juce::Label rSliderLabel;

@@ -43,8 +43,8 @@ private:
   int xPos = 0;
   int yPos = 0;
 
-  int width  = 30;
-  int height = 30;
-
+    int width;//  = 30;
+    int shadowWidth = 40;
+    float shadowOpacity = 0.65;
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundSource)
 };

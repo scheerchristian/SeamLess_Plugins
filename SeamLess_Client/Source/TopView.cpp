@@ -50,12 +50,10 @@ void TopView::paint (juce::Graphics& g)
             }
              g.drawLine(juce::Line<float>(convertMeterToPixel(10, 0), convertMeterToPixel(10, 20)), 0.8f);
              g.drawLine(juce::Line<float>(convertMeterToPixel(0, 10), convertMeterToPixel(20, 10)), 0.8f);
-             
-             g.drawLine(juce::Line<float>(convertMeterToPixel(4.23, 20), convertMeterToPixel(15.77, 0)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(4.23, 0), convertMeterToPixel(15.77, 20)), 0.8f);
-             
-             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 4.23), convertMeterToPixel(20, 15.77)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(20, 4.23), convertMeterToPixel(0, 15.77)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081, 20), convertMeterToPixel(15.7735026919, 0)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081, 0), convertMeterToPixel(15.7735026919, 20)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 4.2264973081), convertMeterToPixel(20, 15.7735026919)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(20, 4.2264973081), convertMeterToPixel(0, 15.7735026919)), 0.8f);
         } else {
             for (int i = 1; i<=19; i++) {
                 g.drawLine(juce::Line<float>(convertMeterToPixel(0, i), convertMeterToPixel(20, i)));
