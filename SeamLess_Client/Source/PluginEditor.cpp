@@ -26,7 +26,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
       sphericalBox(p, apvts)
 {
     
-    setSize (1070, 780);
+    setSize (1000, 600);
     setResizable(true, true);
     setResizeLimits(675, 600, 7000, 8000);
     
@@ -172,24 +172,25 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
+    
     landscape = true;
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.6, getHeight()-40);
 
-    zSlider.setBounds(0,40,100, getHeight()-210);
+    zSlider.setBounds(0,40,100, getHeight()-195);
     topView.setBounds(100,20,maxTopViewSize, maxTopViewSize);
     juce::Component::setColour(juce::ComboBox::outlineColourId, juce::Colours::blue);
     
-    sendBox.setBounds(     maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 370);
-    sphericalBox.setBounds(maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 370);
+    sendBox.setBounds(     maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
+    sphericalBox.setBounds(maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
 
-    settingComponent.setBounds(   maxTopViewSize+120, getHeight()-280, getWidth()-maxTopViewSize-140, 120);
+    settingComponent.setBounds(   maxTopViewSize+120, getHeight()-270, getWidth()-maxTopViewSize-140, 120);
     connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
     
     buttonSettings.setBounds(sendBox.getBounds().getX(),    20, sendBox.getWidth()/3, 40);
     buttonSend.setBounds(buttonSettings.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
     buttonSpherical.setBounds(buttonSend.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
     buttonLayout.setBounds(20, getHeight()-80, 60, 60);
-    buttonGrid.setBounds(20, getHeight()-160, 60, 60);
+    buttonGrid.setBounds(20, getHeight()-150, 60, 60);
     
     
     //xSlider.setBounds(210, -10, 400, 120);
