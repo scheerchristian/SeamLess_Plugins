@@ -3,3 +3,4 @@ SeamLess_Client/JuceLibraryCode/
 SeamLess_Main/Builds/
 SeamLess_Main/JuceLibraryCode/
 Juce/
+*.DS_Store
