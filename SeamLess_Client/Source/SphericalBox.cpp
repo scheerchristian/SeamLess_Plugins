@@ -1,24 +1,16 @@
-/*
-  ==============================================================================
-
-    SphericalBox.cpp
-    Created: 19 Jun 2022 11:13:40pm
-    Author:  Uni
-
-  ==============================================================================
-*/
 #define _USE_MATH_DEFINES
-
 #include "SphericalBox.h"
-#include <math.h>
-
 //==============================================================================
 SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts) :
     audioProcessor(p), treeState(apvts),
-    rSlider(p, apvts, false, { 0, 1, true }),
-    azimutSlider(p, apvts, true, { 0, 2*M_PI, false }),
-    elevationSlider(p, apvts, true, { 0, 2 * M_PI, false })
+   
+    rSlider(p, apvts, false, { 0, 1, true }, "radius"),
+    azimuthSlider(p, apvts, true, { 7*M_PI/2, 3 * M_PI / 2,  false }, "azimuth"),
+    elevationSlider(p, apvts, true, { M_PI, 0, false }, "elevation")
 {
+    rSlider.setName("rSlider");
+    azimuthSlider.setName("azimutSlider");
+    elevationSlider.setName("elevationSlider");
     for (int i = 0; i < 3; i++)
     {
         faders[i]->setText(names[i]);
@@ -26,8 +18,10 @@ SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
         faders[i]->setSliderRange(ranges[i], 0.01);
         faders[i]->setSliderTextValueSuffix(suffixes[i]);
     }
-    
- 
+
+    connectXtoParameter(*treeState.getParameter("xPos"));
+    connectYtoParameter(*treeState.getParameter("yPos"));
+    connectZtoParameter(*treeState.getParameter("zPos"));
 }
 
 SphericalBox::~SphericalBox()
@@ -59,7 +53,7 @@ void SphericalBox::resized()
     r.removeFromLeft(20);
 
     auto sendFaderWFSSection = r.removeFromLeft(sliderWidth);
-    azimutSlider.setBounds(sendFaderWFSSection);
+    azimuthSlider.setBounds(sendFaderWFSSection);
 
     r.removeFromLeft(20);
 
@@ -68,7 +62,48 @@ void SphericalBox::resized()
 
 }
 
-
-void SphericalBox::sliderValueChanged (juce::Slider* slider)
+void SphericalBox::connectXtoParameter(juce::RangedAudioParameter& p)
 {
+    xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+            float x = newValue;
+            float y = treeState.getParameterAsValue("yPos").toString().getFloatValue();
+            float z = treeState.getParameterAsValue("zPos").toString().getFloatValue();
+            
+            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+                updateSphericalSliders(x, y, z);
+        });
+}
+
+void SphericalBox::connectYtoParameter(juce::RangedAudioParameter& p)
+{
+    yAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {            
+            float x = treeState.getParameterAsValue("xPos").toString().getFloatValue();
+            float y = newValue;
+            float z = treeState.getParameterAsValue("zPos").toString().getFloatValue();
+            
+            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+                updateSphericalSliders(x, y, z);
+        });
+}
+
+void SphericalBox::connectZtoParameter(juce::RangedAudioParameter& p)
+{
+    zAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+            float x = treeState.getParameterAsValue("xPos").toString().getFloatValue();
+            float y = treeState.getParameterAsValue("yPos").toString().getFloatValue();
+            float z = newValue;
+
+            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+                updateSphericalSliders(x, y, z);
+        });
+}
+
+void SphericalBox::updateSphericalSliders(float x, float y, float z)
+{
+    rSlider.slider.setValue(rSlider.radius_from_cartesian(x, y, z), juce::dontSendNotification);
+    azimuthSlider.slider.setValue(rSlider.radian_to_degree(azimuthSlider.azimuth_from_cartesian(x, y)), juce::dontSendNotification);
+    elevationSlider.slider.setValue(elevationSlider.radian_to_degree(elevationSlider.elevation_from_cartesian(x, y, z)), juce::dontSendNotification);
 }

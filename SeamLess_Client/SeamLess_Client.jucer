@@ -14,8 +14,6 @@
       <FILE id="tQWjsj" name="HuFo.png" compile="0" resource="1" file="Resources/HuFo.png"/>
     </GROUP>
     <GROUP id="{430F3EF1-34BE-76D3-9328-5006156D1F39}" name="Source">
-      <FILE id="xLHZOI" name="SquericalFunctions.cpp" compile="1" resource="0"
-            file="Source/SquericalFunctions.cpp"/>
       <FILE id="fZuZve" name="SphericalFader.cpp" compile="1" resource="0"
             file="Source/SphericalFader.cpp"/>
       <FILE id="izBz0Z" name="SphericalFader.h" compile="0" resource="0"

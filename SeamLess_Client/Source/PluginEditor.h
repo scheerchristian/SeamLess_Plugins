@@ -31,8 +31,10 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    //==============================================================================
+    void connectZToParameter(juce::RangedAudioParameter& p);
 
-    // static void setOscTargetAddressText(SeamLess_ClientAudioProcessorEditor *p, juce::String a);
+    void sliderValueChanged(juce::Slider* slider) override;
 
 private:
 
@@ -49,23 +51,23 @@ private:
 
     TopView topView;
 
-    //    juce::Slider xSlider;
-    //    juce::Slider ySlider;
-
     juce::Slider zSlider;
 
     juce::Label zSliderLabel;
-    
-    // juce::Slider rSlider;
-    
-    // juce::Label rSliderLabel;
 
-    void sliderValueChanged(juce::Slider* slider) override;
 
-    //juce::AudioProcessorValueTreeState::SliderAttachment xSliderAttachment;
-    //juce::AudioProcessorValueTreeState::SliderAttachment ySliderAttachment;
+    // the zSlider gets a SliderAttachment to keep sync with its corresponding parameter in the apvts ...
     juce::AudioProcessorValueTreeState::SliderAttachment zSliderAttachment;
-    // juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
+    // ... which also needs a ParameterAttachment which calls a callback-function in which we can update the knob inside topView, as its size depends on our z-Position
+    std::unique_ptr<juce::ParameterAttachment> zAttachment; // Attachment to connect the z-Value with the RangedAudioParameter in apvts in the PluginProcessor
 
+
+    
+    //========================= deprecated =====================================================
+    // juce::Slider rSlider;
+    // juce::Label rSliderLabel;
+    // void sliderValueChanged(juce::Slider* slider) override;
+    //    juce::Slider xSlider;
+    //    juce::Slider ySlider;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_ClientAudioProcessorEditor)
 };

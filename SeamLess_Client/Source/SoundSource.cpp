@@ -30,7 +30,7 @@ void SoundSource::paint (juce::Graphics& g)
 {
   //auto area = getLocalBounds().reduced (2);
   g.setColour (juce::Colours::lightblue);
-  g.fillEllipse (xPos, yPos, width,height);
+  g.fillEllipse (0, 0, getWidth(), getHeight());
 }
 
 void SoundSource::resized ()
@@ -48,6 +48,7 @@ void SoundSource::mouseDrag (const juce::MouseEvent& e)
 {
 }
 
+/*
 
 void SoundSource::moveX(double x)
 {
@@ -94,11 +95,15 @@ void SoundSource::moveXYZ(float x, float y, float z)
 
     xPos  = x*getWidth()      - (int) ((float) tmpWidth/ 2.0);
     yPos  = (1-y)*getHeight() - (int) ((float) tmpWidth/2.0);
+   
 
     width  = 5+z*50;
     height = 5+z*50;
 
+
+    //this->setBounds(xPos, yPos, width, height);
     // repaint(xPos,yPos, 40,40);
     repaint(xPos-shift,yPos-shift, width+pad,height+pad);
 
 }
+*/

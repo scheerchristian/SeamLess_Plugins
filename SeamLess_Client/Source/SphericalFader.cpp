@@ -1,27 +1,18 @@
-/*
-  ==============================================================================
-
-    SphericalFader.cpp
-    Created: 31 Mar 2021 10:34:35am
-    Author:  anwaldt
-
-  ==============================================================================
-*/
-
+#define _USE_MATH_DEFINES
 #include <JuceHeader.h>
 #include "SphericalFader.h"
 
 //==============================================================================
-SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters)
+SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String type) 
+    :audioProcessor(p), treeState(apvts), sliderType(type)
    
 {
-
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
     slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::grey);
     slider.setNumDecimalPlacesToDisplay(2);
- 
+   
     if (endless == true)
         slider.setRotaryParameters(rotaryParameters);
     addAndMakeVisible(slider);
@@ -32,7 +23,9 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
     sphericalNameLabel.setText("SND", juce::dontSendNotification);
     sphericalNameLabel.attachToComponent(&slider, false);
 
+    slider.addListener(this);
     addAndMakeVisible(sphericalNameLabel);
+
 
 }
 
@@ -58,15 +51,40 @@ void SphericalFader::setText(juce::String s)
 
 void SphericalFader::sliderDragStarted(juce::Slider* fader)
 {
+    onDrag = true;
 }
 
 void SphericalFader::sliderDragEnded(juce::Slider* fader)
 {
-
+    onDrag = false;
 }
 
 void SphericalFader::sliderValueChanged(juce::Slider* fader)
 {
+    //onDrag = true;
+    auto currentX = treeState.getParameterAsValue("xPos").getValue().toString().getFloatValue();
+    auto currentY = treeState.getParameterAsValue("yPos").getValue().toString().getFloatValue();
+    auto currentZ = treeState.getParameterAsValue("zPos").getValue().toString().getFloatValue();
+
+    auto currentAzimuth = azimuth_from_cartesian(currentX, currentY);
+    auto currentElevation = elevation_from_cartesian(currentX, currentY, currentZ);
+    auto currentRadius = radius_from_cartesian(currentX, currentY, currentZ);
+
+    if (sliderType == "radius")
+        currentRadius = fader->getValue();
+    else if (sliderType == "azimuth")
+        currentAzimuth = degree_to_radian(fader->getValue());
+    else if (sliderType == "elevation")
+        currentElevation = degree_to_radian(fader->getValue());
+
+    auto newX = x_from_spherical(currentRadius, currentElevation, currentAzimuth);
+    auto newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
+    auto newZ = z_from_spherical(currentRadius, currentElevation);
+
+    treeState.getParameter("xPos")->setValueNotifyingHost(newX);
+    treeState.getParameter("yPos")->setValueNotifyingHost(newY);
+    treeState.getParameter("zPos")->setValueNotifyingHost(newZ);
+    //onDrag = false;
 }
 
 void SphericalFader::setSliderRange(juce::Range<double> newRange, double newInterval)
@@ -77,4 +95,57 @@ void SphericalFader::setSliderRange(juce::Range<double> newRange, double newInte
 void SphericalFader::setSliderTextValueSuffix(juce::String newSuffix)
 {
     slider.setTextValueSuffix(newSuffix);
+}
+
+float SphericalFader::radius_from_cartesian(float x, float y, float z)
+{
+    return sqrt((x * x) + (y * y) + (z * z));
+}
+
+float SphericalFader::azimuth_from_cartesian(float x, float y)
+{
+    if (x >= 0)
+        return atan(-y / x);
+    else if (x < 0 && y < 0)
+        return M_PI - atan(y / x);
+    else if (x < 0 && y > 0)
+        return -(M_PI - atan(-y / x));
+
+}
+
+float SphericalFader::elevation_from_cartesian(float x, float y, float z)
+{
+    if (z >= 0)
+        return atan(z / sqrt((x * x) + (y * y)));
+    else
+    {
+        auto eins = (-atan(-z / sqrt((x * x) + (y * y))));
+        return (-atan(-z / sqrt((x * x) + (y * y))));
+    }
+
+}
+
+float SphericalFader::x_from_spherical(float radius, float elevation, float azimuth)
+{
+    return radius *cos(elevation)* cos(azimuth);
+}
+
+float SphericalFader::y_from_spherical(float radius, float elevation, float azimuth)
+{
+    return radius *cos(elevation)* sin(azimuth);
+}
+
+float SphericalFader::z_from_spherical(float radius, float elevation)
+{
+    return radius *sin(elevation);
+}
+
+float SphericalFader::radian_to_degree(float radian)
+{
+    return radian * 180 / M_PI;
+}
+
+float SphericalFader::degree_to_radian(float degree)
+{
+    return degree * M_PI / 180;
 }
