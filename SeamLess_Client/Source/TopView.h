@@ -55,8 +55,7 @@ public:
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
 
     void changeLayout(bool HuFoSelected);
-    void changeGrid(bool xyzGrid);
-    void showGrid(bool showGrid);
+    void showGrid(bool showGrid, bool xyzGrid);
 private:
 
     SeamLess_ClientAudioProcessor *processor;
@@ -73,13 +72,18 @@ private:
     juce::Point<float> polygonPixel[34];
     
     juce::Path TUStudioPath;
-    juce::Point<float> TUStudioMeter[4] = { juce::Point<float>(-1, -1), juce::Point<float>(-1, 1), juce::Point<float>(1, 1), juce::Point<float>(1, -1) };
-    juce::Point<float> TUStudioPixel[4];
+    juce::Point<float> TUStudioMeter[8] = {
+        juce::Point<float>(-1.620, 3.023), juce::Point<float>(1.620, 3.023), juce::Point<float>(2.430, 1.620), juce::Point<float>(2.430, -1.620),
+        juce::Point<float>(1.620, -3.023), juce::Point<float>(-1.620, -3.023), juce::Point<float>(-2.430, -1.620), juce::Point<float>(-2.430,1.620)
+    };
+    
+
+    juce::Point<float> TUStudioPixel[8];
     
     juce::String layout;
     juce::String grid;
     bool enableGrid;
-    
+    juce::Label coordinatesLabel;
     ///
     /// \brief timerCallback
     /// set source position

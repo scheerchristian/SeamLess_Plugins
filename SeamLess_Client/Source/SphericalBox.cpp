@@ -41,7 +41,7 @@ void SphericalBox::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("Spherical Coordinates", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
+    //g.drawText ("Spherical Coordinates", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
 }
 
 
@@ -51,7 +51,7 @@ void SphericalBox::resized()
 
     auto sliderWidth = (r.getWidth() - 40) / 3;
 
-    r.removeFromTop(40);
+    //r.removeFromTop(40);
 
     auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
     rSlider.setBounds(sendFaderFOASection);

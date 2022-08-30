@@ -21,7 +21,14 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p): source()
 
     addAndMakeVisible(source);
     startTimer(50);
+    addAndMakeVisible(coordinatesLabel);
+    coordinatesLabel.setText("", juce::dontSendNotification);
+    coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
+    coordinatesLabel.setVisible(false);
     
+    //coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::lightgrey);
+    //coordinatesLabel.setColour(juce::Label::outlineColourId, juce::Colours::grey);
+
 }
 
 
@@ -92,24 +99,38 @@ void TopView::resized()
         TUStudioPath.clear();
         TUStudioPixel[0] = convertMeterToPixel(TUStudioMeter[0].getX() + 10, TUStudioMeter[0].getY() + 10);
         TUStudioPath.startNewSubPath(TUStudioPixel[0]);
-        for (int i = 1; i <= 3; i++)
+        for (int i = 1; i <= 7; i++)
         {
             TUStudioPixel[i] = convertMeterToPixel(TUStudioMeter[i].getX() + 10, TUStudioMeter[i].getY() + 10);
             TUStudioPath.lineTo(TUStudioPixel[i]);
         }
         TUStudioPath.closeSubPath();
-    } 
+    }
+    coordinatesLabel.setBounds(20, 20, 80, 40);
 }
 
 void TopView::mouseDown(const juce::MouseEvent& e)
 {
     changePosition(e.getPosition());
+    juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
+    juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getHeight()+10)*100)/100)+" m";
+    coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
+    if (e.getPosition().getX()<145 and e.getPosition().getY()<90){
+        coordinatesLabel.setBounds(getWidth()-110, 20, 95, 40);
+    } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
+    coordinatesLabel.setVisible(true);
 }
 
 
 void TopView::mouseDrag (const juce::MouseEvent& e)
 {
     changePosition(e.getPosition());
+    juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
+    juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getWidth()+10)*100)/100)+" m";
+    coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
+    if (e.getPosition().getX()<145 and e.getPosition().getY()<90){
+        coordinatesLabel.setBounds(getWidth()-110, 20, 95, 40);
+    } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
 }
 
 void TopView::changePosition(juce::Point <int> p)
@@ -127,7 +148,7 @@ void TopView::changePosition(juce::Point <int> p)
 
 
 void TopView::mouseUp(const juce::MouseEvent& e)
-{
+{ coordinatesLabel.setVisible(false);
 }
 
 juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
@@ -163,11 +184,16 @@ void TopView::changeLayout(bool HuFoSelected) {
     resized();
 }
 
-void TopView::changeGrid(bool xyzGrid) {
+void TopView::showGrid(bool showGrid, bool xyzGrid) {
+    if (showGrid == true) {
+        enableGrid = true;
+        coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::white);
+        
+    } else {
+        enableGrid = false;
+        coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colour(000000));
+    };
+    
     if (xyzGrid == true) {grid = "xyz";} else {grid = "spherical";}
-    repaint();
-}
-void TopView::showGrid(bool showGrid) {
-    if (showGrid == true) {enableGrid = true;} else {enableGrid = false;};
     repaint();
 }

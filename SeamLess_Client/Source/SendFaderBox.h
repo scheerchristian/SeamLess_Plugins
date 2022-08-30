@@ -35,7 +35,6 @@ public:
     /// A slider listener for all send gain sliders.
     void sliderValueChanged (juce::Slider* slider) override;
     
-    void boxOrientation (bool landscape);
 private:
 
     SeamLess_ClientAudioProcessor& audioProcessor;
@@ -44,8 +43,7 @@ private:
     SendFader sendFaderHOA;
     SendFader sendFaderWFS;
     SendFader sendFaderREV;
-    juce::Label faderBoxName;
-    bool showText = false;
+
 //    SendFader sendFaderLFE;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SendFaderBox)
