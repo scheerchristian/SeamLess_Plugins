@@ -57,6 +57,7 @@ public:
 
     // setter and getter functions
     void setSourceWidthPx(int newWidth);
+    void setZPos(float newValue);
     void changeLayout(bool HuFoSelected);
     void showGrid(bool showGrid, bool xyzGrid);
 private:
@@ -82,6 +83,9 @@ private:
         juce::Point<float>(1.620, -3.023), juce::Point<float>(-1.620, -3.023), juce::Point<float>(-2.430, -1.620), juce::Point<float>(-2.430,1.620)
     };
     
+    juce::Path shadowOrigin;
+    juce::DropShadow sourceShadow;
+
 
     juce::Point<float> TUStudioPixel[8];
     

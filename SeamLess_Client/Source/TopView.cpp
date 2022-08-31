@@ -48,20 +48,27 @@ void TopView::paint (juce::Graphics& g)
     //g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,10);
     if (enableGrid == true){
         g.setColour(juce::Colours::grey);
-         if (grid == "spherical"){
-            for (int i = 1; i <= 13; i++) {
-                g.drawRoundedRectangle(juce::Rectangle<float>(convertMeterToPixel(10-i, 10-i), convertMeterToPixel(10+i, 10+i)), 100*i, 1);
+         if (grid == "spherical")
+         {
+             
+            for (int i = 1; i <= 13; i++) 
+            {
+                g.drawRoundedRectangle(juce::Rectangle<float>(convertMeterToPixel(-i, -i), convertMeterToPixel(i, i)), 100 * (i), 1);
             }
-             g.drawLine(juce::Line<float>(convertMeterToPixel(10, 0), convertMeterToPixel(10, 20)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 10), convertMeterToPixel(20, 10)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081, 20), convertMeterToPixel(15.7735026919, 0)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081, 0), convertMeterToPixel(15.7735026919, 20)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 4.2264973081), convertMeterToPixel(20, 15.7735026919)), 0.8f);
-             g.drawLine(juce::Line<float>(convertMeterToPixel(20, 4.2264973081), convertMeterToPixel(0, 15.7735026919)), 0.8f);
-        } else {
-            for (int i = 1; i<=19; i++) {
-                g.drawLine(juce::Line<float>(convertMeterToPixel(0, i), convertMeterToPixel(20, i)));
-                g.drawLine(juce::Line<float>(convertMeterToPixel(i, 0), convertMeterToPixel(i, 20)));
+            
+             g.drawLine(juce::Line<float>(convertMeterToPixel(0, 10), convertMeterToPixel(0, -10)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(-10, 0), convertMeterToPixel(10, 0)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081 - 10, 10), convertMeterToPixel(5.7735026919, -10)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(4.2264973081 - 10, -10), convertMeterToPixel(5.7735026919, 10)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(-10, 4.2264973081 - 10), convertMeterToPixel(10, 5.7735026919)), 0.8f);
+             g.drawLine(juce::Line<float>(convertMeterToPixel(10, 4.2264973081 - 10), convertMeterToPixel(-10, 5.7735026919)), 0.8f);
+         }
+         else 
+         {
+            for (int i = -9; i<=9; i++) 
+            {
+                g.drawLine(juce::Line<float>(convertMeterToPixel(-10, i), convertMeterToPixel(10, i)));
+                g.drawLine(juce::Line<float>(convertMeterToPixel(i, -10), convertMeterToPixel(i, 10)));
             }
         }
     g.setColour(seamlessBlue);
@@ -71,9 +78,12 @@ void TopView::paint (juce::Graphics& g)
     g.setColour(seamlessBlue);
     g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
     if (layout == "Studio") {g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));}
-   
-    
-    
+
+    // draws the knob shadow
+    g.setColour(juce::Colours::darkgrey);
+    shadowOrigin.addEllipse((xPosPx - sourceWidthPx/2) + xPos - zPos/2, (yPosPx - sourceWidthPx/2) + yPos - zPos/2, sourceWidthPx + zPos, sourceWidthPx + zPos);
+    sourceShadow.drawForPath(g, shadowOrigin);
+    shadowOrigin.clear();
 }
 
 void TopView::resized()
@@ -94,11 +104,11 @@ void TopView::resized()
     if (layout == "Studio") {
         polygonPath.clear();
         TUStudioPath.clear();
-        TUStudioPixel[0] = convertMeterToPixel(TUStudioMeter[0].getX() + 10, TUStudioMeter[0].getY() + 10);
+        TUStudioPixel[0] = convertMeterToPixel(TUStudioMeter[0].getX(), TUStudioMeter[0].getY());
         TUStudioPath.startNewSubPath(TUStudioPixel[0]);
         for (int i = 1; i <= 7; i++)
         {
-            TUStudioPixel[i] = convertMeterToPixel(TUStudioMeter[i].getX() + 10, TUStudioMeter[i].getY() + 10);
+            TUStudioPixel[i] = convertMeterToPixel(TUStudioMeter[i].getX(), TUStudioMeter[i].getY());
             TUStudioPath.lineTo(TUStudioPixel[i]);
         }
         TUStudioPath.closeSubPath();
@@ -115,7 +125,14 @@ void TopView::mouseDown(const juce::MouseEvent& e)
 
     xAttachment->beginGesture();
     yAttachment->beginGesture();
-    } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
+    juce::String xcoord = juce::String(round((+20 * (float)e.getPosition().getX() / (float)getWidth() - 10) * 100) / 100) + " m";
+    juce::String ycoord = juce::String(round((-20 * (float)e.getPosition().getY() / (float)getHeight() + 10) * 100) / 100) + " m";
+    coordinatesLabel.setText("x= " + xcoord + " \ny= " + ycoord, juce::dontSendNotification);
+    if (e.getPosition().getX() < 145 && e.getPosition().getY() < 90) 
+    {
+        coordinatesLabel.setBounds(getWidth() - 110, 20, 95, 40);
+    }
+    else { coordinatesLabel.setBounds(20, 20, 95, 40); }
     coordinatesLabel.setVisible(true);
 }
 
@@ -128,7 +145,7 @@ void TopView::mouseDrag (const juce::MouseEvent& e)
     juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
     juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getWidth()+10)*100)/100)+" m";
     coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
-    if (e.getPosition().getX()<145 and e.getPosition().getY()<90){
+    if (e.getPosition().getX()<145 && e.getPosition().getY()<90){
         coordinatesLabel.setBounds(getWidth()-110, 20, 95, 40);
     } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
 }
@@ -148,6 +165,7 @@ void TopView::connectXtoParameter(juce::RangedAudioParameter& p)
             xPos = newValue;
             auto pos = convertMeterToPixel(newValue, yPos).toInt();
             xPosPx = pos.x;
+            source.setXPos(newValue);
             resized();
         });
     xAttachment->sendInitialUpdate();
@@ -160,6 +178,7 @@ void TopView::connectYtoParameter(juce::RangedAudioParameter& p)
             yPos = newValue;
             auto pos = convertMeterToPixel(newValue, yPos).toInt();
             yPosPx = pos.y;
+            source.setYPos(newValue);
             resized();
         });
     yAttachment->sendInitialUpdate();
@@ -174,16 +193,19 @@ juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
 }
 
 juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
-{    auto sad = getLocalBounds().getWidth();
+{   
+    auto sad = getLocalBounds().getWidth();
     double xMeter = (double(xPixel) / getLocalBounds().getWidth()) * 20 - 10;
     double yMeter = (double(yPixel) / getLocalBounds().getHeight()) * 20 - 10;
-    return juce::Point<double>(xMeter, yMeter);{
+    return juce::Point<double>(xMeter, yMeter);
 }
 
 void TopView::setSourceWidthPx(int newWidth)
 {
     sourceWidthPx = newWidth;
 }
+
+void TopView::setZPos(float newValue) { zPos = newValue; }
 
 // timer no longer needed because of parameter attachments
 /*

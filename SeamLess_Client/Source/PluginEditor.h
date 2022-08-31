@@ -23,7 +23,9 @@
 */
 
 class SeamLess_ClientAudioProcessorEditor  : public juce::AudioProcessorEditor,
-        public juce::Slider::Listener
+        public juce::Slider::Listener,
+        public juce::Button::Listener
+
 {
 public:
     SeamLess_ClientAudioProcessorEditor (SeamLess_ClientAudioProcessor&, juce::AudioProcessorValueTreeState&);

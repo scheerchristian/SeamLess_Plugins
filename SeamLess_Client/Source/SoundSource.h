@@ -29,6 +29,8 @@ public:
   void mouseDown (const juce::MouseEvent& e) override;
   void mouseDrag (const juce::MouseEvent& e) override;
 
+  void setXPos(float newValue);
+  void setYPos(float newValue);
   /*
   void moveX(double x);
   void moveY(double y);
@@ -42,12 +44,12 @@ private:
   juce::ComponentBoundsConstrainer constrainer;
   juce::ComponentDragger dragger;
 
-  /*
-  int xPos = 0;
-  int yPos = 0;
-
+  
+  float xPos;
+  float yPos;
+/*
     int width;//  = 30;
     int shadowWidth = 40;
-  */
+*/
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoundSource)
 };

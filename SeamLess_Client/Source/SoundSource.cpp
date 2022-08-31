@@ -29,8 +29,11 @@ SoundSource::~SoundSource()
 void SoundSource::paint (juce::Graphics& g)
 {
   //auto area = getLocalBounds().reduced (2);
-    
-    auto ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, xPos+width/3, yPos+width/3, juce::Colours::black, xPos+width, yPos+width, true);
+    auto ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, getWidth() * ((-xPos + 10) / 20), getWidth() * ((-yPos + 10) / 20), seamlessBlue, getWidth() / 2, 0, true);
+    if (yPos <= 0)
+        ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, getWidth()*((-xPos+10)/20), getWidth() *((-yPos + 10) / 20), seamlessBlue, getWidth() / 2,0, true);
+    else
+        ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, getWidth() * ((-xPos + 10) / 20), getWidth() * ((-yPos + 10) / 20), seamlessBlue, getWidth() / 2, getWidth(), true);
     //auto shadowgrad = juce::ColourGradient(juce::Colours::darkgrey, xPos+(width-shadowWidth)/2+shadowWidth/2+7, yPos+(width-shadowWidth)/2+shadowWidth/2+7, juce::Colours::white, xPos+(width-shadowWidth)/2+shadowWidth+7, yPos+(width-shadowWidth)/2+shadowWidth+7, true);
     
     //g.setGradientFill(shadowgrad);
@@ -46,6 +49,13 @@ void SoundSource::resized (){
 
 
 void SoundSource::mouseDown (const juce::MouseEvent& e){}
+void SoundSource::mouseDrag(const juce::MouseEvent& e)
+{
+}
+
+void SoundSource::setXPos(float newValue) { xPos = newValue;    }
+void SoundSource::setYPos(float newValue) { yPos = newValue;    }
+
 /*
 
 void SoundSource::mouseDrag (const juce::MouseEvent& e){}

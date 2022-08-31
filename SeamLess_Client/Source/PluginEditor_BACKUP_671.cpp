@@ -24,13 +24,19 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
       settingComponent(&p,apvts),
       sendBox(p,apvts),
       sphericalBox(p, apvts)
+<<<<<<< HEAD
+{
+    
+    setSize (1000, 600);
+=======
 {    
     //connect the parameterAttachments and initialize their callback lambda-functions
     topView.connectXtoParameter(*treeState.getParameter("xPos"));
     topView.connectYtoParameter(*treeState.getParameter("yPos"));
     connectZToParameter(*treeState.getParameter("zPos"));
-    
-    setSize (1000, 600);
+
+    setSize (1070, 780);
+>>>>>>> noTimer
     setResizable(true, true);
     setResizeLimits(675, 600, 7000, 8000);
     
@@ -39,6 +45,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     addAndMakeVisible(topView);
     addAndMakeVisible(sendBox);
     addAndMakeVisible(sphericalBox);
+<<<<<<< HEAD
     sphericalBox.setVisible(false);
     
     addAndMakeVisible(connectionComponent);
@@ -66,9 +73,52 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     
     
 
+    // ===========================================================================
     
 
     // ===========================================================================
+    //    xSlider.setRange (-10, 10, 0.01);
+    //    xSlider.setTextBoxStyle (juce::Slider::TextBoxRight, true, 60, 30);
+    //    xSlider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    //    xSlider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::white);
+
+    //    xSlider.setTextValueSuffix(" m");
+
+    //    addAndMakeVisible (&xSlider);
+    //    xSlider.addListener(this);
+
+    // ===========================================================================
+
+    //    ySlider.setSliderStyle (juce::Slider::LinearVertical);
+    //    ySlider.setRange (-10, 10, 0.01);
+    //    ySlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 90, 30);
+    //    ySlider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    //    ySlider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::white);
+    //    ySlider.setTextValueSuffix(" m");
+
+    //    ySlider.addListener(this);
+    //    addAndMakeVisible (&ySlider);
+
+    // ===========================================================================
+    
+    /*
+    rSlider.setSliderStyle (juce::Slider::LinearVertical);
+    rSlider.setRange (0, 10, 0.01);
+    rSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 90, 30);
+    rSlider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    rSlider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::white);
+    rSlider.setTextValueSuffix(" m");
+    
+    rSlider.addListener(this);
+    addAndMakeVisible (&rSlider);
+    
+    addAndMakeVisible(rSliderLabel);
+    rSliderLabel.setText("Radius", juce::dontSendNotification);
+    rSliderLabel.setJustificationType(juce::Justification::centred);
+    rSliderLabel.setColour (juce::Label::textColourId, seamlessBlue);
+    rSliderLabel.attachToComponent(&rSlider,false);
+    */
+
     
     
     
@@ -99,13 +149,36 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     buttonLayout.addListener(this);
     buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonLayout.setComponentID("layout");
-    buttonLayout.setButtonText ("HuFo");
+    buttonLayout.setButtonText ("Studio");
     
     addAndMakeVisible(buttonGrid);
     buttonGrid.addListener(this);
     buttonGrid.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonGrid.setComponentID("grid");
     buttonGrid.setButtonText ("Grid OFF");
+
+=======
+    addAndMakeVisible(topView);
+
+    zSlider.setSliderStyle (juce::Slider::LinearVertical);
+    zSlider.setRange (-10, 10, 0.01);
+    zSlider.setTextBoxStyle (juce::Slider::TextBoxBelow, false, 120, 30);
+    zSlider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
+    zSlider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::white);
+    zSlider.setTextValueSuffix(" m");
+
+    zSlider.addListener(this);
+    addAndMakeVisible (&zSlider);
+
+    addAndMakeVisible(zSliderLabel);
+    zSliderLabel.setText("Z Position", juce::dontSendNotification);
+    zSliderLabel.setJustificationType(juce::Justification::centred);
+    zSliderLabel.setColour (juce::Label::textColourId, seamlessBlue);
+    zSliderLabel.attachToComponent(&zSlider,false);
+
+    addAndMakeVisible(connectionComponent);
+    connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
+>>>>>>> noTimer
 }
 
 SeamLess_ClientAudioProcessorEditor::~SeamLess_ClientAudioProcessorEditor()
@@ -125,12 +198,18 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
     g.setFont (15.0f);
 
     // g.drawFittedText ("SeamLess Source Control", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
+<<<<<<< HEAD
+    
+    
+=======
+>>>>>>> noTimer
 }
 
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
     
+<<<<<<< HEAD
     landscape = true;
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.6, getHeight()-40);
 
@@ -149,8 +228,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     buttonSpherical.setBounds(buttonSend.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
     buttonLayout.setBounds(20, getHeight()-80, 60, 60);
     buttonGrid.setBounds(20, getHeight()-150, 60, 60);
-
-    connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
+    
     
     //xSlider.setBounds(210, -10, 400, 120);
     //ySlider.setBounds(-10, 200, 120, 400);
@@ -159,6 +237,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);}
     else if (settingComponent.isVisible() == true) {buttonSettings.setColour( juce::TextButton::buttonColourId,juce::Colours::grey);}
     else {buttonSend.setColour(                                               juce::TextButton::buttonColourId,juce::Colours::grey);}
+    
 
     
     const float &aspectRatio = (float)getWidth()/(float)getHeight();
@@ -184,7 +263,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         buttonSend.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
         buttonSpherical.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
         
-                //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
@@ -194,7 +273,21 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         
     }**/
+=======
+    sendBox.setBounds(maxTopViewSize + 120, 20, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
+    
+    sphericalBox.setBounds(maxTopViewSize + 120, 20 + maxTopViewSize / 2 + 10, getWidth() - 140 - maxTopViewSize, maxTopViewSize / 2 - 10);
+
+    connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
+
+    settingComponent.setBounds(20, getHeight()-140, maxTopViewSize*0.55, 120);
+
+    //xSlider.setBounds(210, -10, 400, 120);
+    //ySlider.setBounds(-10, 200, 120, 400);
+    //rSlider.setBounds(1000, 40, 100, maxTopViewSize-20);
+>>>>>>> noTimer
 }
+
 void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioParameter& p)
 {
     // lambda callback function of z-Parameter
@@ -202,14 +295,14 @@ void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioP
         {
             auto x = treeState.getParameterAsValue("xPos").toString().getFloatValue();
             auto y = treeState.getParameterAsValue("yPos").toString().getFloatValue();
+
             // update the width of the slider-knob inside topView
             topView.setSourceWidthPx(newValue + 20);    
             topView.resized();
-            topView.setZPos(newValue);
-
         });
     zAttachment->sendInitialUpdate();   //  update everything when loading the plugin
 }
+
 void SeamLess_ClientAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
     //    if (slider == &xSlider)
@@ -222,6 +315,7 @@ void SeamLess_ClientAudioProcessorEditor::sliderValueChanged(juce::Slider* slide
     //if (slider == &zSlider)
     //    treeState.getParameter("zPos")->setValue(float(slider->getValue()));
 }
+<<<<<<< HEAD
 
 void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
 {
@@ -229,10 +323,10 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
     if (button->getComponentID() == "layout")
     {
         if (button->getButtonText() == "Studio") {
-            topView.changeLayout(true);
+            topView.changeLayout(false);
             buttonLayout.setButtonText("HuFo");
         } else {
-            topView.changeLayout(false);
+            topView.changeLayout(true);
             buttonLayout.setButtonText("Studio");
         }
         
@@ -245,7 +339,7 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
             buttonGrid.setButtonText("Grid \nON \nxyz");
         } else if (button->getButtonText() == "Grid \nON \nxyz"){
             topView.showGrid(true, false);
-            buttonGrid.setButtonText(juce::CharPointer_UTF8("Grid \nON \n r \xcf\x86 \xce\xb8\t"));
+            buttonGrid.setButtonText(juce::CharPointer_UTF8("Grid \nON \n\u03C1\u03C6\u03B8"));
         } else {
             topView.showGrid(false, false);
             buttonGrid.setButtonText("Grid OFF");
@@ -283,3 +377,10 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         }
     }
 }
+
+//void SeamLess_ClientAudioProcessorEditor::setOscTargetAddressText(SeamLess_ClientAudioProcessorEditor* p, juce::String s)
+//{
+//    p->oscTargetAddressText.setText(s, juce::sendNotification);
+//}
+=======
+>>>>>>> noTimer
