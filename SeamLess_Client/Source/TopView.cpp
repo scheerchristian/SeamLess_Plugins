@@ -13,22 +13,20 @@
 
 //==============================================================================
 
-TopView::TopView(SeamLess_ClientAudioProcessor *p): source()
+TopView::TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTreeState& apvts): source(), treeState(apvts)
 {
 
     processor  = p;
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
 
     addAndMakeVisible(source);
-    startTimer(50);
+    // startTimer(50); // timer no longer needed because off parameter attachments
     addAndMakeVisible(coordinatesLabel);
     coordinatesLabel.setText("", juce::dontSendNotification);
     coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
     coordinatesLabel.setVisible(false);
-    
     //coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::lightgrey);
     //coordinatesLabel.setColour(juce::Label::outlineColourId, juce::Colours::grey);
-
 }
 
 
@@ -36,7 +34,6 @@ TopView::~TopView()
 {
 
 }
-
 
 void TopView::paint (juce::Graphics& g)
 {
@@ -77,20 +74,20 @@ void TopView::paint (juce::Graphics& g)
    
     
     
-    //g.drawLine(juce::Line<float>(convertMeterToPixel(3.5, 10), convertMeterToPixel(16.5, 10)));
-    // g.drawImageAt(background.rescaled(700,400,juce::Graphics::mediumResamplingQuality), 0, 0);
 }
 
 void TopView::resized()
 {
-    source.setBounds(0,0,getWidth(),getHeight() );
+    source.setBounds(xPosPx - sourceWidthPx/2, yPosPx - sourceWidthPx/2, sourceWidthPx, sourceWidthPx);
+
+    // draw the HUFO-Shape 
     polygonPath.clear();
     TUStudioPath.clear();
-    polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY() + 10);
+    polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX(), polygonMeter[0].getY());
     polygonPath.startNewSubPath(polygonPixel[0]);
     for (int i = 1; i <= 33; i++)
     {
-        polygonPixel[i] = convertMeterToPixel(polygonMeter[i].getX() + 10, polygonMeter[i].getY() + 10);
+        polygonPixel[i] = convertMeterToPixel(polygonMeter[i].getX(), polygonMeter[i].getY());
         polygonPath.lineTo(polygonPixel[i]);
     }
     polygonPath.closeSubPath();
@@ -107,16 +104,17 @@ void TopView::resized()
         TUStudioPath.closeSubPath();
     }
     coordinatesLabel.setBounds(20, 20, 80, 40);
+    repaint();
 }
 
 void TopView::mouseDown(const juce::MouseEvent& e)
 {
-    changePosition(e.getPosition());
-    juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
-    juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getHeight()+10)*100)/100)+" m";
-    coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
-    if (e.getPosition().getX()<145 and e.getPosition().getY()<90){
-        coordinatesLabel.setBounds(getWidth()-110, 20, 95, 40);
+    auto pos = convertPixelToMeter(e.x, e.y);
+    xAttachment->setValueAsCompleteGesture(pos.x);
+    yAttachment->setValueAsCompleteGesture(pos.y);
+
+    xAttachment->beginGesture();
+    yAttachment->beginGesture();
     } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
     coordinatesLabel.setVisible(true);
 }
@@ -124,7 +122,9 @@ void TopView::mouseDown(const juce::MouseEvent& e)
 
 void TopView::mouseDrag (const juce::MouseEvent& e)
 {
-    changePosition(e.getPosition());
+    auto pos = convertPixelToMeter(e.x, e.y);
+    xAttachment->setValueAsPartOfGesture(pos.x);
+    yAttachment->setValueAsPartOfGesture(pos.y);
     juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
     juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getWidth()+10)*100)/100)+" m";
     coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
@@ -133,39 +133,60 @@ void TopView::mouseDrag (const juce::MouseEvent& e)
     } else {coordinatesLabel.setBounds(20, 20, 95, 40);}
 }
 
-void TopView::changePosition(juce::Point <int> p)
-{
-
-    int x = p.getX();
-    int y = p.getY()+0.5*getHeight();
-
-    float xPos = -20*(0.5-(float) x / (float) getWidth());
-    float yPos =  20*(0.5-(float) y / (float) getHeight())+10;
-
-    processor->setXPos(xPos);
-    processor->setYPos(yPos);
-}
-
 
 void TopView::mouseUp(const juce::MouseEvent& e)
-{ coordinatesLabel.setVisible(false);
+{
+    xAttachment->endGesture();
+    yAttachment->endGesture();
+    coordinatesLabel.setVisible(false);
 }
+
+void TopView::connectXtoParameter(juce::RangedAudioParameter& p)
+{
+    xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) 
+        {
+            xPos = newValue;
+            auto pos = convertMeterToPixel(newValue, yPos).toInt();
+            xPosPx = pos.x;
+            resized();
+        });
+    xAttachment->sendInitialUpdate();
+}
+
+void TopView::connectYtoParameter(juce::RangedAudioParameter& p)
+{
+    yAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+            yPos = newValue;
+            auto pos = convertMeterToPixel(newValue, yPos).toInt();
+            yPosPx = pos.y;
+            resized();
+        });
+    yAttachment->sendInitialUpdate();
+}
+
 
 juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
 {
-    float xPixel = getLocalBounds().getWidth() * (xMeter/20);
-    float yPixel = getLocalBounds().getHeight() * (yMeter/20);
+    float xPixel = getLocalBounds().getWidth() * ((xMeter + 10)/20);
+    float yPixel = getLocalBounds().getHeight() * ((yMeter + 10)/20);
     return juce::Point<float>(xPixel, yPixel);
 }
 
 juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
-{
-    double xMeter = (xPixel / getLocalBounds().getWidth()) * 20;
-    double yMeter = (yPixel / getLocalBounds().getHeight()) * 20;
-    return juce::Point<double>(xMeter, yMeter);
+{    auto sad = getLocalBounds().getWidth();
+    double xMeter = (double(xPixel) / getLocalBounds().getWidth()) * 20 - 10;
+    double yMeter = (double(yPixel) / getLocalBounds().getHeight()) * 20 - 10;
+    return juce::Point<double>(xMeter, yMeter);{
 }
 
+void TopView::setSourceWidthPx(int newWidth)
+{
+    sourceWidthPx = newWidth;
+}
 
+// timer no longer needed because of parameter attachments
+/*
 void TopView::timerCallback()
 {
     if(isUpdating == true)
@@ -177,7 +198,7 @@ void TopView::timerCallback()
         source.moveXYZ(x,y,z);
     }
 }
-
+*/
 void TopView::changeLayout(bool HuFoSelected) {
     if (HuFoSelected == true) {layout = "HuFo";} else {layout = "Studio";}
     repaint();

@@ -14,7 +14,7 @@ juce::OSCSender SeamLess_ClientAudioProcessor::sender1;
 SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     : parameters (*this, nullptr, juce::Identifier ("HuFo"),
                   createParameters()),
-      client(new ClientConnection(*this)),
+      //client(new ClientConnection(*this)),    // no longer needed due to parameterAttachments
       AudioProcessor (BusesProperties()) // use no audio buses
 {
     settings = juce::ValueTree("Settings");
@@ -23,18 +23,6 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     settings.setProperty("oscTargetPort", juce::var(9001), nullptr);
     parameters.state.addChild(settings, 0, nullptr);
 
-    /*
-    sourceIdx.referTo(settings.getPropertyAsValue("sourceIdx", nullptr));
-    oscTargetAddress.referTo(settings.getPropertyAsValue("oscTargetAddress", nullptr));
-    oscTargetPort.referTo(settings.getPropertyAsValue("oscTargetPort", nullptr));
-    */
-
-    //sender1.connect(oscTargetAddress.getValue(), 9001);
-    
-
-    // get pointers to individual parameters from the ValueTreeState
-    //sourceIdx = (juce::AudioParameterInt*) parameters.getParameter("sourceIdx");
-
     xPos      = parameters.getRawParameterValue("xPos");
     yPos      = parameters.getRawParameterValue("yPos");
     zPos      = parameters.getRawParameterValue("zPos");
@@ -42,8 +30,6 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     sendGainWFS      = parameters.getRawParameterValue("sendGainWFS");
     sendGainHOA      = parameters.getRawParameterValue("sendGainHOA");
     sendGainREV      = parameters.getRawParameterValue("sendGainREV");
-//    sendGainLFE      = parameters.getRawParameterValue("sendGainLFE");
-
 
     // add a listener for every parameter to make it trigger parameterChanged()
     parameters.addParameterListener("xPos", this);
@@ -53,11 +39,10 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     parameters.addParameterListener("sendGainWFS", this);
     parameters.addParameterListener("sendGainHOA", this);
     parameters.addParameterListener("sendGainREV", this);
-//    parameters.addParameterListener("sendGainLFE", this);
 
-    client->connectToSocket("localhost", port_nr, 5000);
+    //client->connectToSocket("localhost", port_nr, 5000);  // no longer needed due to parameterAttachments
 
-    setSendState(true);
+    //setSendState(true);   //no longer needed due to parameterAttachments
 
     startTimer(SEND_INTERVAL);
 
@@ -258,14 +243,14 @@ void SeamLess_ClientAudioProcessor::setYPos(float in)
 {
     // *yPos = in;
     juce::Value val = parameters.getParameterAsValue("yPos");
-    val.setValue(juce::var(in));
+    //val.setValue(juce::var(in));
 }
 
 void SeamLess_ClientAudioProcessor::setZPos(float in)
 {
     //*zPos = in;
     juce::Value val = parameters.getParameterAsValue("zPos");
-    val.setValue(juce::var(in));
+    //val.setValue(juce::var(in));
 }
 
 

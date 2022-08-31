@@ -31,13 +31,13 @@ void SoundSource::paint (juce::Graphics& g)
   //auto area = getLocalBounds().reduced (2);
     
     auto ballgrad = juce::ColourGradient(juce::Colours::whitesmoke, xPos+width/3, yPos+width/3, juce::Colours::black, xPos+width, yPos+width, true);
-    auto shadowgrad = juce::ColourGradient(juce::Colours::darkgrey, xPos+(width-shadowWidth)/2+shadowWidth/2+7, yPos+(width-shadowWidth)/2+shadowWidth/2+7, juce::Colours::white, xPos+(width-shadowWidth)/2+shadowWidth+7, yPos+(width-shadowWidth)/2+shadowWidth+7, true);
+    //auto shadowgrad = juce::ColourGradient(juce::Colours::darkgrey, xPos+(width-shadowWidth)/2+shadowWidth/2+7, yPos+(width-shadowWidth)/2+shadowWidth/2+7, juce::Colours::white, xPos+(width-shadowWidth)/2+shadowWidth+7, yPos+(width-shadowWidth)/2+shadowWidth+7, true);
     
-    g.setGradientFill(shadowgrad);
-    g.setOpacity(shadowOpacity);
-    g.fillEllipse (xPos+(width-shadowWidth)/2+5, yPos+(width-shadowWidth)/2+5, shadowWidth,shadowWidth);
+    //g.setGradientFill(shadowgrad);
+    //g.setOpacity(shadowOpacity);
+    //g.fillEllipse (xPos+(width-shadowWidth)/2+5, yPos+(width-shadowWidth)/2+5, shadowWidth,shadowWidth);
     g.setGradientFill(ballgrad);
-    g.fillEllipse (xPos, yPos, width,width);
+    g.fillEllipse (0, 0, getWidth(), getWidth());
 }
 
 void SoundSource::resized (){
@@ -46,6 +46,7 @@ void SoundSource::resized (){
 
 
 void SoundSource::mouseDown (const juce::MouseEvent& e){}
+/*
 
 void SoundSource::mouseDrag (const juce::MouseEvent& e){}
 
@@ -64,4 +65,9 @@ void SoundSource::moveXYZ(float x, float y, float z)
     shadowWidth  = width*1.2*(z+1);
     shadowOpacity = 1-(float)z*0.7;
     repaint();
+   
+
+
+    //this->setBounds(xPos, yPos, width, height);
 }
+*/

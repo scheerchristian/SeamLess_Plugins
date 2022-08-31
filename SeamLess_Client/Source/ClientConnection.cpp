@@ -39,7 +39,7 @@ void ClientConnection::messageReceived(const juce::MemoryBlock& msg)
     {
 
         // std::cout << "Client " << processor->getSourceIndex() << " received message: " << str << '\n';
-
+        
         if(array[0]=="/source/pos/x")
             processor->setXPos(array[2].getFloatValue());
 
@@ -51,6 +51,7 @@ void ClientConnection::messageReceived(const juce::MemoryBlock& msg)
 
         else if(array[0]=="/send/gain")
             processor->setSendGain(array[2].getIntValue(), array[3].getFloatValue());
+         
     }
 }
 

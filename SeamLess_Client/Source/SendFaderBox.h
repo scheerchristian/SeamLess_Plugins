@@ -11,10 +11,8 @@
 #pragma once
 
 #include <JuceHeader.h>
-
 #include "../../Common/SeamLess.h"
 #include "PluginProcessor.h"
-
 #include "SendFader.h"
 
 //==============================================================================
