@@ -1,3 +1,4 @@
+#pragma once
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include <cmath>
@@ -24,17 +25,6 @@ public:
 
     void setSliderRange(juce::Range<double> newRange, double newInterval);
     void setSliderTextValueSuffix(juce::String newSuffix);
-
-
-
-    float radius_from_cartesian(float x, float y, float z);
-    float azimuth_from_cartesian(float x, float y);
-    float elevation_from_cartesian(float x, float y, float z);
-    float x_from_spherical(float radius, float elevation, float azimuth);
-    float y_from_spherical(float radius, float elevation, float azimuth);
-    float z_from_spherical(float radius, float elevation);
-    float radian_to_degree(float radian);
-    float degree_to_radian(float degree);
 
     juce::Slider slider;
 

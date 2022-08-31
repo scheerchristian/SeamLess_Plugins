@@ -188,12 +188,6 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
-    /**else {
-        buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        
-    }**/
 }
 void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioParameter& p)
 {
@@ -212,15 +206,6 @@ void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioP
 }
 void SeamLess_ClientAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
-    //    if (slider == &xSlider)
-    //        xSlider.setValue (xSlider.getValue(), juce::dontSendNotification);
-
-    //    if (slider == &ySlider)
-    //        ySlider.setValue (ySlider.getValue(), juce::dontSendNotification);
-    // rSlider.setValue (rSlider.getValue(), juce::dontSendNotification);
-
-    //if (slider == &zSlider)
-    //    treeState.getParameter("zPos")->setValue(float(slider->getValue()));
 }
 
 void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)

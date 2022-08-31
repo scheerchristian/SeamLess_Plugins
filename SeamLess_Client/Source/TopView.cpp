@@ -207,20 +207,7 @@ void TopView::setSourceWidthPx(int newWidth)
 
 void TopView::setZPos(float newValue) { zPos = newValue; }
 
-// timer no longer needed because of parameter attachments
-/*
-void TopView::timerCallback()
-{
-    if(isUpdating == true)
-    {
-        /// @todo: scaling is hard coded
-        float x = processor->getXPos() / 20.0 + 0.5;
-        float y = processor->getYPos() / 20.0 + 0.5;
-        float z = processor->getZPos() / 20.0 + 0.5;
-        source.moveXYZ(x,y,z);
-    }
-}
-*/
+
 void TopView::changeLayout(bool HuFoSelected) {
     if (HuFoSelected == true) {layout = "HuFo";} else {layout = "Studio";}
     repaint();
@@ -240,3 +227,19 @@ void TopView::showGrid(bool showGrid, bool xyzGrid) {
     if (xyzGrid == true) {grid = "xyz";} else {grid = "spherical";}
     repaint();
 }
+
+
+// timer no longer needed because of parameter attachments
+/*
+void TopView::timerCallback()
+{
+    if(isUpdating == true)
+    {
+        /// @todo: scaling is hard coded
+        float x = processor->getXPos() / 20.0 + 0.5;
+        float y = processor->getYPos() / 20.0 + 0.5;
+        float z = processor->getZPos() / 20.0 + 0.5;
+        source.moveXYZ(x,y,z);
+    }
+}
+*/

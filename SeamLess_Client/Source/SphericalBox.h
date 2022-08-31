@@ -16,6 +16,7 @@
 #include <math.h>
 
 
+
 class SphericalBox  : public juce::Component
 {
 public:

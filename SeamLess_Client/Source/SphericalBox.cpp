@@ -1,5 +1,7 @@
 #define _USE_MATH_DEFINES
 #include "SphericalBox.h"
+#include "trigonometricHelpers.h"
+
 //==============================================================================
 SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts) :
     audioProcessor(p), treeState(apvts),
@@ -103,7 +105,7 @@ void SphericalBox::connectZtoParameter(juce::RangedAudioParameter& p)
 
 void SphericalBox::updateSphericalSliders(float x, float y, float z)
 {
-    rSlider.slider.setValue(rSlider.radius_from_cartesian(x, y, z), juce::dontSendNotification);
-    azimuthSlider.slider.setValue(rSlider.radian_to_degree(azimuthSlider.azimuth_from_cartesian(x, y)), juce::dontSendNotification);
-    elevationSlider.slider.setValue(elevationSlider.radian_to_degree(elevationSlider.elevation_from_cartesian(x, y, z)), juce::dontSendNotification);
+    rSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+    azimuthSlider.slider.setValue(radian_to_degree(azimuth_from_cartesian(x, y)), juce::dontSendNotification);
+    elevationSlider.slider.setValue(radian_to_degree(elevation_from_cartesian(x, y, z)), juce::dontSendNotification);
 }

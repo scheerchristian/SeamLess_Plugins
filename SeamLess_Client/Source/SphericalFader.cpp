@@ -1,6 +1,8 @@
 #define _USE_MATH_DEFINES
 #include <JuceHeader.h>
 #include "SphericalFader.h"
+#include "trigonometricHelpers.h"
+
 
 //==============================================================================
 SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String type) 
@@ -96,57 +98,4 @@ void SphericalFader::setSliderRange(juce::Range<double> newRange, double newInte
 void SphericalFader::setSliderTextValueSuffix(juce::String newSuffix)
 {
     slider.setTextValueSuffix(newSuffix);
-}
-
-float SphericalFader::radius_from_cartesian(float x, float y, float z)
-{
-    return sqrt((x * x) + (y * y) + (z * z));
-}
-
-float SphericalFader::azimuth_from_cartesian(float x, float y)
-{
-    if (x >= 0)
-        return atan(-y / x);
-    else if (x < 0 && y < 0)
-        return M_PI - atan(y / x);
-    else if (x < 0 && y > 0)
-        return -(M_PI - atan(-y / x));
-
-}
-
-float SphericalFader::elevation_from_cartesian(float x, float y, float z)
-{
-    if (z >= 0)
-        return atan(z / sqrt((x * x) + (y * y)));
-    else
-    {
-        auto eins = (-atan(-z / sqrt((x * x) + (y * y))));
-        return (-atan(-z / sqrt((x * x) + (y * y))));
-    }
-
-}
-
-float SphericalFader::x_from_spherical(float radius, float elevation, float azimuth)
-{
-    return radius *cos(elevation)* cos(azimuth);
-}
-
-float SphericalFader::y_from_spherical(float radius, float elevation, float azimuth)
-{
-    return radius *cos(elevation)* sin(azimuth);
-}
-
-float SphericalFader::z_from_spherical(float radius, float elevation)
-{
-    return radius *sin(elevation);
-}
-
-float SphericalFader::radian_to_degree(float radian)
-{
-    return radian * 180 / M_PI;
-}
-
-float SphericalFader::degree_to_radian(float degree)
-{
-    return degree * M_PI / 180;
 }

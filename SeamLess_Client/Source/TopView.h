@@ -15,7 +15,6 @@ class SoundSource;
 #include <JuceHeader.h>
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-
 #include "SoundSource.h"
 
 //==============================================================================
