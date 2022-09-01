@@ -85,7 +85,14 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     auto newX = x_from_spherical(currentRadius, currentElevation, currentAzimuth);
     auto newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
     auto newZ = z_from_spherical(currentRadius, currentElevation);
-
+    if (std::isnan(newX))
+        newX = 0;
+    if (std::isnan(newY))
+        newY = 0;
+    if (std::isnan(newZ))
+        newZ = 0;
+    //needed to not get clamped values
+    
     xAttachment->setValueAsCompleteGesture(newX);
     yAttachment->setValueAsCompleteGesture(newY);
     zAttachment->setValueAsCompleteGesture(newZ);

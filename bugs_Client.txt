@@ -1,0 +1,10 @@
+Known Bugs..
+
+1. Rotary Sliders mit "endless = true" funktionieren nur, wenn startAngleRadians < stopAngleRadians
+    --> die slider sind so aber falsch herum :/
+    wenn start > stop, dann kann man nicht draggen
+
+2. wenn die Quelle an eine "Wand" trifft (also radius größer 10 m), dann verschiebt sich die Quelle nach außen. Soweit ok, aber dann muss sich auch der Azimut ändern
+    --> nach Radiusänderung muss auch callback an die anderen Slider kommen, nicht nur an die AudioParameters
+
+3. Schatten der Quelle ist in die falsche Richtung. In x sollte es stimmen, in y genau falsch herum. Hab im Code den Fehler nicht gefunden

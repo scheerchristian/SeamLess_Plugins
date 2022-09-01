@@ -81,14 +81,17 @@ void TopView::paint (juce::Graphics& g)
 
     // draws the knob shadow
     g.setColour(juce::Colours::darkgrey);
-    shadowOrigin.addEllipse((xPosPx - sourceWidthPx/2) + xPos - zPos/2, (yPosPx - sourceWidthPx/2) + yPos - zPos/2, sourceWidthPx + zPos, sourceWidthPx + zPos);
+    shadowOrigin.addEllipse((convertMeterToPixel(xPos,yPos).getX() - sourceWidthPx/2) + xPos - zPos/2,
+                            (convertMeterToPixel(xPos,yPos).getY() - sourceWidthPx/2) + yPos - zPos/2,
+                            sourceWidthPx + zPos,
+                            sourceWidthPx + zPos);
     sourceShadow.drawForPath(g, shadowOrigin);
     shadowOrigin.clear();
 }
 
 void TopView::resized()
 {
-    source.setBounds(xPosPx - sourceWidthPx/2, yPosPx - sourceWidthPx/2, sourceWidthPx, sourceWidthPx);
+    source.setBounds(convertMeterToPixel(xPos,yPos).getX()-sourceWidthPx/2, convertMeterToPixel(xPos,yPos).getY()-sourceWidthPx/2, sourceWidthPx, sourceWidthPx);
 
     // draw the HUFO-Shape 
     polygonPath.clear();

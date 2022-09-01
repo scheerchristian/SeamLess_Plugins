@@ -137,7 +137,6 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     buttonLayout.setBounds(20, getHeight()-80, 60, 60);
     buttonGrid.setBounds(20, getHeight()-150, 60, 60);
 
-    connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
 
     if (sendBox              .isVisible() == true) {buttonSend.setColour(     juce::TextButton::buttonColourId,juce::Colours::grey);}
     else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);}
