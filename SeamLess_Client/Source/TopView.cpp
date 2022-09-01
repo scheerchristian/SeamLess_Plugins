@@ -188,7 +188,7 @@ void TopView::connectYtoParameter(juce::RangedAudioParameter& p)
 juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
 {
     float xPixel = getLocalBounds().getWidth() * ((xMeter + 10)/20);
-    float yPixel = getLocalBounds().getHeight() * ((yMeter + 10)/20);
+    float yPixel = (getLocalBounds().getHeight() * ((-yMeter + 10)/20));
     return juce::Point<float>(xPixel, yPixel);
 }
 
@@ -196,7 +196,7 @@ juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
 {   
     auto sad = getLocalBounds().getWidth();
     double xMeter = (double(xPixel) / getLocalBounds().getWidth()) * 20 - 10;
-    double yMeter = (double(yPixel) / getLocalBounds().getHeight()) * 20 - 10;
+    double yMeter = -((double(yPixel) / getLocalBounds().getHeight()) * 20 - 10);
     return juce::Point<double>(xMeter, yMeter);
 }
 

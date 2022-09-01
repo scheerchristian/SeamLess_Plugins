@@ -13,10 +13,6 @@ This file contains the basic framework code for a JUCE plugin editor.
 SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 (SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts)
     : AudioProcessorEditor (&p), audioProcessor (p),
-      //xSliderAttachment(p.getState(),"xPos",this->xSlider),
-      //ySliderAttachment(p.getState(),"yPos",this->ySlider),
-      //rSliderAttachment(p.getState(),"radius",this->rSlider),
-
       zSliderAttachment(p.getState(),"zPos",this->zSlider),
       treeState(apvts),
       topView(&p, apvts),
@@ -61,16 +57,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     zSliderLabel.setText("Z Position", juce::dontSendNotification);
     zSliderLabel.setJustificationType(juce::Justification::centred);
     zSliderLabel.setColour (juce::Label::textColourId, seamlessBlue);
-    zSliderLabel.attachToComponent(&zSlider,false);
-    
-    
-    
-
-    
-
-    // ===========================================================================
-    
-    
+    zSliderLabel.attachToComponent(&zSlider, false);
     
 //==== BUTTONS ========================================================================
     
@@ -151,10 +138,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     buttonGrid.setBounds(20, getHeight()-150, 60, 60);
 
     connectionComponent.setBounds(40+maxTopViewSize*0.55, getHeight()-140, maxTopViewSize*0.45+60, 120);
-    
-    //xSlider.setBounds(210, -10, 400, 120);
-    //ySlider.setBounds(-10, 200, 120, 400);
-    //rSlider.setBounds(1000, 40, 100, maxTopViewSize-20);
+
     if (sendBox              .isVisible() == true) {buttonSend.setColour(     juce::TextButton::buttonColourId,juce::Colours::grey);}
     else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);}
     else if (settingComponent.isVisible() == true) {buttonSettings.setColour( juce::TextButton::buttonColourId,juce::Colours::grey);}
@@ -184,7 +168,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         buttonSend.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
         buttonSpherical.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
         
-                //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
@@ -213,7 +197,8 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
     // SPECIAL BUTTONS === GRID & LAYOUT
     if (button->getComponentID() == "layout")
     {
-        if (button->getButtonText() == "Studio") {
+        if (button->getButtonText() == "Studio") 
+        {
             topView.changeLayout(true);
             buttonLayout.setButtonText("HuFo");
         } else {
@@ -228,14 +213,20 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         {
             topView.showGrid(true, true);
             buttonGrid.setButtonText("Grid \nON \nxyz");
-        } else if (button->getButtonText() == "Grid \nON \nxyz"){
+        } 
+        else if (button->getButtonText() == "Grid \nON \nxyz")
+        {
             topView.showGrid(true, false);
             buttonGrid.setButtonText(juce::CharPointer_UTF8("Grid \nON \n r \xcf\x86 \xce\xb8\t"));
-        } else {
+        } 
+        else 
+        {
             topView.showGrid(false, false);
             buttonGrid.setButtonText("Grid OFF");
         }
-    } else { // ALL OTHER BUTTONS
+    } 
+    else 
+    { // ALL OTHER BUTTONS
         buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonSettings.setColour(juce::TextButton::buttonColourId, seamlessBlue);

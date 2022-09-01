@@ -27,7 +27,9 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
 
     slider.addListener(this);
     addAndMakeVisible(sphericalNameLabel);
-
+    connectXtoParameter(*treeState.getParameter("xPos"));
+    connectYtoParameter(*treeState.getParameter("yPos"));
+    connectZtoParameter(*treeState.getParameter("zPos"));
 
 }
 
@@ -64,7 +66,7 @@ void SphericalFader::sliderDragEnded(juce::Slider* fader)
 
 void SphericalFader::sliderValueChanged(juce::Slider* fader)
 {
-    //onDrag = true;
+    onDrag = true;
     auto currentX = treeState.getParameterAsValue("xPos").getValue().toString().getFloatValue();
     auto currentY = treeState.getParameterAsValue("yPos").getValue().toString().getFloatValue();
     auto currentZ = treeState.getParameterAsValue("zPos").getValue().toString().getFloatValue();
@@ -84,10 +86,20 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     auto newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
     auto newZ = z_from_spherical(currentRadius, currentElevation);
 
+    xAttachment->setValueAsCompleteGesture(newX);
+    yAttachment->setValueAsCompleteGesture(newY);
+    zAttachment->setValueAsCompleteGesture(newZ);
+    /*
     treeState.getParameter("xPos")->setValueNotifyingHost(newX);
+    auto test = treeState.getParameterAsValue("xPos").toString().getFloatValue();
     treeState.getParameter("yPos")->setValueNotifyingHost(newY);
+    test = treeState.getParameterAsValue("yPos").toString().getFloatValue();
     treeState.getParameter("zPos")->setValueNotifyingHost(newZ);
-    //onDrag = false;
+    test = treeState.getParameterAsValue("zPos").toString().getFloatValue();
+    */
+
+
+    onDrag = false;
 }
 
 void SphericalFader::setSliderRange(juce::Range<double> newRange, double newInterval)
@@ -98,4 +110,25 @@ void SphericalFader::setSliderRange(juce::Range<double> newRange, double newInte
 void SphericalFader::setSliderTextValueSuffix(juce::String newSuffix)
 {
     slider.setTextValueSuffix(newSuffix);
+}
+
+void SphericalFader::connectXtoParameter(juce::RangedAudioParameter& p)
+{
+    xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+        });
+}
+
+void SphericalFader::connectYtoParameter(juce::RangedAudioParameter& p)
+{
+    yAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+        });
+}
+
+void SphericalFader::connectZtoParameter(juce::RangedAudioParameter& p)
+{
+    zAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
+        {
+        });
 }

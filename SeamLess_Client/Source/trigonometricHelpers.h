@@ -12,7 +12,7 @@
 
 
 #pragma once
-#include <corecrt_math_defines.h>
+#include <math.h>
 #define _USE_MATH_DEFINES
 
 
@@ -24,12 +24,17 @@ inline float radius_from_cartesian(float x, float y, float z)
 inline float azimuth_from_cartesian(float x, float y)
 {
     if (x >= 0)
-        return atan(-y / x);
+        return atan(y / x);
+    else if (x < 0 && y >= 0)
+        return -(M_PI - atan(y / x));
+    else if (x < 0 && y < 0)
+        return -(M_PI - atan(y / x));
+    /*
     else if (x < 0 && y < 0)
         return M_PI - atan(y / x);
     else if (x < 0 && y > 0)
-        return -(M_PI - atan(-y / x));
-
+        return -(M_PI + atan(-y / x));
+    */
 }
 
 inline float elevation_from_cartesian(float x, float y, float z)
@@ -41,17 +46,16 @@ inline float elevation_from_cartesian(float x, float y, float z)
         auto eins = (-atan(-z / sqrt((x * x) + (y * y))));
         return (-atan(-z / sqrt((x * x) + (y * y))));
     }
-
 }
 
 inline float x_from_spherical(float radius, float elevation, float azimuth)
 {
-    return radius * cos(elevation) * cos(azimuth);
+    return radius * cos(elevation) * cos(-azimuth);
 }
 
 inline float y_from_spherical(float radius, float elevation, float azimuth)
 {
-    return radius * cos(elevation) * sin(azimuth);
+    return radius * cos(elevation) * sin(-azimuth);
 }
 
 inline float z_from_spherical(float radius, float elevation)
@@ -66,6 +70,7 @@ inline float radian_to_degree(float radian)
 
 inline float degree_to_radian(float degree)
 {
-    return degree * M_PI / 180;
+    auto test = degree * M_PI / 180;
+    return test;
 }
 #endif TRIGONOMETRIC_HELPERS

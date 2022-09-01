@@ -30,10 +30,18 @@ public:
 
     bool onDrag = false;
 
+    void connectXtoParameter(juce::RangedAudioParameter& p);
+    void connectYtoParameter(juce::RangedAudioParameter& p);
+    void connectZtoParameter(juce::RangedAudioParameter& p);
+
 private:
     juce::Label sphericalNameLabel;
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
     juce::String sliderType;
+    std::unique_ptr<juce::ParameterAttachment> xAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yAttachment;
+    std::unique_ptr<juce::ParameterAttachment> zAttachment;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SphericalFader)
 };
