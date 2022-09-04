@@ -43,7 +43,7 @@ private:
 
   juce::ComponentBoundsConstrainer constrainer;
   juce::ComponentDragger dragger;
-
+  juce::ColourGradient ballgrad;
   
   float xPos;
   float yPos;

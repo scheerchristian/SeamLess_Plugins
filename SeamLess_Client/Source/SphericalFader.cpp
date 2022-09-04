@@ -67,24 +67,38 @@ void SphericalFader::sliderDragEnded(juce::Slider* fader)
 void SphericalFader::sliderValueChanged(juce::Slider* fader)
 {
     onDrag = true;
-    auto currentX = treeState.getParameterAsValue("xPos").getValue().toString().getFloatValue();
-    auto currentY = treeState.getParameterAsValue("yPos").getValue().toString().getFloatValue();
-    auto currentZ = treeState.getParameterAsValue("zPos").getValue().toString().getFloatValue();
+    float currentX = treeState.getParameterAsValue("xPos").getValue().toString().getFloatValue();
+    float currentY = treeState.getParameterAsValue("yPos").getValue().toString().getFloatValue();
+    float currentZ = treeState.getParameterAsValue("zPos").getValue().toString().getFloatValue();
 
-    auto currentAzimuth = azimuth_from_cartesian(currentX, currentY);
-    auto currentElevation = elevation_from_cartesian(currentX, currentY, currentZ);
-    auto currentRadius = radius_from_cartesian(currentX, currentY, currentZ);
-
+    // store backupAngles in case that radius slider gets pulled to 0
+    if (currentX == 0 && currentY == 0 && currentZ == 0)
+    {
+        currentAzimuth = backupAzimuth;
+        currentElevation = backupElevation;
+        currentRadius = 0;
+    }
+    else
+    {
+        currentAzimuth = -azimuth_from_cartesian(currentX, currentY);
+        currentElevation = elevation_from_cartesian(currentX, currentY, currentZ);
+        currentRadius = radius_from_cartesian(currentX, currentY, currentZ);
+    }
+        
     if (sliderType == "radius")
         currentRadius = fader->getValue();
     else if (sliderType == "azimuth")
-        currentAzimuth = degree_to_radian(fader->getValue());
+        currentAzimuth = degree_to_radian(-fader->getValue());
     else if (sliderType == "elevation")
         currentElevation = degree_to_radian(fader->getValue());
 
-    auto newX = x_from_spherical(currentRadius, currentElevation, currentAzimuth);
-    auto newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
-    auto newZ = z_from_spherical(currentRadius, currentElevation);
+    backupAzimuth = currentAzimuth;
+    backupElevation = currentElevation;
+
+    newX = x_from_spherical(currentRadius, currentElevation, currentAzimuth);
+    newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
+    newZ = z_from_spherical(currentRadius, currentElevation);
+
     if (std::isnan(newX))
         newX = 0;
     if (std::isnan(newY))
@@ -92,19 +106,17 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     if (std::isnan(newZ))
         newZ = 0;
     //needed to not get clamped values
-    
+
     xAttachment->setValueAsCompleteGesture(newX);
     yAttachment->setValueAsCompleteGesture(newY);
     zAttachment->setValueAsCompleteGesture(newZ);
-    /*
-    treeState.getParameter("xPos")->setValueNotifyingHost(newX);
-    auto test = treeState.getParameterAsValue("xPos").toString().getFloatValue();
-    treeState.getParameter("yPos")->setValueNotifyingHost(newY);
-    test = treeState.getParameterAsValue("yPos").toString().getFloatValue();
-    treeState.getParameter("zPos")->setValueNotifyingHost(newZ);
-    test = treeState.getParameterAsValue("zPos").toString().getFloatValue();
-    */
-
+    
+    // if the radius slider gets dragged to a value > 10 this might result in a shift of azimuth/elevation
+    // as the soundSource might hit its boundaries and move along them. 
+    // When x,y,z parameters change, the callback-function inside the SprericalBox checks if criticalRadius
+    // ís true. If so, the slider-objects are updated to keep them in sync.
+    if (currentRadius > 10)
+        setRadiusCritical(true);
 
     onDrag = false;
 }
@@ -138,4 +150,15 @@ void SphericalFader::connectZtoParameter(juce::RangedAudioParameter& p)
     zAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue)
         {
         });
+}
+
+
+bool  SphericalFader::isRadiusCritical()
+{
+    return criticalRadius;
+}
+
+void SphericalFader::setRadiusCritical(bool newValue)
+{
+    criticalRadius = newValue;
 }

@@ -23,35 +23,35 @@ inline float radius_from_cartesian(float x, float y, float z)
 
 inline float azimuth_from_cartesian(float x, float y)
 {
-    if (x == 0 && y == 0)
+    // avoid division by 0
+    if (x == 0 && y == 0)  
         return 0;
     else if (x == 0 && y > 0)
-        return M_PI/2;
-    else if (x == 0 && y < 0)
         return -M_PI/2;
+    else if (x == 0 && y < 0)
+        return M_PI/2;
+    // right hemisphere
     else if (x > 0)
-        return atan(y / x);
+        return -atan(y / x);
+    // top left
     else if (x < 0 && y >= 0)
-        return atan(y / x)+M_PI;
+        return -(atan(y / x)+M_PI);
+    // bottom left
     else if (x < 0 && y < 0)
-        return -(M_PI - atan(y / x));
-    /*
-    else if (x < 0 && y < 0)
-        return M_PI - atan(y / x);
-    else if (x < 0 && y > 0)
-        return -(M_PI + atan(-y / x));
-    */
+        return (M_PI - atan(y / x));
 }
 
 inline float elevation_from_cartesian(float x, float y, float z)
 {
-    if (z >= 0)
+    if (x == 0 && y == 0 && z == 0)
+        return 0.0f;
+    else if (z > 0)
         return atan(z / sqrt((x * x) + (y * y)));
     else
     {
         auto eins = (-atan(-z / sqrt((x * x) + (y * y))));
         return (-atan(-z / sqrt((x * x) + (y * y))));
-    }
+    }    
 }
 
 inline float x_from_spherical(float radius, float elevation, float azimuth)
@@ -76,7 +76,6 @@ inline float radian_to_degree(float radian)
 
 inline float degree_to_radian(float degree)
 {
-    auto test = degree * M_PI / 180;
-    return test;
+    return degree * M_PI / 180;
 }
 #endif TRIGONOMETRIC_HELPERS

@@ -31,7 +31,8 @@ public:
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);
 
-    void updateSphericalSliders(float x, float y, float z);
+    void updateSphericalSliders(float x, float y, float z, bool alsoUpdateRadius);
+
 private:
 
     SeamLess_ClientAudioProcessor& audioProcessor;
