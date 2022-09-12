@@ -79,7 +79,7 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
         currentElevation = backupElevation;
         currentRadius = 0;
     }
-    else if (currentX == 0 && currentY == 0) //same thing for |elevation| == 90¡
+    else if (currentX == 0 && currentY == 0) //same thing for |elevation| == 90Â¡
     {
         currentAzimuth = backupAzimuth;
         currentRadius = std::abs(currentZ);
@@ -120,7 +120,7 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     // if the radius slider gets dragged to a value > 10 this might result in a shift of azimuth/elevation
     // as the soundSource might hit its boundaries and move along them. 
     // When x,y,z parameters change, the callback-function inside the SprericalBox checks if criticalRadius
-    // ís true. If so, the slider-objects are updated to keep them in sync.
+    // Ã­s true. If so, the slider-objects are updated to keep them in sync.
     if (currentRadius > 10)
         setRadiusCritical(true);
 
