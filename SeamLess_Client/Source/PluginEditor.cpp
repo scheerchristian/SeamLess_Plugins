@@ -19,7 +19,8 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
       connectionComponent(&p),
       settingComponent(&p,apvts),
       sendBox(p,apvts),
-      sphericalBox(p, apvts)
+      sphericalBox(p, apvts),
+      lfoBox(p, apvts)
 {    
     //connect the parameterAttachments and initialize their callback lambda-functions
     topView.connectXtoParameter(*treeState.getParameter("xPos"));
@@ -35,7 +36,9 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     addAndMakeVisible(topView);
     addAndMakeVisible(sendBox);
     addAndMakeVisible(sphericalBox);
+    addAndMakeVisible(lfoBox);
     sphericalBox.setVisible(false);
+    sendBox.setVisible(false);
     
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
@@ -129,6 +132,7 @@ void SeamLess_ClientAudioProcessorEditor::resized()
 
     settingComponent.setBounds(   maxTopViewSize+120, getHeight()-270, getWidth()-maxTopViewSize-140, 120);
     connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
+    lfoBox.setBounds(   maxTopViewSize + 120, 20 + maxTopViewSize / 2 + 10, getWidth() - 40 - maxTopViewSize, maxTopViewSize / 2 - 10);
     
     buttonSettings.setBounds(sendBox.getBounds().getX(),    20, sendBox.getWidth()/3, 40);
     buttonSend.setBounds(buttonSettings.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
