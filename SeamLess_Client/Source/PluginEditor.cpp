@@ -118,7 +118,6 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 void SeamLess_ClientAudioProcessorEditor::resized()
 {
     
-    landscape = true;
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.6, getHeight()-40);
 
     zSlider.setBounds(0,40,100, getHeight()-195);
@@ -145,23 +144,13 @@ void SeamLess_ClientAudioProcessorEditor::resized()
 
     
     const float &aspectRatio = (float)getWidth()/(float)getHeight();
-    /**if (aspectRatio>1.7)
-    {
-        settingComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-10, 120);
-        connectionComponent.setBounds(maxTopViewSize+120+(getWidth()-maxTopViewSize-120)*0.5, getHeight()-140, (getWidth()-maxTopViewSize-120)*0.5-20, 120);
-        
-        sendBox.setBounds(sendBox.getBounds().getX(), sendBox.getBounds().getY(), sendBox.getWidth(), getHeight()-180);
-        sphericalBox.setBounds(sendBox.getBounds().getX(), sendBox.getBounds().getY(), sendBox.getWidth(), getHeight()-180);
-    }
-     **/
     if (aspectRatio<1.3)
     {
-        landscape = false;
         settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, (getWidth()-maxTopViewSize-140), 120);
         connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-140), 120);
         
-        sendBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
-        sphericalBox.setBounds(100, maxTopViewSize+40, maxTopViewSize, getHeight()-maxTopViewSize-60);
+        sendBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
+        sphericalBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
         
         buttonSettings.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
         buttonSend.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
@@ -248,13 +237,6 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         if (button->getComponentID() == "spherical")
         {
             sphericalBox.setVisible(true);
-        }
-    
-        if (landscape == false) {
-            buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-            buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-            buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-            button->setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
         }
     }
 }
