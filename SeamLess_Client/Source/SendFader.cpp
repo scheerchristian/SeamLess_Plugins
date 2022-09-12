@@ -18,7 +18,7 @@ SendFader::SendFader(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValue
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
-    slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::grey);
+    slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colour(00000000));
     slider.setTextValueSuffix(" dB");
     if (endless == true)
         slider.setRotaryParameters(rotaryParameters);

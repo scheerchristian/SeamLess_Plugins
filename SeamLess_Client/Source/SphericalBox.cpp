@@ -29,7 +29,22 @@ SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
                 { return int(value); });
             range.interval = 0.01;
 
-            faders[1]->slider.setNormalisableRange(range);
+            faders[i]->slider.setNormalisableRange(range);
+            faders[i]->slider.setNumDecimalPlacesToDisplay(0);
+        }
+        else if (i == 2) // special treatment for elevation slider
+        {
+            auto range = juce::NormalisableRange<double>(-90.0, 90.0,
+                [](auto rangeStart, auto rangeEnd, auto normalised)
+                { return rangeStart + (1.0 - normalised) * (rangeEnd - rangeStart); },
+                [](auto rangeStart, auto rangeEnd, auto value)
+                { return 1.0 - (value - rangeStart) / (rangeEnd - rangeStart); },
+                [](auto rangeStart, auto rangeEnd, auto value)
+                { return int(value); });
+            range.interval = 0.01;
+
+            faders[i]->slider.setNormalisableRange(range);
+            faders[i]->slider.setNumDecimalPlacesToDisplay(0);
         }
         else
             faders[i]->setSliderRange(ranges[i], 0.01);
@@ -48,7 +63,7 @@ SphericalBox::~SphericalBox()
 void SphericalBox::paint (juce::Graphics& g)
 {
     g.setColour (seamlessBlue);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 20);   // draw an outline around the component
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 15);   // draw an outline around the component
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
@@ -58,21 +73,21 @@ void SphericalBox::paint (juce::Graphics& g)
 
 void SphericalBox::resized()
 {
-    auto r = getLocalBounds().reduced(20, 20);
+    auto r = getLocalBounds().reduced(10, 10);
 
-    auto sliderWidth = (r.getWidth() - 40) / 3;
+    auto sliderWidth = (r.getWidth() - 20) / 3;
 
     //r.removeFromTop(40);
 
     auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
     rSlider.setBounds(sendFaderFOASection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderWFSSection = r.removeFromLeft(sliderWidth);
     azimuthSlider.setBounds(sendFaderWFSSection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderREVSection = r.removeFromLeft(sliderWidth);
     elevationSlider.setBounds(sendFaderREVSection);

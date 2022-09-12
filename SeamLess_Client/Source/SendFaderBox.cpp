@@ -43,7 +43,7 @@ SendFaderBox::~SendFaderBox()
 void SendFaderBox::paint (juce::Graphics& g)
 {
     g.setColour (seamlessBlue);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 20);   // draw an outline around the component
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 15);   // draw an outline around the component
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
@@ -54,19 +54,19 @@ void SendFaderBox::paint (juce::Graphics& g)
 void SendFaderBox::resized()
 {
     
-    auto r = getLocalBounds().reduced(20, 20);
+    auto r = getLocalBounds().reduced(10, 10);
     
-    auto sliderWidth = (r.getWidth()-40)/3 ;
+    auto sliderWidth = (r.getWidth()-20)/3 ;
     
     auto sendFaderHOASection = r.removeFromLeft(sliderWidth);
     sendFaderHOA.setBounds(sendFaderHOASection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderWFSSection = r.removeFromLeft(sliderWidth);
     sendFaderWFS.setBounds(sendFaderWFSSection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderREVSection = r.removeFromLeft(sliderWidth);
     sendFaderREV.setBounds(sendFaderREVSection);

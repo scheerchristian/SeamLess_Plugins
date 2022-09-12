@@ -12,7 +12,7 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
-    slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::grey);
+    slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colour(00000000));
     slider.setNumDecimalPlacesToDisplay(2);
 
 
@@ -78,6 +78,11 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
         currentAzimuth = backupAzimuth;
         currentElevation = backupElevation;
         currentRadius = 0;
+    }
+    else if (currentX == 0 && currentY == 0) //same thing for |elevation| == 90¡
+    {
+        currentAzimuth = backupAzimuth;
+        currentRadius = std::abs(currentZ);
     }
     else
     {

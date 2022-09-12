@@ -72,7 +72,7 @@ void SourceSettingsComponent::paint (juce::Graphics& g)
 void SourceSettingsComponent::resized()
 {
     nameLabel.setBounds(getWidth()*0.07, getHeight() *0.15, 200, 20);
-    if(getWidth()<290)
+    if(getWidth()<297)
     {
         nameLabel.setVisible(false);
         sourceIndText.setBounds(getWidth()*0.5+25, getHeight() *0.15, 50, 20);
