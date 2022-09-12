@@ -32,13 +32,13 @@ inline float azimuth_from_cartesian(float x, float y)
         return M_PI/2;
     // right hemisphere
     else if (x > 0)
-        return -atan(y / x);
+        return atan(y / x);
     // top left
     else if (x < 0 && y >= 0)
-        return -(atan(y / x)+M_PI);
+        return (atan(y / x)+M_PI);
     // bottom left
     else if (x < 0 && y < 0)
-        return (M_PI - atan(y / x));
+        return -(M_PI - atan(y / x));
 }
 
 inline float elevation_from_cartesian(float x, float y, float z)
@@ -61,7 +61,7 @@ inline float x_from_spherical(float radius, float elevation, float azimuth)
 
 inline float y_from_spherical(float radius, float elevation, float azimuth)
 {
-    return radius * cos(elevation) * sin(azimuth);
+    return -radius * cos(elevation) * sin(azimuth);
 }
 
 inline float z_from_spherical(float radius, float elevation)

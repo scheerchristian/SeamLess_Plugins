@@ -14,7 +14,8 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
     slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colours::grey);
     slider.setNumDecimalPlacesToDisplay(2);
-   
+
+
     if (endless == true)
         slider.setRotaryParameters(rotaryParameters);
     addAndMakeVisible(slider);

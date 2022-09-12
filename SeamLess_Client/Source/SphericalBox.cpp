@@ -17,8 +17,23 @@ SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
     {
         faders[i]->setText(names[i]);
         addAndMakeVisible(*faders[i]);
-        faders[i]->setSliderRange(ranges[i], 0.01);
         faders[i]->setSliderTextValueSuffix(suffixes[i]);
+        if (i == 1) // special treatment for azimut slider
+        {
+            auto range = juce::NormalisableRange<double>(-180.0, 180.0,
+                [](auto rangeStart, auto rangeEnd, auto normalised)
+                { return rangeStart + (1.0 - normalised) * (rangeEnd - rangeStart); },
+                [](auto rangeStart, auto rangeEnd, auto value)
+                { return 1.0 - (value - rangeStart) / (rangeEnd - rangeStart); },
+                [](auto rangeStart, auto rangeEnd, auto value)
+                { return int(value); });
+            range.interval = 0.01;
+
+            faders[1]->slider.setNormalisableRange(range);
+        }
+        else
+            faders[i]->setSliderRange(ranges[i], 0.01);
+
     }
 
     connectXtoParameter(*treeState.getParameter("xPos"));
