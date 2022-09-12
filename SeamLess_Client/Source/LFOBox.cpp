@@ -46,42 +46,43 @@ LFOBox::~LFOBox()
 void LFOBox::paint (juce::Graphics& g)
 {
     g.setColour (seamlessBlue);
-    g.fillRoundedRectangle(getLocalBounds().toFloat(), 20);   // draw an outline around the component
+    g.fillRoundedRectangle(getLocalBounds().toFloat(), 15);   // draw an outline around the component
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("LFO", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
+    //g.drawText ("LFO", getWidth()/2-100, 20, 200, 20, juce::Justification::centred, true);
 }
 
 
 void LFOBox::resized()
 {
-    auto r = getLocalBounds().reduced(20, 20);
+    auto r = getLocalBounds().reduced(10, 10);
 
-    auto sliderWidth = (r.getWidth() - 60) / 4;
-
-    r.removeFromTop(60);
+    auto sliderWidth = (r.getWidth() - 30) / 4;
+    
+    LFOStartButton.setBounds(10, 5, sliderWidth, 20);
+    r.removeFromTop(20);
 
     auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
     rateSlider.setBounds(sendFaderFOASection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderWFSSection = r.removeFromLeft(sliderWidth);
     depthSlider.setBounds(sendFaderWFSSection);
 
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
 
     auto sendFaderREVSection = r.removeFromLeft(sliderWidth);
     phaseSlider.setBounds(sendFaderREVSection);
     
-    r.removeFromLeft(20);
+    r.removeFromLeft(10);
     
     auto offsetSliderX = r.removeFromLeft(sliderWidth);
     offsetSlider.setBounds(offsetSliderX);
     
 
-    LFOStartButton.setBounds(20, 50, sliderWidth, 20);
+    
     
     
     
@@ -98,7 +99,7 @@ void LFOBox::buttonClicked(juce::Button* button)
     if (button == &LFOStartButton) {
         if (button->getButtonText() == "Start") {
             LFOStartButton.setButtonText("Stop");
-            LFOStartButton.setColour(juce::TextButton::buttonColourId, juce::Colours::grey);
+            LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
         }
         else {
             LFOStartButton.setButtonText("Start");
