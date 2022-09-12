@@ -12,7 +12,7 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
-    slider.setColour(juce::Slider::textBoxOutlineColourId, juce::Colour(00000000));
+    slider.setColour(juce::Slider::textBoxOutlineColourId, transparent);
     slider.setNumDecimalPlacesToDisplay(2);
 
 
@@ -40,7 +40,7 @@ SphericalFader::~SphericalFader()
 
 void SphericalFader::paint(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::grey);
+    g.setColour(seamlessGrey);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 10);   // draw an outline around the component
 }
 

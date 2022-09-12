@@ -70,7 +70,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     
     addAndMakeVisible(buttonSend);
     buttonSend.addListener(this);
-    buttonSend.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);
+    buttonSend.setColour(juce::TextButton::buttonColourId,seamlessGrey);
     buttonSend.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
     buttonSend.setComponentID("send");
     buttonSend.setButtonText ("Send");
@@ -122,7 +122,6 @@ void SeamLess_ClientAudioProcessorEditor::resized()
 
     zSlider.setBounds(0,40,100, getHeight()-195);
     topView.setBounds(100,20,maxTopViewSize, maxTopViewSize);
-    juce::Component::setColour(juce::ComboBox::outlineColourId, juce::Colours::blue);
     
     sendBox.setBounds(     maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
     sphericalBox.setBounds(maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
@@ -137,18 +136,15 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     buttonGrid.setBounds(20, getHeight()-150, 60, 60);
 
 
-    if (sendBox              .isVisible() == true) {buttonSend.setColour(     juce::TextButton::buttonColourId,juce::Colours::grey);}
-    else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,juce::Colours::grey);}
-    else if (settingComponent.isVisible() == true) {buttonSettings.setColour( juce::TextButton::buttonColourId,juce::Colours::grey);}
-    else {buttonSend.setColour(                                               juce::TextButton::buttonColourId,juce::Colours::grey);}
+    if (sendBox              .isVisible() == true) {buttonSend.setColour(     juce::TextButton::buttonColourId,seamlessGrey);}
+    else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessGrey);}
+    else if (settingComponent.isVisible() == true) {buttonSettings.setColour( juce::TextButton::buttonColourId,seamlessGrey);}
+    else {buttonSend.setColour(                                               juce::TextButton::buttonColourId,seamlessGrey);}
 
     
     const float &aspectRatio = (float)getWidth()/(float)getHeight();
     if (aspectRatio<1.3)
     {
-        settingComponent.setBounds(maxTopViewSize+120, getHeight()-280, (getWidth()-maxTopViewSize-140), 120);
-        connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, (getWidth()-maxTopViewSize-140), 120);
-        
         sendBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
         sphericalBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
         
@@ -218,7 +214,7 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonSettings.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-        button->setColour(juce::TextButton::buttonColourId, juce::Colours::grey);
+        button->setColour(juce::TextButton::buttonColourId, seamlessGrey);
         
         //settingComponent.setVisible(false);
         //connectionComponent.setVisible(false);

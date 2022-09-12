@@ -25,8 +25,7 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTree
     coordinatesLabel.setText("", juce::dontSendNotification);
     coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
     coordinatesLabel.setVisible(false);
-    //coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::lightgrey);
-    //coordinatesLabel.setColour(juce::Label::outlineColourId, juce::Colours::grey);
+
 }
 
 
@@ -41,13 +40,13 @@ void TopView::paint (juce::Graphics& g)
     g.setColour(seamlessBlue);
     g.fillRoundedRectangle(0,0,getWidth(),getHeight(),30);
 
-    g.setColour(juce::Colour (220,220,220));
+    g.setColour(seamlessLightGrey);
     g.fillRoundedRectangle(5,5,getWidth()-10,getHeight()-10,25);
 
     //g.setColour(seamlessBlue);
     //g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,10);
     if (enableGrid == true){
-        g.setColour(juce::Colours::grey);
+        g.setColour(juce::Colours::silver);
          if (grid == "spherical")
          {
              
