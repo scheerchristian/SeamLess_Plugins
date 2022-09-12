@@ -15,6 +15,7 @@
 #include "SendFaderBox.h"
 #include "SourceSettingsComponent.h"
 #include "SphericalBox.h"
+#include "LFOBox.h"
 
 
 //==============================================================================
@@ -53,6 +54,8 @@ public:
     SourceSettingsComponent settingComponent;
 
     TopView topView;
+    
+    LFOBox lfoBox;
     
     
 
