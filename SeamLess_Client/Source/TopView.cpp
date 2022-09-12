@@ -25,7 +25,7 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTree
     coordinatesLabel.setText("", juce::dontSendNotification);
     coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
     coordinatesLabel.setVisible(false);
-
+    coordinatesLabel.setFont(juce::Font(juce::Font::getDefaultMonospacedFontName(), 14.0f, 0));
 }
 
 
@@ -129,10 +129,16 @@ void TopView::mouseDown(const juce::MouseEvent& e)
     yAttachment->beginGesture();
     juce::String xcoord = juce::String(round((+20 * (float)e.getPosition().getX() / (float)getWidth() - 10) * 100) / 100) + " m";
     juce::String ycoord = juce::String(round((-20 * (float)e.getPosition().getY() / (float)getHeight() + 10) * 100) / 100) + " m";
+    
+    if (std::stof(xcoord.toStdString()) >= 0)
+        xcoord = " "+ xcoord;
+    if (std::stof(ycoord.toStdString()) >= 0)
+        ycoord = " "+ ycoord;
     coordinatesLabel.setText("x= " + xcoord + " \ny= " + ycoord, juce::dontSendNotification);
+
     if (e.getPosition().getX() < 145 && e.getPosition().getY() < 90) 
     {
-        coordinatesLabel.setBounds(getWidth() - 110, 20, 95, 40);
+        coordinatesLabel.setBounds(getWidth() - 115, 20, 95, 40);
     }
     else { coordinatesLabel.setBounds(20, 20, 95, 40); }
     coordinatesLabel.setVisible(true);
@@ -146,7 +152,12 @@ void TopView::mouseDrag (const juce::MouseEvent& e)
     yAttachment->setValueAsPartOfGesture(pos.y);
     juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
     juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getWidth()+10)*100)/100)+" m";
-    coordinatesLabel.setText("x= "+xcoord+" \ny= "+ycoord, juce::dontSendNotification);
+    if (std::stof(xcoord.toStdString()) >= 0)
+        xcoord = " "+ xcoord;
+    if (std::stof(ycoord.toStdString()) >= 0)
+        ycoord = " "+ ycoord;
+    coordinatesLabel.setText("x= " + xcoord + " \ny= " + ycoord, juce::dontSendNotification);
+    
     if (e.getPosition().getX()<145 && e.getPosition().getY()<90){
         coordinatesLabel.setBounds(getWidth()-110, 20, 95, 40);
     } else {coordinatesLabel.setBounds(20, 20, 95, 40);}

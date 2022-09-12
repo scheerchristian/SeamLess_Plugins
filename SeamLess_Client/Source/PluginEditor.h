@@ -63,7 +63,7 @@ public:
 
     juce::Label zSliderLabel;
 
-    juce::TextButton buttonSettings;
+    juce::TextButton buttonLFO;
     juce::TextButton buttonSend;
     juce::TextButton buttonSpherical;
     juce::TextButton buttonLayout;

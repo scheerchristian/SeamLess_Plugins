@@ -37,8 +37,9 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     addAndMakeVisible(sendBox);
     addAndMakeVisible(sphericalBox);
     addAndMakeVisible(lfoBox);
+    sendBox.setVisible(true);
     sphericalBox.setVisible(false);
-    sendBox.setVisible(false);
+    lfoBox.setVisible(false);
     
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
@@ -64,12 +65,12 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     
 //==== BUTTONS ========================================================================
     
-    addAndMakeVisible(buttonSettings);
-    buttonSettings.addListener(this);
-    buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-    buttonSettings.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
-    buttonSettings.setComponentID("settings");
-    buttonSettings.setButtonText ("Settings");
+    addAndMakeVisible(buttonLFO);
+    buttonLFO.addListener(this);
+    buttonLFO.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    buttonLFO.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
+    buttonLFO.setComponentID("lfo");
+    buttonLFO.setButtonText ("LFO");
     
     addAndMakeVisible(buttonSend);
     buttonSend.addListener(this);
@@ -126,23 +127,25 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     zSlider.setBounds(0,40,100, getHeight()-195);
     topView.setBounds(100,20,maxTopViewSize, maxTopViewSize);
     
-    sendBox.setBounds(     maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
-    sphericalBox.setBounds(maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
+    sendBox.setBounds(maxTopViewSize + 120, 70, getWidth() - 140 - maxTopViewSize, getHeight() - 350);
+    sphericalBox.setBounds(sendBox.getBounds());
+    lfoBox.setBounds(sendBox.getBounds());
 
     settingComponent.setBounds(   maxTopViewSize+120, getHeight()-270, getWidth()-maxTopViewSize-140, 120);
     connectionComponent.setBounds(maxTopViewSize+120, getHeight()-140, getWidth()-maxTopViewSize-140, 120);
-    lfoBox.setBounds(   maxTopViewSize + 120, 20 + maxTopViewSize / 2 + 10, getWidth() - 40 - maxTopViewSize, maxTopViewSize / 2 - 10);
     
-    buttonSettings.setBounds(sendBox.getBounds().getX(),    20, sendBox.getWidth()/3, 40);
-    buttonSend.setBounds(buttonSettings.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
+    
+    buttonSend.setBounds(sendBox.getBounds().getX(),    20, sendBox.getWidth()/3, 40);
     buttonSpherical.setBounds(buttonSend.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
+    buttonLFO.setBounds(buttonSpherical.getBounds().getX()+sendBox.getWidth()/3, 20, sendBox.getWidth()/3, 40);
+    
     buttonLayout.setBounds(20, getHeight()-80, 60, 60);
     buttonGrid.setBounds(20, getHeight()-150, 60, 60);
 
 
     if (sendBox              .isVisible() == true) {buttonSend.setColour(     juce::TextButton::buttonColourId,seamlessGrey);}
     else if (sphericalBox    .isVisible() == true) {buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessGrey);}
-    else if (settingComponent.isVisible() == true) {buttonSettings.setColour( juce::TextButton::buttonColourId,seamlessGrey);}
+    else if (lfoBox          .isVisible() == true) {buttonLFO.setColour(      juce::TextButton::buttonColourId,seamlessGrey);}
     else {buttonSend.setColour(                                               juce::TextButton::buttonColourId,seamlessGrey);}
 
     
@@ -150,15 +153,16 @@ void SeamLess_ClientAudioProcessorEditor::resized()
     if (aspectRatio<1.3)
     {
         sendBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
-        sphericalBox.setBounds(100, maxTopViewSize+30, maxTopViewSize, getHeight()-maxTopViewSize-50);
-        
-        buttonSettings.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
-        buttonSend.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
-        buttonSpherical.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
+        sphericalBox.setBounds(sendBox.getBounds());
+        lfoBox.setBounds(sendBox.getBounds());
+
+        buttonSend.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
+        buttonSpherical.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
+        buttonLFO.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
         
         //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
         //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        //buttonSettings.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+        //buttonLFO.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
 }
 void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioParameter& p)
@@ -217,18 +221,18 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
     { // ALL OTHER BUTTONS
         buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-        buttonSettings.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+        buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         button->setColour(juce::TextButton::buttonColourId, seamlessGrey);
         
         //settingComponent.setVisible(false);
         //connectionComponent.setVisible(false);
         sendBox.setVisible(false);
         sphericalBox.setVisible(false);
+        lfoBox.setVisible(false);
         
-        if (button->getComponentID() == "settings")
+        if (button->getComponentID() == "lfo")
         {
-            connectionComponent.setVisible(true);
-            settingComponent.setVisible(true);
+            lfoBox.setVisible(true);
         } else
         if (button->getComponentID() == "send")
         {

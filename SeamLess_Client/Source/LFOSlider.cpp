@@ -20,7 +20,7 @@ LFOSlider::LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValue
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::white);
-    slider.setColour(juce::Slider::textBoxOutlineColourId, seamlessBlue);
+    slider.setColour(juce::Slider::textBoxOutlineColourId, transparent);
     slider.setNumDecimalPlacesToDisplay(2);
  
     if (endless == true)
@@ -43,7 +43,7 @@ LFOSlider::~LFOSlider()
 
 void LFOSlider::paint(juce::Graphics& g)
 {
-    g.setColour(seamlessBlue);
+    g.setColour(seamlessGrey);
     g.fillRoundedRectangle(getLocalBounds().toFloat(), 10);   // draw an outline around the component
 }
 
