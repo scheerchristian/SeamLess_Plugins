@@ -43,6 +43,7 @@ void TopView::paint (juce::Graphics& g)
 
     g.setColour(seamlessBlue);
     g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
+    if (layout == "Studio") {g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));}
     //g.drawLine(juce::Line<float>(convertMeterToPixel(3.5, 10), convertMeterToPixel(16.5, 10)));
     // g.drawImageAt(background.rescaled(700,400,juce::Graphics::mediumResamplingQuality), 0, 0);
 }
@@ -51,7 +52,8 @@ void TopView::resized()
 {
     source.setBounds(0,0,getWidth(),getHeight() );
     polygonPath.clear();
-    polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY() + 10);
+    TUStudioPath.clear();
+    polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY()+ 10);
     polygonPath.startNewSubPath(polygonPixel[0]);
     for (int i = 1; i <= 33; i++)
     {
@@ -59,6 +61,18 @@ void TopView::resized()
         polygonPath.lineTo(polygonPixel[i]);
     }
     polygonPath.closeSubPath();
+    if (layout == "Studio") {
+        polygonPath.clear();
+        TUStudioPath.clear();
+        TUStudioPixel[0] = convertMeterToPixel(TUStudioMeter[0].getX() + 10, TUStudioMeter[0].getY() + 10);
+        TUStudioPath.startNewSubPath(TUStudioPixel[0]);
+        for (int i = 1; i <= 7; i++)
+        {
+            TUStudioPixel[i] = convertMeterToPixel(TUStudioMeter[i].getX() + 10, TUStudioMeter[i].getY() + 10);
+            TUStudioPath.lineTo(TUStudioPixel[i]);
+        }
+        TUStudioPath.closeSubPath();
+    }
 
 }
 
@@ -121,3 +135,12 @@ void TopView::timerCallback()
     */
 }
 
+void TopView::changeLayout(bool HuFoSelected)
+{
+    if (HuFoSelected == true)
+        layout = "HuFo";
+    else
+        layout = "Studio";
+    repaint();
+    resized();
+}

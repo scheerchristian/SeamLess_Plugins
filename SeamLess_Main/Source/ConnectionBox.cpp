@@ -19,9 +19,10 @@ ConnectionBox::ConnectionBox(SeamLess_MainAudioProcessor &p) : audioProcessor(p)
     incomingPortText.setEditable (true);
     incomingPortText.setColour(juce::Label::textColourId, juce::Colours::white);
     incomingPortText.setColour (juce::Label::backgroundColourId, seamlessBlue);
-
+    incomingPortText.setJustificationType(juce::Justification::centred);
+    
     addAndMakeVisible(receiveOscButton);
-    receiveOscButton.setButtonText("Receiving OSC");
+    receiveOscButton.setButtonText("Receiving \nOSC");
 
     incomingPortText.onTextChange = [this]
     {
@@ -44,8 +45,7 @@ void ConnectionBox::paint (juce::Graphics& g)
 
     g.setColour(seamlessBlue);
     g.setFont(14.0f);
-    g.drawText("Port for receiving OSC", 10, 10, 250, 10,
-        juce::Justification::left, true);   // draw some placeholder text
+    g.drawText("Port for receiving OSC", 0, 10, getWidth(), 10, juce::Justification::centred, true);   // draw some placeholder text
 
 }
 
@@ -54,7 +54,10 @@ void ConnectionBox::resized()
 
     incomingPortLabel.setBounds(10, 20, 220, 20);
     incomingPortText.setBounds(30, 60, 120, 20);
-    receiveOscButton.setBounds(180, 30, 70, 50);   
+    receiveOscButton.setBounds(180, 30, 70, 50);
+    
+    incomingPortText.setBounds(getWidth()*0.05, getHeight()*0.35, getWidth()*0.4, 50);
+    receiveOscButton.setBounds(getWidth()*0.55, getHeight()*0.35, getWidth()*0.4, 50);
 }
 
 
