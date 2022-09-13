@@ -439,3 +439,10 @@ void SeamLess_ClientAudioProcessor::setConnectedToMain(bool b)
 {
     connectedToMain = b;
 }
+
+void SeamLess_ClientAudioProcessor::reconnectToMainPlugin()
+{
+    client->connectToSocket("localhost", port_nr, 5000);
+
+    setSendState(true);
+}

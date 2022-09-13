@@ -103,6 +103,7 @@ public:
     virtual void parameterChanged(const juce::String & id, float val) override;
     juce::AudioProcessorValueTreeState& getState();
 
+    void reconnectToMainPlugin();
 
 private:
 
