@@ -9,12 +9,12 @@
 */
 
 #pragma once
-
+#define _USE_MATH_DEFINES
 #include <JuceHeader.h>
-
 #include "../../Common/SeamLess.h"
 #include "PluginProcessor.h"
 #include "LFOSlider.h"
+#include <math.h>
 
 class LFOBox  : public juce::Component, juce::Slider::Listener, juce::Button::Listener
 {

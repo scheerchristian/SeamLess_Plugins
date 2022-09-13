@@ -15,13 +15,13 @@ ClientConnection::ClientConnection(SeamLess_ClientAudioProcessor& p)
     processor = &p;
 }
 
-void ClientConnection::connectionMade()
+void ClientConnection::connectionMade() 
 {
     printf("Client: connection established to main plugin!\n");
     processor->setConnectedToMain(true);
 }
 
-void ClientConnection::connectionLost()
+void ClientConnection::connectionLost() 
 {
     printf("Client: connection to main lost!\n");
     processor->setConnectedToMain(false);

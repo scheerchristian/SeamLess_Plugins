@@ -31,8 +31,8 @@ private:
 
     SeamLess_ClientAudioProcessor* processor;
 
-    void connectionMade();
-    void connectionLost();
+    void connectionMade() override;
+    void connectionLost() override;
     void messageReceived(const juce::MemoryBlock& msg);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ClientConnection);
