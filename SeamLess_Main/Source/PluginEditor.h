@@ -14,7 +14,7 @@
 #include "ConnectionBox.h"
 #include "ReverbFaderBox.h"
 #include "OutgoingConnectionComponent.h"
-#include"TopView.h"
+#include "TopView.h"
 //==============================================================================
 /**
 */
@@ -39,6 +39,8 @@ private:
     OutgoingConnectionComponent connectionComponent;
     
     TopView sourceViewer;
+    
+    juce::TextButton layoutButton;
     
     juce::Rectangle<float> sourceViewerSection;
 

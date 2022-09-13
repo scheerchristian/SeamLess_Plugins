@@ -22,6 +22,20 @@ SeamLess_MainAudioProcessorEditor::SeamLess_MainAudioProcessorEditor (SeamLess_M
     addAndMakeVisible(reverbFaderBox);
     addAndMakeVisible(connectionComponent);
     addAndMakeVisible(sourceViewer);
+    addAndMakeVisible(layoutButton);
+    layoutButton.setButtonText("HuFo");
+    layoutButton.onClick = [this] {
+        if (layoutButton.getButtonText() == "HuFo")
+        {
+            sourceViewer.changeLayout(false);
+            layoutButton.setButtonText("Studio");
+        }
+        else
+        {
+            sourceViewer.changeLayout(true);
+            layoutButton.setButtonText("HuFo");
+        }
+    };
 }
 
 SeamLess_MainAudioProcessorEditor::~SeamLess_MainAudioProcessorEditor()
@@ -36,8 +50,8 @@ void SeamLess_MainAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("SeamLess Main Plugin", 20, 20, 200, 20,
-    juce::Justification::left, true);
+    g.drawText ("SeamLess Main Plugin", 10, 0, getWidth()*0.25, 40,
+    juce::Justification::centred, true);
 }
 
 
@@ -66,6 +80,14 @@ void SeamLess_MainAudioProcessorEditor::resized()
         sourceViewer.setBounds(15, r.getY(), r.getHeight(), r.getHeight() + 5);
     else
         sourceViewer.setBounds(15, r.getY(), r.getWidth(), r.getWidth() + 5);
+    
+    oscConnectionBox.setBounds(10, 40, getWidth()*0.25, 100);
+    connectionComponent.setBounds(10, 150, getWidth()*0.25, 100);
+    const int &maxSourceViewerSize = std::min<int>((getWidth()*0.25+10), getHeight()-oscConnectionBox.getHeight()-connectionComponent.getHeight()-60);
+    sourceViewer.setBounds(5, 260, maxSourceViewerSize, maxSourceViewerSize);
+    reverbFaderBox.setBounds(getWidth()*0.275, 10, getWidth()*0.72, getHeight()-20);
+    layoutButton.setBounds(getWidth()-80, getHeight()-80, 60, 60);
+    
 }
 
 

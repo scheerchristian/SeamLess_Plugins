@@ -46,8 +46,8 @@ void ReverbFader::resized()
 {
     auto r = getLocalBounds();
     auto sliderWidth = r.getWidth();
-    auto sliderHeight = r.getHeight() * 2 / 3;
-    slider.setBounds(r.getWidth()/2 - sliderWidth / 2, r.getHeight() / 2 - sliderHeight / 2, sliderWidth, sliderHeight);
+    auto sliderHeight = r.getHeight() *0.9 ;
+    slider.setBounds(r.getWidth()/2 - sliderWidth / 2, r.getHeight() / 2 - sliderHeight / 2+10, sliderWidth, sliderHeight);
 }
 
 void ReverbFader::setText(juce::String s)

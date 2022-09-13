@@ -50,7 +50,7 @@ public:
 
     void mouseUp(const juce::MouseEvent& e) override;
 
-
+    void changeLayout(bool HuFoSelected);
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
 
@@ -68,6 +68,14 @@ private:
     juce::Path polygonPath;
     juce::Point<float> polygonMeter[34] = { juce::Point<float>(-6.051, 2.112), juce::Point<float>(-5.392, 2.593), juce::Point<float>(-4.695, 3.018), juce::Point<float>(-3.964, 3.382), juce::Point<float>(-3.205, 3.684), juce::Point<float>(-2.424, 3.921), juce::Point<float>(-1.625, 4.091), juce::Point<float>(-0.816, 4.194), juce::Point<float>(-0.0f, 4.228), juce::Point<float>(0.816, 4.194), juce::Point<float>(1.626, 4.091), juce::Point<float>(2.424, 3.921), juce::Point<float>(3.206, 3.684), juce::Point<float>(3.964, 3.382), juce::Point<float>(4.695, 3.017), juce::Point<float>(5.392, 2.593), juce::Point<float>(6.054, 2.107), juce::Point<float>(6.051, -2.112), juce::Point<float>(5.392, -2.593), juce::Point<float>(4.695, -3.018), juce::Point<float>(3.964, -3.382), juce::Point<float>(3.205, -3.684), juce::Point<float>(2.424, -3.921), juce::Point<float>(1.625, -4.091), juce::Point<float>(0.816, -4.194), juce::Point<float>(0.0f, -4.228), juce::Point<float>(-0.816, -4.194), juce::Point<float>(-1.626, -4.091), juce::Point<float>(-2.424	, -3.921), juce::Point<float>(-3.206, -3.684), juce::Point<float>(-3.964, -3.382), juce::Point<float>(-4.695, -3.017), juce::Point<float>(-5.392, -2.593), juce::Point<float>(-6.054, -2.107) };
     juce::Point<float> polygonPixel[34];
+    
+    juce::Path TUStudioPath;
+    juce::Point<float> TUStudioMeter[8] = {
+        juce::Point<float>(-1.620, 3.023), juce::Point<float>(1.620, 3.023), juce::Point<float>(2.430, 1.620), juce::Point<float>(2.430, -1.620),
+        juce::Point<float>(1.620, -3.023), juce::Point<float>(-1.620, -3.023), juce::Point<float>(-2.430, -1.620), juce::Point<float>(-2.430,1.620) };
+    juce::Point<float> TUStudioPixel[8];
+    
+    juce::String layout;
     ///
     /// \brief timerCallback
     /// set source position
