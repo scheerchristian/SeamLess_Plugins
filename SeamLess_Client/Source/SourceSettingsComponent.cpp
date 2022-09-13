@@ -30,9 +30,17 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     nameLabel.setColour(juce::Label::textColourId, juce::Colours::black);
     
     addAndMakeVisible (mainConnectionButton);
-    mainConnectionButton.setButtonText ("Not Connected!");
+    mainConnectionButton.setButtonText ("Not Connected! Click to retry.");
     mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
-
+    mainConnectionButton.onClick = [this]
+    {
+        if (mainConnectionButton.getButtonText() == "Not Connected! Click to retry.")
+        {
+            mainConnectionButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+            processor->reconnectToMainPlugin();
+        }
+    };
+    
     sourceIndText.onTextChange = [this]
     {
         juce::String s = sourceIndText.getText();
@@ -99,12 +107,12 @@ void SourceSettingsComponent::setConnectionFeedback(bool state)
 {
   if(state==true)
   {
-    mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::green);
+    mainConnectionButton.setColour(juce::TextButton::buttonColourId,seamlessGrey);
     mainConnectionButton.setButtonText ("Connected to Main Plugin!");
   }
   else if(state==false)
   {
       mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
-      mainConnectionButton.setButtonText ("Not Connected!");
+      mainConnectionButton.setButtonText ("Not Connected! Click to retry.");
   }
 }
