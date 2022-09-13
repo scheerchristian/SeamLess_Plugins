@@ -14,7 +14,7 @@ juce::OSCSender SeamLess_ClientAudioProcessor::sender1;
 SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     : parameters (*this, nullptr, juce::Identifier ("HuFo"),
                   createParameters()),
-      //client(new ClientConnection(*this)),    // no longer needed due to parameterAttachments
+      client(new ClientConnection(*this)),    // no longer needed due to parameterAttachments
       AudioProcessor (BusesProperties()) // use no audio buses
 {
     settings = juce::ValueTree("Settings");
@@ -40,9 +40,9 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     parameters.addParameterListener("sendGainHOA", this);
     parameters.addParameterListener("sendGainREV", this);
 
-    //client->connectToSocket("localhost", port_nr, 5000);  // no longer needed due to parameterAttachments
+    client->connectToSocket("localhost", port_nr, 5000);  // no longer needed due to parameterAttachments
 
-    //setSendState(true);   //no longer needed due to parameterAttachments
+    setSendState(true);   //no longer needed due to parameterAttachments
 
     startTimer(SEND_INTERVAL);
 

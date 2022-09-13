@@ -147,7 +147,7 @@ private:
     juce::AudioProcessorValueTreeState parameters;
     juce::ValueTree settings;
 
-    // std::unique_ptr<ClientConnection> client;    // no longer needed due to parameterAttachments
+    std::unique_ptr<ClientConnection> client;    // no longer needed due to parameterAttachments
 
     virtual void hiResTimerCallback() override;
 

@@ -9,7 +9,6 @@
 */
 
 #include "LFOBox.h"
-
 #include "LFOBox.h"
 
 
@@ -80,13 +79,6 @@ void LFOBox::resized()
     
     auto offsetSliderX = r.removeFromLeft(sliderWidth);
     offsetSlider.setBounds(offsetSliderX);
-    
-
-    
-    
-    
-    
-
 }
 
 
