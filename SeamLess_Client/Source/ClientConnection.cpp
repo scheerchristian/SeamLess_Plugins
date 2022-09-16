@@ -64,3 +64,12 @@ void ClientConnection::reconnect()
 {
 //  this.connectToSocket("localhost",);
 }
+
+void ClientConnection::sendMessageToMain(juce::String msg)
+{
+    if (isConnected())
+    {
+        juce::MemoryBlock mb (msg.toRawUTF8(), msg.getNumBytesAsUTF8()+1);
+        sendMessage(mb);
+    }
+}

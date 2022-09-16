@@ -428,6 +428,15 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
 
         sendGainSend();
     }
+    if (isSending)
+    {
+        int i = (int) sourceIdx.getValue();
+        float x = (float) *xPos;
+        float y = (float) *yPos;
+        float z = (float) *zPos;
+        juce::String ipcPos = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
+        client->sendMessageToMain(ipcPos);
+    }
 }
 
 bool SeamLess_ClientAudioProcessor::getConnectedToMain()
@@ -443,6 +452,4 @@ void SeamLess_ClientAudioProcessor::setConnectedToMain(bool b)
 void SeamLess_ClientAudioProcessor::reconnectToMainPlugin()
 {
     client->connectToSocket("localhost", port_nr, 5000);
-
-    setSendState(true);
 }

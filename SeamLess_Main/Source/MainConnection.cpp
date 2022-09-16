@@ -37,6 +37,10 @@ void MainConnection::connectionLost()
 
 void MainConnection::messageReceived(const juce::MemoryBlock& msg)
 {
+    
+    juce::StringArray strs;
+    strs.addTokens(msg.toString(), "/", "_");
+    message = strs;    
         // const auto str = msg.toString();
         // printf("From client: %s\n", str.toRawUTF8());
 //

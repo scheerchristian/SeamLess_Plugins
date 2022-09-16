@@ -36,6 +36,13 @@ SeamLess_MainAudioProcessorEditor::SeamLess_MainAudioProcessorEditor (SeamLess_M
             layoutButton.setButtonText("HuFo");
         }
     };
+    addAndMakeVisible(fullSizeSourceViewButton);
+    fullSizeSourceViewButton.setButtonText("bigg");
+    fullSizeSourceViewButton.onClick = [this] {
+        fullScreen = !fullScreen;
+        resized();
+    };
+    startTimer(100);
 }
 
 SeamLess_MainAudioProcessorEditor::~SeamLess_MainAudioProcessorEditor()
@@ -81,17 +88,36 @@ void SeamLess_MainAudioProcessorEditor::resized()
     else
         sourceViewer.setBounds(15, r.getY(), r.getWidth(), r.getWidth() + 5);
     
-    oscConnectionBox.setBounds(10, 40, getWidth()*0.25, 100);
-    connectionComponent.setBounds(10, 150, getWidth()*0.25, 100);
-    const int &maxSourceViewerSize = std::min<int>((getWidth()*0.25+10), getHeight()-oscConnectionBox.getHeight()-connectionComponent.getHeight()-60);
-    sourceViewer.setBounds(5, 260, maxSourceViewerSize, maxSourceViewerSize);
+    oscConnectionBox.setBounds(10, 40, getWidth()*0.25, 60);
+    connectionComponent.setBounds(10, 110, getWidth()*0.25, 100);
     reverbFaderBox.setBounds(getWidth()*0.275, 10, getWidth()*0.72, getHeight()-20);
-    layoutButton.setBounds(getWidth()-80, getHeight()-80, 60, 60);
+    const int &maxSourceViewerSize = std::min<int>((getWidth()*0.25+10), getHeight()-oscConnectionBox.getHeight()-connectionComponent.getHeight()-85);
+    if (fullScreen == false)
+    {
+        sourceViewer.setBounds(5, getHeight()-maxSourceViewerSize-10, maxSourceViewerSize, maxSourceViewerSize);
+        layoutButton.setVisible(false);
+        reverbFaderBox.setVisible(true);
+        fullSizeSourceViewButton.setButtonText("bigg");
+        
+    }
+    else
+    {
+        const int &maxSourceViewerSize = std::min<int>(getWidth(), getHeight());
+        sourceViewer.setBounds(reverbFaderBox.getBounds().getX(), 0, maxSourceViewerSize, maxSourceViewerSize);
+        layoutButton.setBounds(fullSizeSourceViewButton.getBounds().getX(), fullSizeSourceViewButton.getBounds().getY()+30, 60, 60);
+        layoutButton.setVisible(true);
+        reverbFaderBox.setVisible(false);
+        fullSizeSourceViewButton.setButtonText("smol");
+        
+    }
+    fullSizeSourceViewButton.setBounds(10, getHeight()-maxSourceViewerSize-30, 60, 20);
+    
     
 }
 
 
 void SeamLess_MainAudioProcessorEditor::timerCallback()
 {
-
+    juce::StringArray msgtokens = audioProcessor.getIncomingMessages();
+    sourceViewer.moveSource(msgtokens[0].getIntValue(), msgtokens[1].getFloatValue(), msgtokens[2].getFloatValue(), msgtokens[3].getFloatValue());
 }

@@ -20,7 +20,7 @@ class SoundSource  : public juce::Component
 {
 public:
 
-  SoundSource();
+  SoundSource(int ID, float x, float y, float z);
 
   ~SoundSource() override;
 
@@ -34,15 +34,20 @@ public:
   /// moves the center of the elipse
   void moveXY(float x, float y);
   void moveXYZ(float x, float y, float z);
+    juce::Point<float> getPosition();
+    int getSourceWidth();
+    void updateCoordinates(float x, float y, float z);
+    int getSourceID();
 
 private:
 
-  juce::ComponentBoundsConstrainer constrainer;
-  juce::ComponentDragger dragger;
-
-  int xPos = 0;
-  int yPos = 0;
-
+    juce::ComponentBoundsConstrainer constrainer;
+    juce::ComponentDragger dragger;
+    float xPos = 0;
+    float yPos = 0;
+    float sourceWidth = 1;
+    float zToWidth(float z);
+    int sourceID = 0;
   int width  = 30;
   int height = 30;
 
