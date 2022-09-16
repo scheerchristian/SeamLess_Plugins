@@ -22,7 +22,7 @@ ConnectionBox::ConnectionBox(SeamLess_MainAudioProcessor &p) : audioProcessor(p)
     incomingPortText.setJustificationType(juce::Justification::centred);
     
     addAndMakeVisible(receiveOscButton);
-    receiveOscButton.setButtonText("Receiving \nOSC");
+    //receiveOscButton.setButtonText("Receiving \nOSC");
 
     incomingPortText.onTextChange = [this]
     {
@@ -45,7 +45,7 @@ void ConnectionBox::paint (juce::Graphics& g)
 
     g.setColour(seamlessBlue);
     g.setFont(14.0f);
-    g.drawText("Port for receiving OSC", 0, 10, getWidth(), 10, juce::Justification::centred, true);   // draw some placeholder text
+    g.drawText("Receiving OSC on Port", 10, getHeight()/2-5, 150, 10, juce::Justification::left, true);   // draw some placeholder text
 
 }
 
@@ -58,6 +58,8 @@ void ConnectionBox::resized()
     
     incomingPortText.setBounds(getWidth()*0.05, getHeight()*0.35, getWidth()*0.4, 50);
     receiveOscButton.setBounds(getWidth()*0.55, getHeight()*0.35, getWidth()*0.4, 50);
+    incomingPortText.setBounds(145, getHeight()/2-8, 51, 17);
+    receiveOscButton.setBounds(200, getHeight()/2-8, 17, 17);
 }
 
 

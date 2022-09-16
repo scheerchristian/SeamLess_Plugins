@@ -13,13 +13,12 @@
 
 //==============================================================================
 
-TopView::TopView(SeamLess_MainAudioProcessor *p): source()
+TopView::TopView(SeamLess_MainAudioProcessor *p): source(0,0,0,0)
 {
 
     processor  = p;
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
 
-    //addAndMakeVisible(source);
     startTimer(50);
 
     
@@ -50,7 +49,11 @@ void TopView::paint (juce::Graphics& g)
 
 void TopView::resized()
 {
-    source.setBounds(0,0,getWidth(),getHeight() );
+    if (sourceVector.size() != 0) {
+        for(auto const& s: sourceVector) {
+            s->setBounds(convertMeterToPixel(s->getPosition().getX()+10,0).getX()-(s->getSourceWidth())/2, convertMeterToPixel(0,-s->getPosition().getY()+10).getY()-(s->getSourceWidth())/2, (s->getSourceWidth()), (s->getSourceWidth()));
+        }
+    }
     polygonPath.clear();
     TUStudioPath.clear();
     polygonPixel[0] = convertMeterToPixel(polygonMeter[0].getX() + 10, polygonMeter[0].getY()+ 10);
@@ -142,5 +145,27 @@ void TopView::changeLayout(bool HuFoSelected)
     else
         layout = "Studio";
     repaint();
+    resized();
+}
+
+void TopView::moveSource (int sourceID, float x, float y, float z)
+{
+    auto source = std::find(registeredSources.begin(), registeredSources.end(), sourceID);
+    
+    if (source != registeredSources.end())
+    {
+        // only move already registered source
+        auto s = sourceVector[source - registeredSources.begin()];
+        s->updateCoordinates(x, y, z);
+    }
+    else
+    {
+        // also add new sourceID
+        SoundSource* s = new SoundSource(sourceID, x,y,z);
+        addAndMakeVisible(s);
+        s->setComponentID("source"+juce::String(sourceID));
+        sourceVector.push_back(s);
+        registeredSources.push_back(sourceID);
+    }
     resized();
 }

@@ -12,13 +12,16 @@ Author:  anwaldt
 #include "SoundSource.h"
 
 //==============================================================================
-SoundSource::SoundSource()
+SoundSource::SoundSource(int ID, float x, float y, float z)
 {
-
+    
+    updateCoordinates(x, y, z);
+    sourceID = ID;
     // this makes the component ignore mouse events
     // and they reach the parent component
     setInterceptsMouseClicks(false,false);
-
+    //idLabel.setText(juce::String(ID), juce::dontSendNotification);
+    //addAndMakeVisible(idLabel);
 }
 
 
@@ -28,14 +31,20 @@ SoundSource::~SoundSource()
 
 void SoundSource::paint (juce::Graphics& g)
 {
+    if (sourceID > 0)
+    {
   //auto area = getLocalBounds().reduced (2);
   g.setColour (juce::Colours::lightblue);
-  g.fillEllipse (xPos, yPos, width,height);
+  g.fillEllipse (0, 0, getWidth(),getHeight());
+    g.setColour(seamlessBlue);
+    g.drawText(juce::String(sourceID), 0, 0, getWidth(), getHeight(), juce::Justification::centred);
+    }
+    
 }
 
 void SoundSource::resized ()
 {
-
+    
 }
 
 
@@ -101,4 +110,29 @@ void SoundSource::moveXYZ(float x, float y, float z)
     // repaint(xPos,yPos, 40,40);
     repaint(xPos-shift,yPos-shift, width+pad,height+pad);
 
+}
+
+juce::Point<float> SoundSource::getPosition()
+{
+    return juce::Point<float>(xPos, yPos);
+}
+int SoundSource::getSourceWidth()
+{
+    return sourceWidth;
+}
+
+float SoundSource::zToWidth(float z){
+    return 2*z+30;
+}
+
+void SoundSource::updateCoordinates(float x, float y, float z)
+{
+    xPos = x;
+    yPos = y;
+    sourceWidth = zToWidth(z);
+}
+
+int SoundSource::getSourceID()
+{
+    return sourceID;
 }

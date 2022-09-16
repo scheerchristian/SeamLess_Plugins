@@ -26,6 +26,7 @@ public:
 
     void reconnect();
 
+    void sendMessageToMain(juce::String msg);
 
 private:
 
@@ -33,7 +34,7 @@ private:
 
     void connectionMade() override;
     void connectionLost() override;
-    void messageReceived(const juce::MemoryBlock& msg);
+    void messageReceived(const juce::MemoryBlock& msg) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ClientConnection);
 };

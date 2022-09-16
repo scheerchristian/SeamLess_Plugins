@@ -30,10 +30,11 @@ public:
     /// for deleting all disconnected MainConnections.
     void connectionLost();
 
+
     void messageReceived(const juce::MemoryBlock& msg);
-
+    juce::StringArray message;
 private:
-
+    //SoundSource source;
     SeamLess_MainAudioProcessor *processor;
     juce::WaitableEvent& stop_signal_;
 

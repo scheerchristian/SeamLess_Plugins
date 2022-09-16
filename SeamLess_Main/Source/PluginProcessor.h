@@ -98,6 +98,7 @@ public:
     juce::String  getOscTargetAddress();
     int getOscTargetPort();
 
+    juce::StringArray getIncomingMessages();
 private:
 
     /// \brief incomingPort
@@ -148,12 +149,12 @@ private:
 
     std::vector<MainConnection*> connections;
 
-    juce::InterprocessConnection* createConnectionObject();
+    juce::InterprocessConnection* createConnectionObject() override;
 
     ///
     /// \brief hiResTimerCallback
     /// Send all OSC commands with a timer call.
-    void hiResTimerCallback();
+    void hiResTimerCallback() override;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_MainAudioProcessor)

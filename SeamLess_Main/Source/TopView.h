@@ -53,6 +53,9 @@ public:
     void changeLayout(bool HuFoSelected);
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
+    void moveSource (int sourceID, float x, float y, float z);
+    
+    void connectXtoParameter(juce::RangedAudioParameter& p);
 
 private:
 
@@ -76,6 +79,8 @@ private:
     juce::Point<float> TUStudioPixel[8];
     
     juce::String layout;
+    std::vector<SoundSource*> sourceVector;
+    std::vector<int> registeredSources;
     ///
     /// \brief timerCallback
     /// set source position

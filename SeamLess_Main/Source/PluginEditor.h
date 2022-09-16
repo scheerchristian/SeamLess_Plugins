@@ -41,10 +41,13 @@ private:
     TopView sourceViewer;
     
     juce::TextButton layoutButton;
+    juce::TextButton fullSizeSourceViewButton;
+    
+    bool fullScreen = false;
     
     juce::Rectangle<float> sourceViewerSection;
 
-    void timerCallback();
+    void timerCallback() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_MainAudioProcessorEditor)
 };
