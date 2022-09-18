@@ -33,16 +33,16 @@ TopView::~TopView()
 
 void TopView::paint (juce::Graphics& g)
 {
-    g.setColour(juce::Colour (220,220,220));
-    g.fillRoundedRectangle(0,0,getWidth(),getHeight(),30);
+    g.setColour(seamlessLightGrey);
+    g.fillRoundedRectangle(0,0,getWidth(),getHeight(),getWidth()*0.08);
+
+    //g.setColour(seamlessBlue);
+    //g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,15);
+
 
     g.setColour(seamlessBlue);
-    g.drawRoundedRectangle(0,0,getWidth(),getHeight(),30,15);
-
-
-    g.setColour(seamlessBlue);
-    g.strokePath(polygonPath, juce::PathStrokeType(5.0f));
-    if (layout == "Studio") {g.strokePath(TUStudioPath, juce::PathStrokeType(5.0f));}
+    g.strokePath(polygonPath, juce::PathStrokeType(getWidth()*0.01));
+    if (layout == "Studio") {g.strokePath(TUStudioPath, juce::PathStrokeType(getWidth()*0.01));}
     //g.drawLine(juce::Line<float>(convertMeterToPixel(3.5, 10), convertMeterToPixel(16.5, 10)));
     // g.drawImageAt(background.rescaled(700,400,juce::Graphics::mediumResamplingQuality), 0, 0);
 }
@@ -160,7 +160,7 @@ void TopView::moveSource (int sourceID, float x, float y, float z)
     }
     else
     {
-        // also add new sourceID
+        // add new sourceID if not yet registered
         SoundSource* s = new SoundSource(sourceID, x,y,z);
         addAndMakeVisible(s);
         s->setComponentID("source"+juce::String(sourceID));
@@ -168,4 +168,11 @@ void TopView::moveSource (int sourceID, float x, float y, float z)
         registeredSources.push_back(sourceID);
     }
     resized();
+}
+void TopView::reInitViewer()
+{
+    removeAllChildren();
+    deleteAllChildren();
+    sourceVector.clear();
+    registeredSources.clear();
 }

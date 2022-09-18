@@ -22,11 +22,7 @@ SeamLess_MainAudioProcessor::SeamLess_MainAudioProcessor()
                   std::make_unique<juce::AudioParameterFloat> ("revT60m", "Reverb T60 MID", 0.0, 10.0, 2.0),
                   std::make_unique<juce::AudioParameterFloat> ("revLpFreq", "Reverb LP Freq", juce::NormalisableRange<float>(10, 10000, 0.01, 0.2, false), 500),
                   std::make_unique<juce::AudioParameterFloat> ("revLpRs", "Reverb LP Slope", 0.0, 1.0, 0.5),
-                  std::make_unique<juce::AudioParameterFloat> ("revLpDb", "Reverb Gain", -24.0, 6.0, -9.0),
-                  std::make_unique<juce::AudioParameterFloat> ("sourceID", "Source ID", 0, 1000, 0),
-                  std::make_unique<juce::AudioParameterFloat> ("sourceX", "Source X", -10, 10, 0),
-                  std::make_unique<juce::AudioParameterFloat> ("sourceY", "Source Y", -10, 10, 0),
-                  std::make_unique<juce::AudioParameterFloat> ("sourceZ", "Source Z", -10, 10, 0),
+                  std::make_unique<juce::AudioParameterFloat> ("revLpDb", "Reverb Gain", -24.0, 6.0, -9.0)
                   }),
       AudioProcessor (BusesProperties())
 {
@@ -433,8 +429,12 @@ void SeamLess_MainAudioProcessor::hiResTimerCallback()
 
 juce::StringArray SeamLess_MainAudioProcessor::getIncomingMessages()
 {
-    if (connections.size() == 0)
-        return juce::StringArray();
-    else
-        return connections[0]->message;
+    juce::StringArray messages;
+    if (connections.size() != 0)
+    {
+        for (auto const& c: connections) {
+            messages.add(c->message);
+        }
+    }
+    return messages;
 }

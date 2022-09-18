@@ -16,6 +16,7 @@ MainConnection::MainConnection(juce::WaitableEvent& stop_signal, SeamLess_MainAu
   stop_signal_(stop_signal)
 {
     processor = p;
+    message = "-1/0/0/0";
 }
 
 void MainConnection::connectionMade()
@@ -37,10 +38,7 @@ void MainConnection::connectionLost()
 
 void MainConnection::messageReceived(const juce::MemoryBlock& msg)
 {
-    
-    juce::StringArray strs;
-    strs.addTokens(msg.toString(), "/", "_");
-    message = strs;    
+    message = msg.toString();
         // const auto str = msg.toString();
         // printf("From client: %s\n", str.toRawUTF8());
 //
