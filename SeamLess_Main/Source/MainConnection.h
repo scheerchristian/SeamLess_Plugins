@@ -32,7 +32,7 @@ public:
 
 
     void messageReceived(const juce::MemoryBlock& msg);
-    juce::StringArray message;
+    juce::String message;
 private:
     //SoundSource source;
     SeamLess_MainAudioProcessor *processor;

@@ -25,15 +25,7 @@ public:
   ~SoundSource() override;
 
   void paint (juce::Graphics&) override;
-  void resized() override;
-  void mouseDown (const juce::MouseEvent& e) override;
-  void mouseDrag (const juce::MouseEvent& e) override;
-  void moveX(double x);
-  void moveY(double y);
 
-  /// moves the center of the elipse
-  void moveXY(float x, float y);
-  void moveXYZ(float x, float y, float z);
     juce::Point<float> getPosition();
     int getSourceWidth();
     void updateCoordinates(float x, float y, float z);

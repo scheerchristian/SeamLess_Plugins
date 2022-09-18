@@ -55,8 +55,7 @@ public:
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
     void moveSource (int sourceID, float x, float y, float z);
     
-    void connectXtoParameter(juce::RangedAudioParameter& p);
-
+    void reInitViewer();
 private:
 
     SeamLess_MainAudioProcessor *processor;

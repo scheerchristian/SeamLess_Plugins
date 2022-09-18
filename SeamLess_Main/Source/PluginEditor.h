@@ -40,8 +40,9 @@ private:
     
     TopView sourceViewer;
     
-    juce::TextButton layoutButton;
     juce::TextButton fullSizeSourceViewButton;
+    juce::TextButton layoutButton;
+    juce::TextButton reInitButton;
     
     bool fullScreen = false;
     
