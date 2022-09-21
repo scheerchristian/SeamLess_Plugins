@@ -34,12 +34,40 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 //==== BOXES =========================================================================
 
     addAndMakeVisible(topView);
+
     addAndMakeVisible(sendBox);
+    sendBox.setVisible(false);
+    buttonSend.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+
+
     addAndMakeVisible(sphericalBox);
-    addAndMakeVisible(lfoBox);
-    sendBox.setVisible(true);
     sphericalBox.setVisible(false);
+    buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+
+    addAndMakeVisible(lfoBox);
     lfoBox.setVisible(false);
+    buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+
+
+    switch (audioProcessor.getSettingsMode())
+    {
+        case 0: 
+            sendBox.setVisible(true);
+            buttonSend.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+            break;
+        case 1: 
+            sphericalBox.setVisible(true);
+            buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+            break;
+        case 2: 
+            lfoBox.setVisible(true);
+            buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+            break;
+        default:
+            sendBox.setVisible(true);
+            break;
+    }
+    
     
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
@@ -90,13 +118,35 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     buttonLayout.addListener(this);
     buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonLayout.setComponentID("layout");
-    buttonLayout.setButtonText ("HuFo");
-    
+    if (audioProcessor.getShapeState() == audioProcessor.HuFo)
+    {
+        buttonLayout.setButtonText("HuFo");
+        topView.changeLayout(true);
+    }
+    else
+    {
+        buttonLayout.setButtonText("Studio");
+        topView.changeLayout(false);
+    }
     addAndMakeVisible(buttonGrid);
     buttonGrid.addListener(this);
-    buttonGrid.setColour(juce::TextButton::buttonColourId,seamlessBlue);
+    buttonGrid.setColour(juce::TextButton::buttonColourId, seamlessBlue);
     buttonGrid.setComponentID("grid");
-    buttonGrid.setButtonText ("Grid OFF");
+    switch (audioProcessor.getGridState())
+    {
+        case 0:
+            buttonGrid.setButtonText("Grid OFF");
+            topView.showGrid(false, false);
+            break;
+        case 1:
+            buttonGrid.setButtonText("Grid \nON \nxyz");
+            topView.showGrid(true, true);
+            break;
+        case 2:
+            buttonGrid.setButtonText(juce::CharPointer_UTF8("Grid \nON \n r \xcf\x86 \xce\xb8\t"));
+            topView.showGrid(true, false);
+            break;
+    }
 }
 
 SeamLess_ClientAudioProcessorEditor::~SeamLess_ClientAudioProcessorEditor()
@@ -193,28 +243,37 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         {
             topView.changeLayout(true);
             buttonLayout.setButtonText("HuFo");
-        } else {
+            audioProcessor.setShapeState(audioProcessor.HuFo);
+        } 
+        else 
+        {
             topView.changeLayout(false);
             buttonLayout.setButtonText("Studio");
+            audioProcessor.setShapeState(audioProcessor.Studio);
         }
         
-    } else
-    if (button->getComponentID() == "grid")
+    } 
+    else if (button->getComponentID() == "grid")
     {
         if (button->getButtonText() == "Grid OFF")
         {
-            topView.showGrid(true, true);
             buttonGrid.setButtonText("Grid \nON \nxyz");
+            topView.showGrid(true, true);
+            audioProcessor.setGridState(audioProcessor.gridXYZ);
+
         } 
         else if (button->getButtonText() == "Grid \nON \nxyz")
         {
             topView.showGrid(true, false);
             buttonGrid.setButtonText(juce::CharPointer_UTF8("Grid \nON \n r \xcf\x86 \xce\xb8\t"));
+            audioProcessor.setGridState(audioProcessor.gridSpheric);
         } 
         else 
         {
             topView.showGrid(false, false);
             buttonGrid.setButtonText("Grid OFF");
+            audioProcessor.setGridState(audioProcessor.gridOff);
+
         }
     } 
     else 
@@ -233,14 +292,17 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         if (button->getComponentID() == "lfo")
         {
             lfoBox.setVisible(true);
-        } else
-        if (button->getComponentID() == "send")
+            audioProcessor.setSettingsMode(audioProcessor.lfo);
+        } 
+        else if (button->getComponentID() == "send")
         {
             sendBox.setVisible(true);
-        } else
-        if (button->getComponentID() == "spherical")
+            audioProcessor.setSettingsMode(audioProcessor.send);
+        } 
+        else if (button->getComponentID() == "spherical")
         {
             sphericalBox.setVisible(true);
+            audioProcessor.setSettingsMode(audioProcessor.spherical);
         }
     }
 }

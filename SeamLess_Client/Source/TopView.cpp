@@ -221,18 +221,23 @@ void TopView::setSourceWidthPx(int newWidth)
 void TopView::setZPos(float newValue) { zPos = newValue; }
 
 
-void TopView::changeLayout(bool HuFoSelected) {
+void TopView::changeLayout(bool HuFoSelected) 
+{
     if (HuFoSelected == true) {layout = "HuFo";} else {layout = "Studio";}
     repaint();
     resized();
 }
 
-void TopView::showGrid(bool showGrid, bool xyzGrid) {
-    if (showGrid == true) {
+void TopView::showGrid(bool showGrid, bool xyzGrid) 
+{
+    if (showGrid == true) 
+    {
         enableGrid = true;
         coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::white);
         
-    } else {
+    } 
+    else 
+    {
         enableGrid = false;
         coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colour(000000));
     };

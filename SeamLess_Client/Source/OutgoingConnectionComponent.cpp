@@ -71,7 +71,7 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     {
         audioProcessor->setSendState(sendButton.getToggleStateValue().getValue());
     };
-
+    sendButton.setToggleState(audioProcessor->getSendButtonState(), juce::NotificationType::sendNotification);
     startTimer(100);
 }
 
