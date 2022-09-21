@@ -217,6 +217,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", -60.0, 0.0, -60.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoRate", 1), "LFO: Rate(Hz)", 0.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
+
+
+
+
     //params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID("sourceIdx", 1), "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
 
     return { params.begin(), params.end() };

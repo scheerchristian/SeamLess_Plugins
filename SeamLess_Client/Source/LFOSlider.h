@@ -14,7 +14,7 @@
 class LFOSlider : public juce::Slider, juce::Slider::Listener
 {
 public:
-    LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters);
+    LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String id);
     ~LFOSlider() override;
 
     void paint(juce::Graphics&) override;
@@ -35,6 +35,12 @@ private:
     juce::Label lfoNameLabel;
 
     juce::Slider slider;
+
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> lfoSliderAttachment;
+
+    juce::String parameterID;
+
+    juce::AudioProcessorValueTreeState* treeState;
 
     double currentValue;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFOSlider)
