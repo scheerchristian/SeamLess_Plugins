@@ -21,6 +21,11 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     settings.setProperty("sourceIdx", juce::var(-1), nullptr);
     settings.setProperty("oscTargetAddress", juce::var("127.0.0.1"), nullptr);
     settings.setProperty("oscTargetPort", juce::var(9001), nullptr);
+    settings.setProperty("settingsMode", juce::var(0), nullptr);
+    settings.setProperty("sendButton", juce::var(true), nullptr);
+    settings.setProperty("shapeState", juce::var(0), nullptr);
+    settings.setProperty("gridState", juce::var(0), nullptr);
+
     parameters.state.addChild(settings, 0, nullptr);
 
     xPos      = parameters.getRawParameterValue("xPos");
@@ -173,7 +178,10 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
                 sourceIdx.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sourceIdx", nullptr));
                 oscTargetAddress.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetAddress", nullptr));
                 oscTargetPort.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetPort", nullptr));
-
+                settingsMode.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("settingsMode", nullptr));
+                sendButtonState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sendButton", nullptr));
+                shapeState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("shapeState", nullptr));
+                gridState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("gridState", nullptr));
                 sender1.connect(oscTargetAddress.getValue(), 9001);
                 DBG(xmlState->toString());
             }
@@ -373,6 +381,26 @@ int SeamLess_ClientAudioProcessor::getOscTargetPort()
     return oscTargetPort.getValue();
 }
 
+int SeamLess_ClientAudioProcessor::getSettingsMode()
+{
+    return settingsMode.toString().getIntValue();
+}
+
+void SeamLess_ClientAudioProcessor::setSettingsMode(int newValue)
+{
+    settingsMode.setValue(newValue);
+}
+
+int SeamLess_ClientAudioProcessor::getShapeState()
+{
+    return shapeState.getValue();
+}
+
+void SeamLess_ClientAudioProcessor::setShapeState(int newValue)
+{
+    shapeState.setValue(newValue);
+}
+
 juce::AudioProcessorValueTreeState& SeamLess_ClientAudioProcessor::getState()
 {
     return parameters;
@@ -387,6 +415,17 @@ void SeamLess_ClientAudioProcessor::setSendState(bool s)
 {
     isSending=s;
 }
+
+bool SeamLess_ClientAudioProcessor::getSendButtonState()
+{
+    return sendButtonState.getValue();
+}
+
+void SeamLess_ClientAudioProcessor::setSendButtonState(bool newValue)
+{
+    sendButtonState.setValue(newValue);
+}
+
 
 
 void SeamLess_ClientAudioProcessor::parameterChanged(const juce::String & id, float val)
@@ -437,6 +476,16 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
         juce::String ipcPos = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
         client->sendMessageToMain(ipcPos);
     }
+}
+
+int SeamLess_ClientAudioProcessor::getGridState()
+{
+    return gridState.getValue();
+}
+
+void SeamLess_ClientAudioProcessor::setGridState(int newValue)
+{
+    gridState.setValue(newValue);
 }
 
 bool SeamLess_ClientAudioProcessor::getConnectedToMain()

@@ -41,7 +41,6 @@ public:
     void sliderValueChanged(juce::Slider* slider) override;
 
     private:
-
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
 
@@ -56,8 +55,6 @@ public:
     TopView topView;
     
     LFOBox lfoBox;
-    
-    
 
     juce::Slider zSlider;
 

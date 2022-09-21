@@ -94,21 +94,41 @@ public:
     juce::String  getOscTargetAddress();
     int getOscTargetPort();
 
+    int getSettingsMode();
+    void setSettingsMode(int newValue);
+    enum availableSettingsModes { send, spherical, lfo };
+
+    int getShapeState();
+    void setShapeState(int newValue);
+    enum availableShapes {HuFo, Studio};
+
+    int getGridState();
+    void setGridState(int newValue);
+    enum availableGrids { gridOff, gridXYZ, gridSpheric };
+
+
     bool getConnectedToMain();
     void setConnectedToMain(bool b);
 
     bool getSendState();
     void setSendState(bool s);
 
+    bool getSendButtonState();
+    void setSendButtonState(bool newValue);
+
     virtual void parameterChanged(const juce::String & id, float val) override;
     juce::AudioProcessorValueTreeState& getState();
 
     void reconnectToMainPlugin();
 
+
 private:
 
     // for the inter com
     const int port_nr = 52713;
+
+
+
 
     bool connectedToMain = false;
 
@@ -116,6 +136,11 @@ private:
     juce::Value oscTargetAddress;
     juce::Value oscTargetPort;
     juce::Value sourceIdx;
+    juce::Value settingsMode;
+    juce::Value sendButtonState;
+    juce::Value shapeState;
+    juce::Value gridState;
+
 
     // used to detect play-state
     juce::AudioPlayHead::CurrentPositionInfo playInfo;
@@ -147,6 +172,7 @@ private:
     // and manages serialization
     juce::AudioProcessorValueTreeState parameters;
     juce::ValueTree settings;
+
 
     std::unique_ptr<ClientConnection> client;    // no longer needed due to parameterAttachments
 
