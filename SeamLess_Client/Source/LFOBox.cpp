@@ -14,10 +14,10 @@
 
 LFOBox::LFOBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts) :
     audioProcessor(p), treeState(apvts),
-    rateSlider(p, apvts, false, { 0, 1, true }),
-    depthSlider(p, apvts, false, { 0, 2*M_PI, false }),
-    phaseSlider(p, apvts, false, { M_PI , M_PI, true }),
-    offsetSlider(p, apvts, false, { M_PI , M_PI, true }),
+    rateSlider(p, apvts, false, { 0, 1, true }, "lfoRate"),
+    depthSlider(p, apvts, false, { 0, 2 * M_PI, false }, "lfoDepth"),
+    phaseSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoPhase"),
+    offsetSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoOffset"),
     LFOStartButton()
 {
     for (int i = 0; i < 4; i++)

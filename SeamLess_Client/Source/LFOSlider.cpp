@@ -13,9 +13,11 @@
 
 
 //==============================================================================
-LFOSlider::LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters)
+LFOSlider::LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String id)
    
 {
+    parameterID = id;
+    treeState = &apvts;
 
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
@@ -33,6 +35,8 @@ LFOSlider::LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValue
     lfoNameLabel.setText("SND", juce::dontSendNotification);
     lfoNameLabel.attachToComponent(&slider, false);
 
+    lfoSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, id, slider);
+    
     addAndMakeVisible(lfoNameLabel);
 
 }
