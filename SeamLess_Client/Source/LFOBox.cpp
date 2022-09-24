@@ -88,6 +88,10 @@ void LFOBox::sliderValueChanged (juce::Slider* slider)
 
 void LFOBox::buttonClicked(juce::Button* button)
 {
+    float depth = treeState.getParameterAsValue("lfoDepth").toString().getFloatValue();
+    float phase = treeState.getParameterAsValue("lfoPhase").toString().getFloatValue();
+    float rate = treeState.getParameterAsValue("lfoRate").toString().getFloatValue();
+
     if (button == &LFOStartButton) {
         if (button->getButtonText() == "Start") {
             LFOStartButton.setButtonText("Stop");
@@ -96,6 +100,11 @@ void LFOBox::buttonClicked(juce::Button* button)
         else {
             LFOStartButton.setButtonText("Start");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+            audioProcessor.xLFO->initialise([this] (float x) 
+                {
+                    //float depth = this. .getParameter("");
+                    std::sin(x);
+                }, 128);
         }
     }
     

@@ -1,0 +1,26 @@
+Client Plug-in
+
+Speicherbare Parameter:
+
+Automatisierbar:
+- xPos
+- yPos
+- zPos
+- HOA
+- WFS
+- REV
+
+- rate
+- depth
+- phase 
+- offset
+
+nicht-automatisierbar:
+- sourceIdx
+- oscTargetAdress
+- oscTargetPort
+
+- GridOff/GridXYZ/GridSpherical 
+- Hufo/Studio (done)
+- sendOSC (done)
+- Send/Spherical/LFO (done)
