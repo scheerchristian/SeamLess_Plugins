@@ -127,12 +127,11 @@ private:
     // for the inter com
     const int port_nr = 52713;
 
-
-
+    //LFO
 
     bool connectedToMain = false;
 
-    // IP address and port are used by all instances
+    // Values to be stored 
     juce::Value oscTargetAddress;
     juce::Value oscTargetPort;
     juce::Value sourceIdx;
