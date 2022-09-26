@@ -15,7 +15,7 @@ class ClientConnection;
 
 #include "../../Common/SeamLess.h"
 #include "ClientConnection.h"
-
+#include "../../Maximilian/src//maximilian.h"
 
 //==============================================================================
 /**
@@ -121,6 +121,18 @@ public:
 
     void reconnectToMainPlugin();
 
+    //LFOs
+    static constexpr size_t xLFOUpdateRate = 100;
+    size_t xLFOUpdateCounter = xLFOUpdateRate;
+    std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
+
+    std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
+    std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
+
+    //float xLFOValue;
+    float yLFOValue;
+    float zLFOValue;
+
 
 private:
 
@@ -130,6 +142,14 @@ private:
     //LFO
 
     bool connectedToMain = false;
+    juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>> processorChainLFO;
+    enum
+    {
+        xLFOIndex,
+        yLFOIndex,
+        zLFOIndex
+    };
+
 
     // Values to be stored 
     juce::Value oscTargetAddress;
@@ -142,7 +162,7 @@ private:
 
 
     // used to detect play-state
-    juce::AudioPlayHead::CurrentPositionInfo playInfo;
+    juce::AudioPlayHead::PositionInfo playInfo;
 
     // manual send state (used by all instances):
     static bool isSending;

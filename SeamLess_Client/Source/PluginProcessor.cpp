@@ -51,6 +51,11 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
 
     startTimer(SEND_INTERVAL);
 
+    // LFOs
+    xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+    yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+    zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -109,12 +114,16 @@ void SeamLess_ClientAudioProcessor::changeProgramName (int index, const juce::St
 //==============================================================================
 void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    xLFO->prepare({ sampleRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels()});
     //isSending=true;
+    //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
 }
 
 void SeamLess_ClientAudioProcessor::releaseResources()
 {
     //isSending=false;
+    //processorChainLFO.reset();
+    xLFO->reset();
 }
 
 
@@ -125,9 +134,41 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     auto* ph = getPlayHead();
-    ph->getCurrentPosition(playInfo);
-    playSending = playInfo.isPlaying;
+    playSending = playInfo.getIsPlaying();
 
+    int numSamples = buffer.getNumSamples();
+
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
+
+    //xLFO->process(buffer);
+    if (playSending == true && xLFO->isInitialised())
+    {
+        for (int sample = 0; sample < numSamples; sample += int(std::log2(numSamples)))
+        {
+            auto xLFOOut = xLFO->processSample(sample);
+            parameters.getParameter("xPos")->setValueNotifyingHost(xLFOOut-10);
+        }
+        /*
+        for (size_t pos = 0; pos < size_t(numSamples);)
+        {
+            //channelData[sample] = buffer.getSample(channel, sample);
+            auto max = juce::jmin(numSamples - pos, xLFOUpdateCounter);
+            pos += max;
+            xLFOUpdateCounter -= max;
+            if (xLFOUpdateCounter == 0)
+            {
+                xLFOUpdateCounter = xLFOUpdateRate;
+                auto xLFOOut = xLFO->processSample(0.0f);
+                parameters.getParameter("xPos")->setValueNotifyingHost(xLFOOut);
+            }
+        }
+        */
+    }
+
+
+
+    
 }
 
 bool SeamLess_ClientAudioProcessor::hasEditor() const

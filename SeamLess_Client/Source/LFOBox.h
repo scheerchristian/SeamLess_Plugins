@@ -16,7 +16,10 @@
 #include "LFOSlider.h"
 #include <math.h>
 
-class LFOBox  : public juce::Component, juce::Slider::Listener, juce::Button::Listener
+class LFOBox  : public juce::Component, 
+                public juce::Slider::Listener, 
+                public juce::Button::Listener,
+                public juce::HighResolutionTimer
 {
 public:
 
@@ -31,7 +34,7 @@ public:
     
     void buttonClicked(juce::Button* button) override;
     
-
+    void hiResTimerCallback() override;
 private:
 
     SeamLess_ClientAudioProcessor& audioProcessor;
