@@ -88,25 +88,44 @@ void LFOBox::sliderValueChanged (juce::Slider* slider)
 
 void LFOBox::buttonClicked(juce::Button* button)
 {
-    float depth = treeState.getParameterAsValue("lfoDepth").toString().getFloatValue();
+    float depth = treeState.getParameterAsValue("lfoDepth").toString().getFloatValue() / 10;
     float phase = treeState.getParameterAsValue("lfoPhase").toString().getFloatValue();
     float rate = treeState.getParameterAsValue("lfoRate").toString().getFloatValue();
 
-    if (button == &LFOStartButton) {
-        if (button->getButtonText() == "Start") {
+    if (button == &LFOStartButton) 
+    {
+        if (button->getButtonText() == "Start") 
+        {
             LFOStartButton.setButtonText("Stop");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+            audioProcessor.xLFO->setFrequency(rateSlider.getValue());
+            audioProcessor.xLFO->initialise([depth, phase, rate](float x)
+                {
+                    return depth * std::sin(rate * 2 * M_PI * x + phase);
+                }, 128);
+            //startTimer(100);
         }
-        else {
+
+        else
+        {
             LFOStartButton.setButtonText("Start");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-            audioProcessor.xLFO->initialise([this] (float x) 
-                {
-                    //float depth = this. .getParameter("");
-                    std::sin(x);
-                }, 128);
+            audioProcessor.xLFO.reset();
+            audioProcessor.xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+            if (audioProcessor.xLFO->isInitialised() == true)
+                DBG("initialized");
+                //stopTimer();
         }
     }
-    
-}
 
+   
+}
+void LFOBox::hiResTimerCallback()
+{
+    /*
+    if (audioProcessor.xLFO->isInitialised())
+    {
+        treeState.getParameter("xPos")->setValueNotifyingHost(audioProcessor.xLFOValue);
+    }
+    */
+}
