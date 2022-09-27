@@ -25,6 +25,9 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     //connect the parameterAttachments and initialize their callback lambda-functions
     topView.connectXtoParameter(*treeState.getParameter("xPos"));
     topView.connectYtoParameter(*treeState.getParameter("yPos"));
+    lfoBox.connectXtoParameter(*treeState.getParameter("xPos"));
+    lfoBox.connectYtoParameter(*treeState.getParameter("yPos"));
+
     connectZToParameter(*treeState.getParameter("zPos"));
     
     setSize (1000, 600);

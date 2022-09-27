@@ -6,8 +6,7 @@
 
 // initialize static members
 
-bool SeamLess_ClientAudioProcessor::isSending   = false;
-bool SeamLess_ClientAudioProcessor::playSending = false;
+
 
 juce::OSCSender SeamLess_ClientAudioProcessor::sender1;
 
@@ -52,10 +51,11 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     startTimer(SEND_INTERVAL);
 
     // LFOs
+    /*
     xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-
+    */
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -114,16 +114,16 @@ void SeamLess_ClientAudioProcessor::changeProgramName (int index, const juce::St
 //==============================================================================
 void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    xLFO->prepare({ sampleRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels()});
-    //isSending=true;
+    //xLFO->prepare({ sampleRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels()});
+    isSending=true;
     //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
 }
 
 void SeamLess_ClientAudioProcessor::releaseResources()
 {
-    //isSending=false;
+    isSending=false;
     //processorChainLFO.reset();
-    xLFO->reset();
+    //xLFO->reset();
 }
 
 
@@ -140,32 +140,18 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
-
-    //xLFO->process(buffer);
-    if (playSending == true && xLFO->isInitialised())
+    
+    /*
+    if (playSending == true &&  xLFO->isInitialised())
     {
         for (int sample = 0; sample < numSamples; sample += int(std::log2(numSamples)))
+        //for (int sample = 0; sample < numSamples; sample++)
         {
-            auto xLFOOut = xLFO->processSample(sample);
-            parameters.getParameter("xPos")->setValueNotifyingHost(xLFOOut-10);
+            xLFOOut = xLFO->processSample(0.0f);
+            yLFOOut = yLFO->processSample(0.0f);
         }
-        /*
-        for (size_t pos = 0; pos < size_t(numSamples);)
-        {
-            //channelData[sample] = buffer.getSample(channel, sample);
-            auto max = juce::jmin(numSamples - pos, xLFOUpdateCounter);
-            pos += max;
-            xLFOUpdateCounter -= max;
-            if (xLFOUpdateCounter == 0)
-            {
-                xLFOUpdateCounter = xLFOUpdateRate;
-                auto xLFOOut = xLFO->processSample(0.0f);
-                parameters.getParameter("xPos")->setValueNotifyingHost(xLFOOut);
-            }
-        }
-        */
     }
-
+    */
 
 
     
@@ -463,6 +449,11 @@ bool SeamLess_ClientAudioProcessor::getSendState()
 void SeamLess_ClientAudioProcessor::setSendState(bool s)
 {
     isSending=s;
+}
+
+bool SeamLess_ClientAudioProcessor::getPlayState()
+{
+    return playSending;
 }
 
 bool SeamLess_ClientAudioProcessor::getSendButtonState()

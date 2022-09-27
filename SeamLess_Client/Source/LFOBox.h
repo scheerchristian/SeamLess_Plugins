@@ -35,6 +35,14 @@ public:
     void buttonClicked(juce::Button* button) override;
     
     void hiResTimerCallback() override;
+
+    void connectXtoParameter(juce::RangedAudioParameter& p);
+    void connectYtoParameter(juce::RangedAudioParameter& p);
+
+    std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
+    std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
+
+
 private:
 
     SeamLess_ClientAudioProcessor& audioProcessor;
@@ -54,7 +62,8 @@ private:
     
     juce::TextButton* textbutton = &LFOStartButton;
     
-
+    std::unique_ptr<juce::ParameterAttachment> xAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yAttachment;
     
    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LFOBox)
