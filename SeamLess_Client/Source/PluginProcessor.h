@@ -15,7 +15,6 @@ class ClientConnection;
 
 #include "../../Common/SeamLess.h"
 #include "ClientConnection.h"
-#include "../../Maximilian/src//maximilian.h"
 
 //==============================================================================
 /**
@@ -113,6 +112,8 @@ public:
     bool getSendState();
     void setSendState(bool s);
 
+    bool getPlayState();
+
     bool getSendButtonState();
     void setSendButtonState(bool newValue);
 
@@ -126,22 +127,25 @@ public:
     size_t xLFOUpdateCounter = xLFOUpdateRate;
     std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
 
+    /*
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
 
-    //float xLFOValue;
-    float yLFOValue;
-    float zLFOValue;
-
+    
+    float xLFOOut;
+    float yLFOOut;
+    */
 
 private:
 
     // for the inter com
     const int port_nr = 52713;
 
-    //LFO
 
+    
     bool connectedToMain = false;
+
+    /*
     juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>> processorChainLFO;
     enum
     {
@@ -149,7 +153,7 @@ private:
         yLFOIndex,
         zLFOIndex
     };
-
+    */
 
     // Values to be stored 
     juce::Value oscTargetAddress;
@@ -165,9 +169,9 @@ private:
     juce::AudioPlayHead::PositionInfo playInfo;
 
     // manual send state (used by all instances):
-    static bool isSending;
+    bool isSending;
     // play state depending (used by all instances):
-    static bool playSending;
+    bool playSending;
 
     /// \brief sender1
     /// @todo Make it non static!
