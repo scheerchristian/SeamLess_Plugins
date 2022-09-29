@@ -18,8 +18,8 @@
 
 class LFOBox  : public juce::Component, 
                 public juce::Slider::Listener, 
-                public juce::Button::Listener,
-                public juce::HighResolutionTimer
+                public juce::Button::Listener
+
 {
 public:
 
@@ -34,13 +34,9 @@ public:
     
     void buttonClicked(juce::Button* button) override;
     
-    void hiResTimerCallback() override;
-
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
 
-    std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
-    std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
 
 
 private:
