@@ -51,11 +51,14 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     startTimer(SEND_INTERVAL);
 
     // LFOs
-    /*
+    
     xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-    */
+
+    connectXtoParameter(*parameters.getParameter("xPos"));
+    connectYtoParameter(*parameters.getParameter("yPos"));
+
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -114,7 +117,6 @@ void SeamLess_ClientAudioProcessor::changeProgramName (int index, const juce::St
 //==============================================================================
 void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    //xLFO->prepare({ sampleRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels()});
     isSending=true;
     //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
 }
@@ -123,7 +125,7 @@ void SeamLess_ClientAudioProcessor::releaseResources()
 {
     isSending=false;
     //processorChainLFO.reset();
-    //xLFO->reset();
+    xLFO->reset();
 }
 
 
@@ -140,18 +142,15 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
-    
-    /*
-    if (playSending == true &&  xLFO->isInitialised())
+
+    if (xLFO->isInitialised())
     {
-        for (int sample = 0; sample < numSamples; sample += int(std::log2(numSamples)))
-        //for (int sample = 0; sample < numSamples; sample++)
-        {
-            xLFOOut = xLFO->processSample(0.0f);
-            yLFOOut = yLFO->processSample(0.0f);
-        }
+        float xLFOOut = xLFO->processSample(0.0f);
+        float yLFOOut = yLFO->processSample(0.0f);
+        xAttachment->setValueAsPartOfGesture(xLFOOut);
+        yAttachment->setValueAsPartOfGesture(yLFOOut);
     }
-    */
+    
 
 
     
@@ -541,4 +540,15 @@ void SeamLess_ClientAudioProcessor::setConnectedToMain(bool b)
 void SeamLess_ClientAudioProcessor::reconnectToMainPlugin()
 {
     client->connectToSocket("localhost", port_nr, 5000);
+
 }
+void SeamLess_ClientAudioProcessor::connectXtoParameter(juce::RangedAudioParameter& p)
+{
+    xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
+}
+
+void SeamLess_ClientAudioProcessor::connectYtoParameter(juce::RangedAudioParameter& p)
+{
+    yAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
+}
+

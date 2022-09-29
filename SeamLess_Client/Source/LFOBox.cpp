@@ -34,10 +34,6 @@ LFOBox::LFOBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeSt
     LFOStartButton.setComponentID("LFOStart");
     LFOStartButton.setButtonText("Start");
 
-    xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-    yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-    xLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
-    yLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
 
 
  
@@ -103,33 +99,29 @@ void LFOBox::buttonClicked(juce::Button* button)
         {
             LFOStartButton.setButtonText("Stop");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-            xLFO->setFrequency(rateSlider.getValue()/audioProcessor.getSampleRate());
-            xLFO->initialise([depth, phase, rate](float x)
+            audioProcessor.xLFO->initialise([depth, phase, rate](float x)
                 {
                     return depth * std::sin(rate * 2 * M_PI * x + phase);
                 }, 128);
-            yLFO->setFrequency(rateSlider.getValue());
-            yLFO->initialise([depth, phase, rate](float x)
+            audioProcessor.yLFO->setFrequency(rateSlider.getValue());
+            audioProcessor.yLFO->initialise([depth, phase, rate](float x)
                 {
                     return depth * std::cos(rate * 2 * M_PI * x + phase);
                 }, 128);
             xAttachment->beginGesture();
             yAttachment->beginGesture();
-            startTimer(10);
         }
 
         else
         {
             LFOStartButton.setButtonText("Start");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-            // deeinitialise lfo
-            xLFO.reset();
-            xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-            yLFO.reset();
-            yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-            xLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
-            yLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
-            stopTimer();
+            audioProcessor.xLFO.reset();
+            audioProcessor.xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+            audioProcessor.yLFO.reset();
+            audioProcessor.yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+            audioProcessor.xLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate() / audioProcessor.getBlockSize(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
+            audioProcessor.yLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate() / audioProcessor.getBlockSize(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
             xAttachment->endGesture();
             yAttachment->endGesture();
         }
@@ -137,26 +129,7 @@ void LFOBox::buttonClicked(juce::Button* button)
 
    
 }
-void LFOBox::hiResTimerCallback()
-{
-//    if (audioProcessor.getPlayState() == true)
- //   {
-        float xLFOOut = xLFO->processSample(0.0f);
-        float yLFOOut = yLFO->processSample(0.0f);
-        xAttachment->setValueAsPartOfGesture(xLFOOut);
-        yAttachment->setValueAsPartOfGesture(yLFOOut);
-  //  }
 
-    //auto value = juce::NormalisableRange<float>(-10.0f, 10.0f);
-    //float normVal = value.convertTo0to1(audioProcessor.xLFOOut);
-
-    /*
-    if (audioProcessor.xLFO->isInitialised())
-    {
-        treeState.getParameter("xPos")->setValueNotifyingHost(audioProcessor.xLFOValue);
-    }
-    */
-}
 
 void LFOBox::connectXtoParameter(juce::RangedAudioParameter& p)
 {

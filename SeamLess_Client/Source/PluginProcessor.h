@@ -127,16 +127,21 @@ public:
     size_t xLFOUpdateCounter = xLFOUpdateRate;
     std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
 
-    /*
+    
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
 
     
     float xLFOOut;
     float yLFOOut;
-    */
+    void connectXtoParameter(juce::RangedAudioParameter& p);
+    void connectYtoParameter(juce::RangedAudioParameter& p);
+
 
 private:
+
+    std::unique_ptr<juce::ParameterAttachment> xAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yAttachment;
 
     // for the inter com
     const int port_nr = 52713;
