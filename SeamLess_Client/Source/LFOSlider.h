@@ -28,6 +28,7 @@ public:
 
     void setSliderRange(juce::Range<double> newRange, double newInterval);
     void setSliderTextValueSuffix(juce::String newSuffix);
+    void setSliderSkewFactor(double newSkewFactor);
 
 
 private:
