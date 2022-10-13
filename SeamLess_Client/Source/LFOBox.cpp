@@ -14,28 +14,28 @@
 
 LFOBox::LFOBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts) :
     audioProcessor(p), treeState(apvts),
-    rateSlider(p, apvts, false, { 0, 1, true }, "lfoRate"),
+    rateSlider(p, apvts, false, { 0.0, 1.0, true }, "lfoRate"),
     depthSlider(p, apvts, false, { 0, 2 * M_PI, false }, "lfoDepth"),
     phaseSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoPhase"),
-    offsetSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoOffset"),
+    offsetXSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoXOffset"),
+    offsetYSlider(p, apvts, false, { M_PI , M_PI, true }, "lfoYOffset"),
+
     LFOStartButton()
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 5; i++)
     {
         slider[i]->setText(names[i]);
         addAndMakeVisible(*slider[i]);
         slider[i]->setSliderRange(ranges[i], 0.01);
         slider[i]->setSliderTextValueSuffix(suffixes[i]);
-        //getLookAndFeel().setColour (juce::Slider::thumbColourId, seamlessBlue);
     }
+    rateSlider.setSliderSkewFactor(0.5);
+
     addAndMakeVisible(LFOStartButton);
     LFOStartButton.addListener(this);
     LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
     LFOStartButton.setComponentID("LFOStart");
     LFOStartButton.setButtonText("Start");
-
-    rateSlider.setSliderRange(juce::Range<double>{0.0, 5.0}, 0.01);
-    rateSlider.setSliderSkewFactor(0.5);
 }
 
 LFOBox::~LFOBox()
@@ -57,7 +57,7 @@ void LFOBox::resized()
 {
     auto r = getLocalBounds().reduced(10, 10);
 
-    auto sliderWidth = (r.getWidth() - 30) / 4;
+    auto sliderWidth = (r.getWidth() - 40) / 5;
     
     LFOStartButton.setBounds(10, 5, sliderWidth, 20);
     r.removeFromTop(20);
@@ -77,8 +77,13 @@ void LFOBox::resized()
     
     r.removeFromLeft(10);
     
-    auto offsetSliderX = r.removeFromLeft(sliderWidth);
-    offsetSlider.setBounds(offsetSliderX);
+    auto offsetXSliderX = r.removeFromLeft(sliderWidth);
+    offsetXSlider.setBounds(offsetXSliderX);
+
+    r.removeFromLeft(10);
+
+    auto offsetXSliderY = r.removeFromLeft(sliderWidth);
+    offsetYSlider.setBounds(offsetXSliderY);
 }
 
 
@@ -91,6 +96,8 @@ void LFOBox::buttonClicked(juce::Button* button)
     float depth = treeState.getParameterAsValue("lfoDepth").toString().getFloatValue() / 10;
     float phase = treeState.getParameterAsValue("lfoPhase").toString().getFloatValue();
     float rate = treeState.getParameterAsValue("lfoRate").toString().getFloatValue();
+    float xOffset = treeState.getParameterAsValue("lfoXOffset").toString().getFloatValue();
+    float yOffset = treeState.getParameterAsValue("lfoYOffset").toString().getFloatValue();
 
     if (button == &LFOStartButton) 
     {
@@ -99,14 +106,14 @@ void LFOBox::buttonClicked(juce::Button* button)
             LFOStartButton.setButtonText("Stop");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
             audioProcessor.xLFO->setFrequency(rate);
-            audioProcessor.xLFO->initialise([depth, phase, rate](float x)
+            audioProcessor.xLFO->initialise([depth, phase, rate, xOffset](float x)
                 {
-                    return depth * std::sin(rate * 2 * M_PI * x + phase);
+                    return depth * std::sin(rate * 2 * M_PI * x + phase) + xOffset;
                 });
             audioProcessor.yLFO->setFrequency(rate);
-            audioProcessor.yLFO->initialise([depth, phase, rate](float x)
+            audioProcessor.yLFO->initialise([depth, phase, rate, yOffset](float x)
                 {
-                    return depth * std::cos(rate * 2 * M_PI * x + phase);
+                    return depth * std::cos(rate * 2 * M_PI * x + phase) + yOffset;
                 });
             //xAttachment->beginGesture();
             //yAttachment->beginGesture();

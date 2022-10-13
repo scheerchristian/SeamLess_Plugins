@@ -47,14 +47,16 @@ private:
     LFOSlider rateSlider;
     LFOSlider depthSlider;
     LFOSlider phaseSlider;
-    LFOSlider offsetSlider;
+    LFOSlider offsetXSlider;
+    LFOSlider offsetYSlider;
+
     
     juce::TextButton LFOStartButton;
 
-    juce::String names[4] = { "rate", "depth", "phase", "offset" };
-    LFOSlider* slider[4] = { &rateSlider, &depthSlider, &phaseSlider, &offsetSlider };
-    juce::Range<double> ranges[4] = { {0.0, 10.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0} };
-    juce::String suffixes[4] = { " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m" };
+    juce::String names[5] = { "rate", "depth", "phase", "offset X", "offset Y"};
+    LFOSlider* slider[5] = { &rateSlider, &depthSlider, &phaseSlider, &offsetXSlider, &offsetYSlider };
+    juce::Range<double> ranges[5] = { {0.0, 2.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0}, {-10.0, 10.0} };
+    juce::String suffixes[5] = { " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m", " m"};
     
     juce::TextButton* textbutton = &LFOStartButton;
     
