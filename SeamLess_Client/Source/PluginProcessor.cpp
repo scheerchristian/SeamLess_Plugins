@@ -44,9 +44,12 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     parameters.addParameterListener("sendGainHOA", this);
     parameters.addParameterListener("sendGainREV", this);
 
-    client->connectToSocket("localhost", port_nr, 5000);  // no longer needed due to parameterAttachments
+    client->connectToSocket("localhost", port_nr, 5000); 
 
-    setSendState(true);   //no longer needed due to parameterAttachments
+    setSendState(true);  
+
+    connectXtoParameter(*parameters.getParameter("xPos"));
+    connectYtoParameter(*parameters.getParameter("yPos"));
 
     startTimer(SEND_INTERVAL);
 
@@ -55,10 +58,6 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-
-    connectXtoParameter(*parameters.getParameter("xPos"));
-    connectYtoParameter(*parameters.getParameter("yPos"));
-
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -119,6 +118,8 @@ void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int sample
 {
     isSending=true;
     //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
+    xLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+    yLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
 }
 
 void SeamLess_ClientAudioProcessor::releaseResources()
@@ -126,6 +127,7 @@ void SeamLess_ClientAudioProcessor::releaseResources()
     isSending=false;
     //processorChainLFO.reset();
     xLFO->reset();
+    yLFO->reset();
 }
 
 
@@ -142,18 +144,14 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
-
+    
     if (xLFO->isInitialised())
     {
-        float xLFOOut = xLFO->processSample(0.0f);
-        float yLFOOut = yLFO->processSample(0.0f);
-        xAttachment->setValueAsPartOfGesture(xLFOOut);
-        yAttachment->setValueAsPartOfGesture(yLFOOut);
+        xLFOOut = xLFO->processSample(0.0f);
+        yLFOOut = yLFO->processSample(0.0f);
+        xAttachment->setValueAsCompleteGesture(xLFOOut);
+        yAttachment->setValueAsCompleteGesture(yLFOOut);
     }
-    
-
-
-    
 }
 
 bool SeamLess_ClientAudioProcessor::hasEditor() const
@@ -243,7 +241,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", -60.0, 0.0, -60.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoRate", 1), "LFO: Rate(Hz)", 0.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
@@ -515,6 +513,15 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
         juce::String ipcPos = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
         client->sendMessageToMain(ipcPos);
     }
+    /*
+    if (xLFO->isInitialised())
+    {
+        //xLFOOut = xLFO->processSample(0.0f);
+        //yLFOOut = yLFO->processSample(0.0f);
+        //xAttachment->setValueAsPartOfGesture(xLFOOut);
+        //yAttachment->setValueAsPartOfGesture(yLFOOut);
+    }
+    */
 }
 
 int SeamLess_ClientAudioProcessor::getGridState()

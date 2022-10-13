@@ -126,8 +126,6 @@ public:
     static constexpr size_t xLFOUpdateRate = 100;
     size_t xLFOUpdateCounter = xLFOUpdateRate;
     std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
-
-    
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
 

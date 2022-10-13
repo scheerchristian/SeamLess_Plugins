@@ -82,3 +82,8 @@ void LFOSlider::setSliderTextValueSuffix(juce::String newSuffix)
 {
     slider.setTextValueSuffix(newSuffix);
 }
+
+void LFOSlider::setSliderSkewFactor(double newSkewFactor)
+{
+    slider.setSkewFactor(newSkewFactor);
+}

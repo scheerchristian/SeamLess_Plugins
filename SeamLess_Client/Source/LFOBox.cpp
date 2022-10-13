@@ -34,9 +34,8 @@ LFOBox::LFOBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeSt
     LFOStartButton.setComponentID("LFOStart");
     LFOStartButton.setButtonText("Start");
 
-
-
- 
+    rateSlider.setSliderRange(juce::Range<double>{0.0, 5.0}, 0.01);
+    rateSlider.setSliderSkewFactor(0.5);
 }
 
 LFOBox::~LFOBox()
@@ -99,35 +98,36 @@ void LFOBox::buttonClicked(juce::Button* button)
         {
             LFOStartButton.setButtonText("Stop");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+            audioProcessor.xLFO->setFrequency(rate);
             audioProcessor.xLFO->initialise([depth, phase, rate](float x)
                 {
                     return depth * std::sin(rate * 2 * M_PI * x + phase);
-                }, 128);
-            audioProcessor.yLFO->setFrequency(rateSlider.getValue());
+                });
+            audioProcessor.yLFO->setFrequency(rate);
             audioProcessor.yLFO->initialise([depth, phase, rate](float x)
                 {
                     return depth * std::cos(rate * 2 * M_PI * x + phase);
-                }, 128);
-            xAttachment->beginGesture();
-            yAttachment->beginGesture();
+                });
+            //xAttachment->beginGesture();
+            //yAttachment->beginGesture();
         }
 
         else
         {
             LFOStartButton.setButtonText("Start");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+            //xAttachment->endGesture();
+            //yAttachment->endGesture();
+            audioProcessor.xLFO->reset();
             audioProcessor.xLFO.reset();
             audioProcessor.xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+            audioProcessor.yLFO->reset();
             audioProcessor.yLFO.reset();
             audioProcessor.yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
             audioProcessor.xLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate() / audioProcessor.getBlockSize(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
             audioProcessor.yLFO->prepare(juce::dsp::ProcessSpec({ audioProcessor.getSampleRate() / audioProcessor.getBlockSize(), (juce::uint32)audioProcessor.getBlockSize(), 1 }));
-            xAttachment->endGesture();
-            yAttachment->endGesture();
         }
     }
-
-   
 }
 
 
