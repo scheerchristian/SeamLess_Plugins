@@ -132,14 +132,18 @@ public:
     
     float xLFOOut;
     float yLFOOut;
+    float zLFOOut;
+
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
+    void connectZtoParameter(juce::RangedAudioParameter& p);
 
 
 private:
 
     std::unique_ptr<juce::ParameterAttachment> xAttachment;
     std::unique_ptr<juce::ParameterAttachment> yAttachment;
+    std::unique_ptr<juce::ParameterAttachment> zAttachment;
 
     // for the inter com
     const int port_nr = 52713;

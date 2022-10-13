@@ -50,6 +50,8 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
 
     connectXtoParameter(*parameters.getParameter("xPos"));
     connectYtoParameter(*parameters.getParameter("yPos"));
+    connectZtoParameter(*parameters.getParameter("zPos"));
+
 
     startTimer(SEND_INTERVAL);
 
@@ -120,6 +122,8 @@ void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int sample
     //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
     xLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
     yLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+    zLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+
 }
 
 void SeamLess_ClientAudioProcessor::releaseResources()
@@ -149,8 +153,10 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     {
         xLFOOut = xLFO->processSample(0.0f);
         yLFOOut = yLFO->processSample(0.0f);
+        zLFOOut = zLFO->processSample(0.0f);
         xAttachment->setValueAsCompleteGesture(xLFOOut);
         yAttachment->setValueAsCompleteGesture(yLFOOut);
+        zAttachment->setValueAsCompleteGesture(zLFOOut);
     }
 }
 
@@ -241,13 +247,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", -60.0, 0.0, -60.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", -60.0, 0.0, -60.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
-
-
-
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yLfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yLfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yLfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yLfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
 
     //params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID("sourceIdx", 1), "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
 
@@ -557,5 +568,10 @@ void SeamLess_ClientAudioProcessor::connectXtoParameter(juce::RangedAudioParamet
 void SeamLess_ClientAudioProcessor::connectYtoParameter(juce::RangedAudioParameter& p)
 {
     yAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
+}
+
+void SeamLess_ClientAudioProcessor::connectZtoParameter(juce::RangedAudioParameter& p)
+{
+    zAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
 }
 
