@@ -18,7 +18,8 @@
 
 class LFOBox  : public juce::Component, 
                 public juce::Slider::Listener, 
-                public juce::Button::Listener
+                public juce::Button::Listener,
+                public juce::ComboBox::Listener
 
 {
 public:
@@ -33,9 +34,12 @@ public:
     void sliderValueChanged (juce::Slider* slider) override;
     
     void buttonClicked(juce::Button* button) override;
+
+    void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged);
     
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
+    void connectZtoParameter(juce::RangedAudioParameter& p);
 
 
 
@@ -44,23 +48,49 @@ private:
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
 
-    LFOSlider rateSlider;
-    LFOSlider depthSlider;
-    LFOSlider phaseSlider;
-    LFOSlider offsetSlider;
-    
-    juce::TextButton LFOStartButton;
+    juce::String names[12] = { "rate", "depth", "phase", "offset", "rate", "depth", "phase", "offset", "rate", "depth", "phase", "offset" };
+    juce::Range<double> ranges[12] = { {0.0, 10.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0}, {0.0, 10.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0}, {0.0, 10.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0} };
+    juce::String suffixes[12] = { " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m", " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m", " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m" };
 
-    juce::String names[4] = { "rate", "depth", "phase", "offset" };
-    LFOSlider* slider[4] = { &rateSlider, &depthSlider, &phaseSlider, &offsetSlider };
-    juce::Range<double> ranges[4] = { {0.0, 10.00}, {0.0, 100.0}, {-180.0 , 180.0}, {-10.0, 10.0} };
-    juce::String suffixes[4] = { " Hz"," %", juce::CharPointer_UTF8("\xc2\xb0"), " m" };
+
+    LFOSlider xRateSlider;
+    LFOSlider xDepthSlider;
+    LFOSlider xPhaseSlider;
+    LFOSlider xOffsetSlider;
+
+    LFOSlider yRateSlider;
+    LFOSlider yDepthSlider;
+    LFOSlider yPhaseSlider;
+    LFOSlider yOffsetSlider;
+
+    LFOSlider zRateSlider;
+    LFOSlider zDepthSlider;
+    LFOSlider zPhaseSlider;
+    LFOSlider zOffsetSlider;
+    
+    LFOSlider* sliders[12] = { &xRateSlider, &xDepthSlider, &xPhaseSlider, &xOffsetSlider, &yRateSlider, &yDepthSlider, &yPhaseSlider, &yOffsetSlider, &zRateSlider, &zDepthSlider, &zPhaseSlider, &zOffsetSlider };
+    LFOSlider* rateSliders[3] = { &xRateSlider, &yRateSlider, &zRateSlider };
+    LFOSlider* depthSliders[3] = { &xDepthSlider, &yDepthSlider, &zDepthSlider };
+    LFOSlider* phaseSliders[3] = { &xPhaseSlider, &yPhaseSlider, &zPhaseSlider };
+    LFOSlider* offsetSliders[3] = { &xOffsetSlider, &yOffsetSlider, &zOffsetSlider };
+    LFOSlider* xSliders[4] = { &xRateSlider, &xDepthSlider, &xPhaseSlider, &xOffsetSlider };
+    LFOSlider* ySliders[4] = { &yRateSlider, &yDepthSlider, &yPhaseSlider, &yOffsetSlider };
+    LFOSlider* zSliders[4] = { &zRateSlider, &zDepthSlider, &zPhaseSlider, &zOffsetSlider };
+
+
+
+
+
+    juce::TextButton LFOStartButton;
+    juce::ComboBox LFONumberBox;
+
     
     juce::TextButton* textbutton = &LFOStartButton;
     
     std::unique_ptr<juce::ParameterAttachment> xAttachment;
     std::unique_ptr<juce::ParameterAttachment> yAttachment;
-    
+    std::unique_ptr<juce::ParameterAttachment> zAttachment;
+
    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LFOBox)
 };

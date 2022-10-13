@@ -27,6 +27,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     topView.connectYtoParameter(*treeState.getParameter("yPos"));
     lfoBox.connectXtoParameter(*treeState.getParameter("xPos"));
     lfoBox.connectYtoParameter(*treeState.getParameter("yPos"));
+    lfoBox.connectZtoParameter(*treeState.getParameter("zPos"));
 
     connectZToParameter(*treeState.getParameter("zPos"));
     
