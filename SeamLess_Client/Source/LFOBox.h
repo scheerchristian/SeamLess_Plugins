@@ -41,7 +41,9 @@ public:
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);
 
-
+    void endLFOs();
+    void startLFOs();
+   
 
 private:
 
