@@ -24,6 +24,7 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     settings.setProperty("sendButton", juce::var(true), nullptr);
     settings.setProperty("shapeState", juce::var(0), nullptr);
     settings.setProperty("gridState", juce::var(0), nullptr);
+    settings.setProperty("selectedLFO", juce::var(0), nullptr);
 
     parameters.state.addChild(settings, 0, nullptr);
 
@@ -120,9 +121,7 @@ void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int sample
 {
     isSending=true;
     //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
-    xLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
-    yLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
-    zLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+    prepareLFOs();
 
 }
 
@@ -154,9 +153,9 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
         xLFOOut = xLFO->processSample(0.0f);
         yLFOOut = yLFO->processSample(0.0f);
         zLFOOut = zLFO->processSample(0.0f);
-        xAttachment->setValueAsCompleteGesture(xLFOOut);
-        yAttachment->setValueAsCompleteGesture(yLFOOut);
-        zAttachment->setValueAsCompleteGesture(zLFOOut);
+        xAttachment->setValueAsPartOfGesture(xLFOOut);
+        yAttachment->setValueAsPartOfGesture(yLFOOut);
+        zAttachment->setValueAsPartOfGesture(zLFOOut);
     }
 }
 
@@ -173,31 +172,13 @@ juce::AudioProcessorEditor* SeamLess_ClientAudioProcessor::createEditor()
 
 void SeamLess_ClientAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-
-    // for the tree only:
     auto state = parameters.copyState();
     std::unique_ptr<juce::XmlElement> xml (state.createXml());
     copyXmlToBinary (*xml, destData);
-
-    /*
-    // for additional parameters:
-    std::unique_ptr<juce::XmlElement> xml2 (new juce::XmlElement ("HoFo_Client"));
-
-    xml2->setAttribute("sourceIdx", (int) sourceIdx.getValue());
-    copyXmlToBinary(*xml2, destData);
-
-    xml2->setAttribute ("oscTargetAddress", (juce::String) oscTargetAddress.getValue());
-    copyXmlToBinary (*xml2, destData);
-
-    xml2->setAttribute ("oscTargetPort", (int) oscTargetPort.getValue());
-    copyXmlToBinary (*xml2, destData
-    */
 }
 
 void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-
-    // for the tree only:
     std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
     if (xmlState.get() != nullptr)
         if (xmlState->hasTagName (parameters.state.getType()))
@@ -212,6 +193,7 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
                 sendButtonState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sendButton", nullptr));
                 shapeState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("shapeState", nullptr));
                 gridState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("gridState", nullptr));
+                selectedLFO.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("selectedLFO", nullptr));
                 sender1.connect(oscTargetAddress.getValue(), 9001);
                 DBG(xmlState->toString());
             }
@@ -545,6 +527,16 @@ void SeamLess_ClientAudioProcessor::setGridState(int newValue)
     gridState.setValue(newValue);
 }
 
+int SeamLess_ClientAudioProcessor::getSelectedLFO()
+{
+    return selectedLFO.getValue();
+}
+
+void SeamLess_ClientAudioProcessor::setSelectedLFO(int newState)
+{
+    selectedLFO.setValue(newState);
+}
+
 bool SeamLess_ClientAudioProcessor::getConnectedToMain()
 {
   return connectedToMain;
@@ -560,6 +552,14 @@ void SeamLess_ClientAudioProcessor::reconnectToMainPlugin()
     client->connectToSocket("localhost", port_nr, 5000);
 
 }
+
+void SeamLess_ClientAudioProcessor::prepareLFOs()
+{
+    xLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+    yLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+    zLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
+}
+
 void SeamLess_ClientAudioProcessor::connectXtoParameter(juce::RangedAudioParameter& p)
 {
     xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});

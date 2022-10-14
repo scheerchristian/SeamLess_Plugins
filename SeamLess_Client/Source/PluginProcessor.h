@@ -105,6 +105,10 @@ public:
     void setGridState(int newValue);
     enum availableGrids { gridOff, gridXYZ, gridSpheric };
 
+    int getSelectedLFO();
+    void setSelectedLFO(int newState);
+    enum lfosToSelect { x=1, y=2, z=3 };
+
 
     bool getConnectedToMain();
     void setConnectedToMain(bool b);
@@ -128,6 +132,7 @@ public:
     std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
+    void prepareLFOs();
 
     
     float xLFOOut;
@@ -149,7 +154,7 @@ private:
     const int port_nr = 52713;
 
 
-    
+   
     bool connectedToMain = false;
 
     /*
@@ -170,6 +175,7 @@ private:
     juce::Value sendButtonState;
     juce::Value shapeState;
     juce::Value gridState;
+    juce::Value selectedLFO;
 
 
     // used to detect play-state

@@ -41,37 +41,15 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 
     addAndMakeVisible(sendBox);
     sendBox.setVisible(false);
-    buttonSend.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-
+    buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
 
     addAndMakeVisible(sphericalBox);
     sphericalBox.setVisible(false);
-    buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+    buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessBlue);
 
     addAndMakeVisible(lfoBox);
     lfoBox.setVisible(false);
-    buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-
-
-    switch (audioProcessor.getSettingsMode())
-    {
-        case 0: 
-            sendBox.setVisible(true);
-            buttonSend.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-            break;
-        case 1: 
-            sphericalBox.setVisible(true);
-            buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-            break;
-        case 2: 
-            lfoBox.setVisible(true);
-            buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
-            break;
-        default:
-            sendBox.setVisible(true);
-            break;
-    }
-    
+    buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessBlue);
     
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
@@ -106,7 +84,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     
     addAndMakeVisible(buttonSend);
     buttonSend.addListener(this);
-    buttonSend.setColour(juce::TextButton::buttonColourId,seamlessGrey);
+    buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonSend.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
     buttonSend.setComponentID("send");
     buttonSend.setButtonText ("Send");
@@ -118,6 +96,21 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     buttonSpherical.setComponentID("spherical");
     buttonSpherical.setButtonText ("Spherical");
     
+    switch (audioProcessor.getSettingsMode())
+    {
+    case 0:
+        sendBox.setVisible(true);
+        buttonSend.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+        break;
+    case 1:
+        sphericalBox.setVisible(true);
+        buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+        break;
+    case 2:
+        lfoBox.setVisible(true);
+        buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+        break;
+    }
     addAndMakeVisible(buttonLayout);
     buttonLayout.addListener(this);
     buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
@@ -155,6 +148,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
 
 SeamLess_ClientAudioProcessorEditor::~SeamLess_ClientAudioProcessorEditor()
 {
+    lfoBox.endLFOs();   // end LFOs when closing the plugin. They should only spin to draw an xyz-automation. Afterwards the movements get triggered by the xyz-automations.
 }
 
 //==============================================================================
