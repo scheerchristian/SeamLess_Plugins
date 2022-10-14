@@ -118,16 +118,22 @@ void LFOBox::sliderValueChanged (juce::Slider* slider)
 void LFOBox::buttonClicked(juce::Button* button)
 {
     float xDepth = treeState.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
-    float xPhase = treeState.getParameterAsValue("xLfoPhase").toString().getFloatValue();
+    float xPhase = treeState.getParameterAsValue("xLfoPhase").toString().getFloatValue() * M_PI / 180;
     float xRate = treeState.getParameterAsValue("xLfoRate").toString().getFloatValue();
+    float xOffset = treeState.getParameterAsValue("xLfoOffset").toString().getFloatValue();
+
 
     float yDepth = treeState.getParameterAsValue("yLfoDepth").toString().getFloatValue() / 10;
-    float yPhase = treeState.getParameterAsValue("yLfoPhase").toString().getFloatValue();
+    float yPhase = treeState.getParameterAsValue("yLfoPhase").toString().getFloatValue() * M_PI / 180;
     float yRate = treeState.getParameterAsValue("yLfoRate").toString().getFloatValue();
+    float yOffset = treeState.getParameterAsValue("yLfoOffset").toString().getFloatValue();
+
 
     float zDepth = treeState.getParameterAsValue("zLfoDepth").toString().getFloatValue() / 10;
-    float zPhase = treeState.getParameterAsValue("zLfoPhase").toString().getFloatValue();
+    float zPhase = treeState.getParameterAsValue("zLfoPhase").toString().getFloatValue() * M_PI / 180;
     float zRate = treeState.getParameterAsValue("zLfoRate").toString().getFloatValue();
+    float zOffset = treeState.getParameterAsValue("zLfoOffset").toString().getFloatValue();
+
 
     if (button == &LFOStartButton) 
     {
@@ -136,19 +142,19 @@ void LFOBox::buttonClicked(juce::Button* button)
             LFOStartButton.setButtonText("Stop");
             LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
             audioProcessor.xLFO->setFrequency(xRate);
-            audioProcessor.xLFO->initialise([xDepth, xPhase, xRate](float x)
+            audioProcessor.xLFO->initialise([xDepth, xPhase, xRate, xOffset](float x)
                 {
-                    return xDepth * std::sin(xRate * 2 * M_PI * x + xPhase);
+                    return xDepth * std::sin(xRate * 2 * M_PI * x + xPhase) + xOffset;
                 });
             audioProcessor.yLFO->setFrequency(yRate);
-            audioProcessor.yLFO->initialise([yDepth, yPhase, yRate](float x)
+            audioProcessor.yLFO->initialise([yDepth, yPhase, yRate, yOffset](float x)
                 {
-                    return yDepth * std::sin(yRate * 2 * M_PI * x + yPhase);
+                    return yDepth * std::sin(yRate * 2 * M_PI * x + yPhase) + yOffset;
                 });
             audioProcessor.zLFO->setFrequency(zRate);
-            audioProcessor.zLFO->initialise([zDepth, zPhase, zRate](float x)
+            audioProcessor.zLFO->initialise([zDepth, zPhase, zRate, zOffset](float x)
                 {
-                    return zDepth * std::sin(zRate * 2 * M_PI * x + zPhase);
+                    return zDepth * std::sin(zRate * 2 * M_PI * x + zPhase) + zOffset;
                 });
         }
 
