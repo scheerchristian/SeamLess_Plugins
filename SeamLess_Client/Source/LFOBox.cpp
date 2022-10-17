@@ -172,6 +172,7 @@ void LFOBox::connectZtoParameter(juce::RangedAudioParameter& p)
 
 void LFOBox::startLFOs()
 {
+    //audioProcessor.prepareLFOs();
     float xDepth = treeState.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
     float xPhase = treeState.getParameterAsValue("xLfoPhase").toString().getFloatValue() * M_PI / 180;
     float xRate = treeState.getParameterAsValue("xLfoRate").toString().getFloatValue();
@@ -188,25 +189,25 @@ void LFOBox::startLFOs()
     float zOffset = treeState.getParameterAsValue("zLfoOffset").toString().getFloatValue();
 
     LFOStartButton.setButtonText("Stop");
-    LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey);
+    LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey); 
     audioProcessor.xLFO->setFrequency(xRate);
     audioProcessor.xLFO->initialise([xDepth, xPhase, xRate, xOffset](float x)
         {
-            return xDepth * std::sin(xRate * 2 * M_PI * x + xPhase) + xOffset;
+            return xDepth * std::sin(x + xPhase) + xOffset;
         });
     xAttachment->beginGesture();
-
+  
     audioProcessor.yLFO->setFrequency(yRate);
     audioProcessor.yLFO->initialise([yDepth, yPhase, yRate, yOffset](float x)
         {
-            return yDepth * std::sin(yRate * 2 * M_PI * x + yPhase) + yOffset;
+            return yDepth * std::sin(x + yPhase) + yOffset;
         });
     yAttachment->beginGesture();
 
     audioProcessor.zLFO->setFrequency(zRate);
     audioProcessor.zLFO->initialise([zDepth, zPhase, zRate, zOffset](float x)
         {
-            return zDepth * std::sin(zRate * 2 * M_PI * x + zPhase) + zOffset;
+            return zDepth * std::sin(x + zPhase) + zOffset;
         });
     zAttachment->beginGesture();
 }
