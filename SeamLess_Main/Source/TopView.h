@@ -30,31 +30,41 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    /// \brief mouseDown
-    /// \param e
-    ///
-    /// Calls changePosition() when the mouse is dragged.
-    void mouseDown(const juce::MouseEvent& e) override;
-
-    /// \brief mouseDrag
-    /// \param e
-    ///
-    /// Calls changePosition() when the mouse is dragged.
-    void mouseDrag(const juce::MouseEvent& e) override;
-
-    /// \brief changePosition
-    /// \param p
-    /// Sets the X and Y position parameters of the
-    /// processor.
-    void changePosition(juce::Point <int> p);
-
-    void mouseUp(const juce::MouseEvent& e) override;
-
+    
+    /**
+     Changes the displayed room layout in the Source Viewer.
+     @param HuFoSelected true for Humbold Forum Layout, false for TU Studio
+     */
     void changeLayout(bool HuFoSelected);
+    
+    /**
+     Converts two coordinates in meters to the associated pixels in the Source Viewer
+     @param xMeter x-Coordinate in meters
+     @param yMeter y-Coordinate in meters
+     */
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
+    
+    /**
+     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters
+     @param xPixel x-Coordinate in pixel
+     @param yPixel y-Coordinate in pixel
+     @see convertPixelToMeter
+     */
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
+    
+    /**
+     Moves a source in the Source Viewer
+     @param sourceID SourceID of the source to be moved
+     @param x new x-coordinate of the source
+     @param y new y-coordinate of the source
+     @param z new z-coordinate of the source
+     @see convertMeterToPixel
+     */
     void moveSource (int sourceID, float x, float y, float z);
     
+    /**
+     Reinitializes the Source Viewer. All sources get removed, and all connected sources are added afterwards. This helps to remove sources which aren't valid anymore.
+     */
     void reInitViewer();
 private:
 

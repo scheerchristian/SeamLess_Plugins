@@ -79,35 +79,6 @@ void TopView::resized()
 
 }
 
-void TopView::mouseDown(const juce::MouseEvent& e)
-{
-    changePosition(e.getPosition());
-}
-
-
-void TopView::mouseDrag (const juce::MouseEvent& e)
-{
-    changePosition(e.getPosition());
-}
-
-void TopView::changePosition(juce::Point <int> p)
-{
-
-    int x = p.getX();
-    int y = p.getY()+0.5*getHeight();
-
-    float xPos = -20*(0.5-(float) x / (float) getWidth());
-    float yPos =  20*(0.5-(float) y / (float) getHeight())+10;
-    /*
-    processor->setXPos(xPos);
-    processor->setYPos(yPos);
-    */
-}
-
-
-void TopView::mouseUp(const juce::MouseEvent& e)
-{
-}
 
 juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
 {
@@ -126,16 +97,7 @@ juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
 
 void TopView::timerCallback()
 {
-    /*
-    if(isUpdating == true)
-    {
-        /// @todo: scaling is hard coded
-        float x = processor->getXPos() / 20.0 + 0.5;
-        float y = processor->getYPos() / 20.0 + 0.5;
-        float z = processor->getZPos() / 20.0 + 0.5;
-        source.moveXYZ(x,y,z);
-    }
-    */
+
 }
 
 void TopView::changeLayout(bool HuFoSelected)

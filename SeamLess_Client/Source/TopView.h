@@ -23,6 +23,8 @@ class SoundSource;
 class TopView  : public juce::Component//, juce::Timer  // timer no longer needed because of parameter attachments
 {
 public:
+    /**
+     @brief Creates a TopView object.*/
     TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTreeState& apvts);
     ~TopView() override;
 
@@ -33,16 +35,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    /// \brief mouseDown
-    /// \param e
-    ///
-    /// Calls changePosition() when the mouse is dragged.
     void mouseDown(const juce::MouseEvent& e) override;
 
-    /// \brief mouseDrag
-    /// \param e
-    ///
-    /// Calls changePosition() when the mouse is dragged.
     void mouseDrag(const juce::MouseEvent& e) override;
 
     void mouseUp(const juce::MouseEvent& e) override;
@@ -50,15 +44,51 @@ public:
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
 
-
+    /**
+     Converts two coordinates in meters to the associated pixels in the Source Viewer
+     @param xMeter x-Coordinate in meters
+     @param yMeter y-Coordinate in meters
+     @see convertPixelToMeter
+     */
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
+    
+    /**
+     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters
+     @param xPixel x-Coordinate in pixel
+     @param yPixel y-Coordinate in pixel
+     @see convertMeterToPixel
+     */
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
 
     // setter and getter functions
+    /**
+     Sets the source's width.
+     @param newWidth width in pixel
+     @see setZPos
+     */
     void setSourceWidthPx(int newWidth);
+    
+    /**
+     Sets the source's z position.
+     @param newValue z position in meter
+     @see setSourceWidthPx
+     */
     void setZPos(float newValue);
+    
+    /**
+     Changes the displayed room layout.
+     @param HuFoSelected true for Humbold Forum Layout, false for TU Studio
+     */
     void changeLayout(bool HuFoSelected);
+    
+    /**
+     Enables or disables the cartesian or spherical grid.
+     
+     @param showGrid must be true for grids to be displayed
+     @param xyzGrid true for cartesian grid, false for spherical grid
+     */
     void showGrid(bool showGrid, bool xyzGrid);
+    
 private:
 
     SeamLess_ClientAudioProcessor *processor;

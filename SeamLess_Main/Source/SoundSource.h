@@ -19,17 +19,42 @@ Author:  anwaldt
 class SoundSource  : public juce::Component
 {
 public:
+    /** Creates a SoundSource.
+        Its coordinates and ID get stored here as well.
+     @param ID The ID of the source to be created
+     @param x The inital x-position of the source
+     @param y The inital y-position of the source
+     @param z The inital z-position of the source
+    */
+    SoundSource(int ID, float x, float y, float z);
+    ~SoundSource() override;
 
-  SoundSource(int ID, float x, float y, float z);
-
-  ~SoundSource() override;
-
-  void paint (juce::Graphics&) override;
-
-    juce::Point<float> getPosition();
-    int getSourceWidth();
-    void updateCoordinates(float x, float y, float z);
+    void paint (juce::Graphics&) override;
+    
+    /**
+     @returns the source ID of the SoundSource
+     */
     int getSourceID();
+    
+    /**
+     @returns Point of x and y position of the source.
+     @see getSourceWidth
+     */
+    juce::Point<float> getPosition();
+    
+    /**
+     @returns the width of the source, correlated to its z-position
+     @see getPosition
+     */
+    int getSourceWidth();
+    
+    /**
+     updates the coordinates which are stored in the SoundSource object.
+     @param x x-coordinate of the new position
+     @param y y-coordinate of the new position
+     @param z z-coordinate of the new position
+     */
+    void updateCoordinates(float x, float y, float z);
 
 private:
 

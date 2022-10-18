@@ -41,15 +41,6 @@ void SoundSource::paint (juce::Graphics& g)
     g.fillEllipse (0, 0, getWidth(), getWidth());
 }
 
-void SoundSource::resized (){
-    
-}
-
-
-void SoundSource::mouseDown (const juce::MouseEvent& e){}
-void SoundSource::mouseDrag(const juce::MouseEvent& e)
-{
-}
 
 void SoundSource::setXPos(float newValue) { xPos = newValue;    }
 void SoundSource::setYPos(float newValue) { yPos = newValue;    }
