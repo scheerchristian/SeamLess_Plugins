@@ -98,7 +98,7 @@ public:
     juce::String  getOscTargetAddress();
     int getOscTargetPort();
 
-    juce::StringArray getIncomingMessages();
+    juce::StringArray getIncomingMessages(juce::String messageType);
 private:
 
     /// \brief incomingPort

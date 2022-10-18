@@ -68,11 +68,9 @@ public:
     */
     void xyzPosSend();
 
-    ///
-    /// \brief sendGainSend
-    /// \param id The string identifier for the send channel.
-    /// \param in The gain value.
-    /// Send OSC messages for the send gains!
+    /**
+     @brief Send OSC messages for the send gains
+    */
     void sendGainSend();
 
     //==============================================================================
@@ -109,21 +107,30 @@ public:
     void setSelectedLFO(int newState);
     enum lfosToSelect { x=1, y=2, z=3 };
 
-
+    /** @brief returns state of connection to main */
     bool getConnectedToMain();
+    
+    /** @brief sets current state of connection to main */
     void setConnectedToMain(bool b);
-
+    
+    /** @brief returns state of sending OSC to main */
     bool getSendState();
+    
+    /** @brief sets state of sending OSC to main */
     void setSendState(bool s);
 
     bool getPlayState();
 
+    /** @brief returns state of send button */
     bool getSendButtonState();
+    
+    /** @brief sets state of send Button */
     void setSendButtonState(bool newValue);
 
     virtual void parameterChanged(const juce::String & id, float val) override;
     juce::AudioProcessorValueTreeState& getState();
 
+    /** @brief Retrys to connect to the main plugin if no connection is established. */
     void reconnectToMainPlugin();
 
     //LFOs

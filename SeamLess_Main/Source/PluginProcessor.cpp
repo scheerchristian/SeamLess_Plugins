@@ -427,13 +427,16 @@ void SeamLess_MainAudioProcessor::hiResTimerCallback()
 
 
 
-juce::StringArray SeamLess_MainAudioProcessor::getIncomingMessages()
+juce::StringArray SeamLess_MainAudioProcessor::getIncomingMessages(juce::String messageType)
 {
     juce::StringArray messages;
     if (connections.size() != 0)
     {
         for (auto const& c: connections) {
-            messages.add(c->message);
+            if (messageType == "pos")
+                messages.add(c->posmessage);
+            else
+                messages.add(c->message);
         }
     }
     return messages;

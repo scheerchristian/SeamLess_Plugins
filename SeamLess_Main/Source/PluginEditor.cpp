@@ -133,14 +133,14 @@ void SeamLess_MainAudioProcessorEditor::resized()
 
 void SeamLess_MainAudioProcessorEditor::timerCallback()
 {
-    juce::StringArray msg = audioProcessor.getIncomingMessages();
+    juce::StringArray msg = audioProcessor.getIncomingMessages("pos");
     for (int i = 0; i < msg.size(); i++) {
         juce::StringArray msgtokens;
-        msgtokens.addTokens(msg[i], "/", "_");
-        int sourceID = msgtokens[0].getIntValue();
-        float      x = msgtokens[1].getFloatValue();
-        float      y = msgtokens[2].getFloatValue();
-        float      z = msgtokens[3].getFloatValue();
+        msgtokens.addTokens(msg[i], "/", "$");
+        int sourceID = msgtokens[1].getIntValue();
+        float      x = msgtokens[2].getFloatValue();
+        float      y = msgtokens[3].getFloatValue();
+        float      z = msgtokens[4].getFloatValue();
         sourceViewer.moveSource(sourceID, x, y, z);
     }
 }
