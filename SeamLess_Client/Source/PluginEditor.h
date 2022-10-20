@@ -66,7 +66,7 @@ public:
     juce::TextButton buttonLayout;
     juce::TextButton buttonGrid;
     
-
+    juce::TooltipWindow tooltip;
 
     // the zSlider gets a SliderAttachment to keep sync with its corresponding parameter in the apvts ...
     juce::AudioProcessorValueTreeState::SliderAttachment zSliderAttachment;

@@ -95,9 +95,12 @@ void SourceSettingsComponent::resized()
 
 void SourceSettingsComponent::timerCallback()
 {
-    if(sourceIndText.isBeingEdited() == false)
+    if(sourceIndText.isBeingEdited() == false) {
         sourceIndText.setText(juce::String(processor->getSourceIndex()), juce::dontSendNotification);
-
+        if (!processor->getConnectedToMain()){
+            processor->reconnectToMainPlugin();
+        }
+    }
     this->setConnectionFeedback(processor->getConnectedToMain());
 
 }
@@ -105,12 +108,12 @@ void SourceSettingsComponent::timerCallback()
 
 void SourceSettingsComponent::setConnectionFeedback(bool state)
 {
-  if(state==true)
+  if (state)
   {
     mainConnectionButton.setColour(juce::TextButton::buttonColourId,seamlessGrey);
     mainConnectionButton.setButtonText ("Connected to Main Plugin!");
   }
-  else if(state==false)
+  else
   {
       mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
       mainConnectionButton.setButtonText ("Not Connected! Click to retry.");

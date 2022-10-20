@@ -20,7 +20,7 @@ class SoundSource;
 //==============================================================================
 /*
 */
-class TopView  : public juce::Component//, juce::Timer  // timer no longer needed because of parameter attachments
+class TopView  : public juce::Component
 {
 public:
     /**
@@ -33,14 +33,39 @@ public:
 
 
     void paint (juce::Graphics&) override;
+    
+    /**
+     All elements belonging to the TopView component are placed onto the canvas here. Relative coordinates are needed for scalability.
+     */
     void resized() override;
 
+    /**
+     @brief Triggered when mouse click is registered.
+     
+     Used to start a gesture and show the label displaying the coordinates
+     @see mouseDrag
+     @see mouseUp
+     */
     void mouseDown(const juce::MouseEvent& e) override;
 
+    /**
+     @brief Triggered when mouse is dragged after a click.
+     
+     Used to record a gesture and update the label displaying the coordinates
+     @see mouseDown
+     @see mouseUp
+     */
     void mouseDrag(const juce::MouseEvent& e) override;
 
+    /**
+     @brief Triggered when mouse click is finished.
+     
+     Used to stop the ongoing gesture and hide the label displaying the coordinates
+     @see mouseDown
+     @see mouseDrag
+     */
     void mouseUp(const juce::MouseEvent& e) override;
-
+    
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
 
@@ -134,11 +159,7 @@ private:
     
     bool enableGrid;
     juce::Label coordinatesLabel;
-    ///
-    /// \brief timerCallback
-    /// set source position
-    /// scaled between 0 and 1
-    // virtual void timerCallback() override;   // timer no longer needed because of parameter attachments
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopView)
 

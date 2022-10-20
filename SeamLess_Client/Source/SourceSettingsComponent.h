@@ -24,6 +24,9 @@ public:
     SourceSettingsComponent(SeamLess_ClientAudioProcessor *a, juce::AudioProcessorValueTreeState &apvts);
     ~SourceSettingsComponent() override;
 
+    /**
+     Sets the Connection Button to match the current state of the connection.
+     @param state current connection state*/
     void setConnectionFeedback(bool state);
 
     void paint (juce::Graphics&) override;

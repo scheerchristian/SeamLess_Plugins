@@ -18,9 +18,6 @@ TopView::TopView(SeamLess_MainAudioProcessor *p): source(0,0,0,0)
 
     processor  = p;
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
-
-    startTimer(50);
-
     
 }
 
@@ -92,12 +89,6 @@ juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
     double xMeter = (xPixel / getLocalBounds().getWidth()) * 20;
     double yMeter = (yPixel / getLocalBounds().getHeight()) * 20;
     return juce::Point<double>(xMeter, yMeter);
-}
-
-
-void TopView::timerCallback()
-{
-
 }
 
 void TopView::changeLayout(bool HuFoSelected)
