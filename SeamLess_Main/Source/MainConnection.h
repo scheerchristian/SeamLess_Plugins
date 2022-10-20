@@ -24,12 +24,12 @@ public:
     MainConnection(juce::WaitableEvent& stop_signal, SeamLess_MainAudioProcessor *p);
 
     /**
-     @brief gets triggered if a client connected.
+     @brief gets triggered when a client is connected, prints out a info message 
      */
     void connectionMade();
 
     /**
-    @brief If a MainConnection object loses its connection, it calls the processor's removeClosedConnections method for deleting all disconnected MainConnections.
+    @brief If a MainConnection object loses its connection, it calls the processor's removeClosedConnections method for deleting all disconnected MainConnections
      */
     void connectionLost();
 
@@ -39,9 +39,13 @@ public:
     void messageReceived(const juce::MemoryBlock& msg);
     
     /**
-     @brief contains the latest received message as a juce::String object
+     @brief contains the latest received general message as a juce::String object
      */
     juce::String message;
+    
+    /**
+     @brief contains the latest received source position message as a juce::String object
+     */
     juce::String posmessage;
 
 private:

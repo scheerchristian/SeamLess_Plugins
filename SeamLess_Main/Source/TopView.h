@@ -21,7 +21,7 @@ class SoundSource;
 //==============================================================================
 /*
 */
-class TopView  : public juce::Component, juce::Timer
+class TopView  : public juce::Component
 {
 public:
     TopView(SeamLess_MainAudioProcessor *p);
@@ -90,11 +90,7 @@ private:
     juce::String layout;
     std::vector<SoundSource*> sourceVector;
     std::vector<int> registeredSources;
-    ///
-    /// \brief timerCallback
-    /// set source position
-    /// scaled between 0 and 1
-    virtual void timerCallback() override;
+   
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TopView)
 

@@ -26,6 +26,7 @@ class SeamLess_ClientAudioProcessor  : public juce::AudioProcessor,
 public:
     //==============================================================================
     SeamLess_ClientAudioProcessor();
+    /** @cond PRIVATE */
     ~SeamLess_ClientAudioProcessor() override;
 
     //==============================================================================
@@ -52,8 +53,8 @@ public:
     void setCurrentProgram (int index) override;
     const juce::String getProgramName (int index) override;
     void changeProgramName (int index, const juce::String& newName) override;
-
-
+    /** @endcond */
+    
     float getXPos();
     float getYPos();
     float getZPos();

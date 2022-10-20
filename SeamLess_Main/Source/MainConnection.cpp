@@ -40,10 +40,12 @@ void MainConnection::messageReceived(const juce::MemoryBlock& msg)
 {
     juce::StringArray stringArray;
     stringArray.addTokens(msg.toString(), "/", "§");
+    juce::String receivedMessage = msg.toString().trimCharactersAtStart(stringArray[0]+"/");
     if (stringArray[0] == "pos")
-        posmessage = msg.toString();
+        posmessage = receivedMessage;
+     
     else
-        message = msg.toString();
+        message = receivedMessage;
 
         // const auto str = msg.toString();
         // printf("From client: %s\n", str.toRawUTF8());

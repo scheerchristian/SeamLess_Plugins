@@ -29,8 +29,6 @@ public:
      */
     bool mainConnection();
 
-    void reconnect();
-
     /**
      Sends a message to the connected master plugin, if a connection is established.
      
@@ -42,7 +40,6 @@ public:
      
      @param messageType Type of Message
      @param message Message to be send
-     
      */
     void sendMessageToMain(juce::String messageType, juce::String message);
 

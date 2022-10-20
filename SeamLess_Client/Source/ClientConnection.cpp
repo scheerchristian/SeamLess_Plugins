@@ -60,11 +60,6 @@ bool ClientConnection::mainConnection()
   return this->isConnected();
 }
 
-void ClientConnection::reconnect()
-{
-//  this.connectToSocket("localhost",);
-}
-
 void ClientConnection::sendMessageToMain(juce::String messageType, juce::String message)
 {
     if (isConnected())

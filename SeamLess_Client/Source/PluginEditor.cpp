@@ -96,6 +96,14 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     buttonSpherical.setComponentID("spherical");
     buttonSpherical.setButtonText ("Spherical");
     
+//==== Tooltips =======================================================================
+    addAndMakeVisible(tooltip);
+    buttonLFO.setTooltip("LFO Settings");
+    buttonSpherical.setTooltip("Spherical Coordinates");
+    buttonSend.setTooltip("Send Fader Levels");
+    buttonLayout.setTooltip("Select Room Layout");
+    buttonGrid.setTooltip("Enable different grid modes");
+    
     switch (audioProcessor.getSettingsMode())
     {
     case 0:
@@ -208,9 +216,6 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         buttonSpherical.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
         buttonLFO.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
         
-        //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        //buttonLFO.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
 }
 void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioParameter& p)
