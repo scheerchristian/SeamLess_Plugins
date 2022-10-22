@@ -20,8 +20,8 @@ class ClientConnection;
 /**
 */
 
-class SeamLess_ClientAudioProcessor  : public juce::AudioProcessor,
-        juce::AudioProcessorValueTreeState::Listener, juce::HighResolutionTimer
+class SeamLess_ClientAudioProcessor : public juce::AudioProcessor,
+    juce::AudioProcessorValueTreeState::Listener, juce::HighResolutionTimer
 {
 public:
     //==============================================================================
@@ -29,10 +29,10 @@ public:
     ~SeamLess_ClientAudioProcessor() override;
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -49,9 +49,9 @@ public:
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const juce::String getProgramName (int index) override;
-    void changeProgramName (int index, const juce::String& newName) override;
+    void setCurrentProgram(int index) override;
+    const juce::String getProgramName(int index) override;
+    void changeProgramName(int index, const juce::String& newName) override;
 
 
     float getXPos();
@@ -77,8 +77,8 @@ public:
 
     //==============================================================================
 
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock& destData) override;
+    void setStateInformation(const void* data, int sizeInBytes) override;
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 
 
@@ -99,7 +99,7 @@ public:
 
     int getShapeState();
     void setShapeState(int newValue);
-    enum availableShapes {HuFo, Studio};
+    enum availableShapes { HuFo, Studio };
 
     int getGridState();
     void setGridState(int newValue);
@@ -107,7 +107,7 @@ public:
 
     int getSelectedLFO();
     void setSelectedLFO(int newState);
-    enum lfosToSelect { x=1, y=2, z=3 };
+    enum lfosToSelect { x = 1, y = 2, z = 3 };
 
 
     bool getConnectedToMain();
@@ -121,7 +121,7 @@ public:
     bool getSendButtonState();
     void setSendButtonState(bool newValue);
 
-    virtual void parameterChanged(const juce::String & id, float val) override;
+    virtual void parameterChanged(const juce::String& id, float val) override;
     juce::AudioProcessorValueTreeState& getState();
 
     void reconnectToMainPlugin();
@@ -133,7 +133,11 @@ public:
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
     void prepareLFOs();
-
+    void refreshLFOs();
+    void startLFOs();
+    void endLFOs();
+    std::array<float, 12> getLfoSettings();
+    
     
     float xLFOOut;
     float yLFOOut;
@@ -142,6 +146,7 @@ public:
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);
+    void connectLfosToParameters();
 
 
 private:
@@ -149,6 +154,24 @@ private:
     std::unique_ptr<juce::ParameterAttachment> xAttachment;
     std::unique_ptr<juce::ParameterAttachment> yAttachment;
     std::unique_ptr<juce::ParameterAttachment> zAttachment;
+
+    std::unique_ptr<juce::ParameterAttachment> xLfoRateAttachment;
+    std::unique_ptr<juce::ParameterAttachment> xLfoDepthAttachment;
+    std::unique_ptr<juce::ParameterAttachment> xLfoPhaseAttachment;
+    std::unique_ptr<juce::ParameterAttachment> xLfoOffsetAttachment;
+
+    std::unique_ptr<juce::ParameterAttachment> yLfoRateAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yLfoDepthAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yLfoPhaseAttachment;
+    std::unique_ptr<juce::ParameterAttachment> yLfoOffsetAttachment;
+
+    std::unique_ptr<juce::ParameterAttachment> zLfoRateAttachment;
+    std::unique_ptr<juce::ParameterAttachment> zLfoDepthAttachment;
+    std::unique_ptr<juce::ParameterAttachment> zLfoPhaseAttachment;
+    std::unique_ptr<juce::ParameterAttachment> zLfoOffsetAttachment;
+
+    //std::array<juce::String, 12> lfoSliderNames = {"xLfoRate", "xLfoDepth", "xLfoPhase", "xLfoOffset", "yLfoRate", "yLfoDepth", "yLfoPhase", "yLfoOffset", "zLfoRate", "zLfoDepth", "zLfoPhase", "zLfoOffset" };
+
 
     // for the inter com
     const int port_nr = 52713;

@@ -80,9 +80,6 @@ private:
     LFOSlider* zSliders[4] = { &zRateSlider, &zDepthSlider, &zPhaseSlider, &zOffsetSlider };
 
 
-
-
-
     juce::TextButton LFOStartButton;
     juce::ComboBox LFONumberBox;
 

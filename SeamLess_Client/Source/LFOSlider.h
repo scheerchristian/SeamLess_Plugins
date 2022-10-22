@@ -43,6 +43,8 @@ private:
 
     juce::AudioProcessorValueTreeState* treeState;
 
+    SeamLess_ClientAudioProcessor* audioProcessor;
+
     double currentValue;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LFOSlider)
 };

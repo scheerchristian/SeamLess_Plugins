@@ -18,6 +18,7 @@ LFOSlider::LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValue
 {
     parameterID = id;
     treeState = &apvts;
+    audioProcessor = &p;
 
     slider.setSliderStyle(juce::Slider::Rotary);
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
