@@ -111,6 +111,7 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
         buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessGrey);
         break;
     }
+
     addAndMakeVisible(buttonLayout);
     buttonLayout.addListener(this);
     buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
@@ -168,8 +169,7 @@ void SeamLess_ClientAudioProcessorEditor::paint (juce::Graphics& g)
 
 // ALL components need to be resized() for appearing in the GUI
 void SeamLess_ClientAudioProcessorEditor::resized()
-{
-    
+{   
     const int &maxTopViewSize = std::min<int>((getWidth()-100)/1.6, getHeight()-40);
 
     zSlider.setBounds(0,40,100, getHeight()-195);
@@ -207,10 +207,6 @@ void SeamLess_ClientAudioProcessorEditor::resized()
         buttonSend.setBounds(maxTopViewSize+120, 20,  getWidth()-maxTopViewSize-140, 40);
         buttonSpherical.setBounds(maxTopViewSize+120, 80,  getWidth()-maxTopViewSize-140, 40);
         buttonLFO.setBounds(maxTopViewSize+120, 140, getWidth()-maxTopViewSize-140, 40);
-        
-        //buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        //buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-        //buttonLFO.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     }
 }
 void SeamLess_ClientAudioProcessorEditor::connectZToParameter(juce::RangedAudioParameter& p)
@@ -280,9 +276,7 @@ void SeamLess_ClientAudioProcessorEditor::buttonClicked (juce::Button* button)
         buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessBlue);
         button->setColour(juce::TextButton::buttonColourId, seamlessGrey);
-        
-        //settingComponent.setVisible(false);
-        //connectionComponent.setVisible(false);
+
         sendBox.setVisible(false);
         sphericalBox.setVisible(false);
         lfoBox.setVisible(false);

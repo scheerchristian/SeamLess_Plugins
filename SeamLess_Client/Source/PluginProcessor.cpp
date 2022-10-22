@@ -49,18 +49,21 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
 
     setSendState(true);  
 
-    connectXtoParameter(*parameters.getParameter("xPos"));
-    connectYtoParameter(*parameters.getParameter("yPos"));
-    connectZtoParameter(*parameters.getParameter("zPos"));
-
-
-    startTimer(SEND_INTERVAL);
-
     // LFOs
-    
+
     xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
     zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+
+    connectXtoParameter(*parameters.getParameter("xPos"));
+    connectYtoParameter(*parameters.getParameter("yPos"));
+    connectZtoParameter(*parameters.getParameter("zPos"));
+    connectLfosToParameters();
+    //connectLfosToParateres(getLfo());
+
+    startTimer(SEND_INTERVAL);
+
+
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -560,6 +563,83 @@ void SeamLess_ClientAudioProcessor::prepareLFOs()
     zLFO->prepare(juce::dsp::ProcessSpec({ getSampleRate() / getBlockSize(), (juce::uint32)getBlockSize(), 1 }));
 }
 
+void SeamLess_ClientAudioProcessor::refreshLFOs()
+{   
+    if (xLFO->isInitialised() && yLFO->isInitialised() && zLFO->isInitialised())
+    {
+        endLFOs();
+        startLFOs();
+    }
+}
+
+void SeamLess_ClientAudioProcessor::startLFOs()
+{
+    
+    std::array<float, 12>lfoSettings = getLfoSettings();
+
+    xLFO->setFrequency(lfoSettings[2]);
+    xLFO->initialise([lfoSettings](float x)
+        {
+            return lfoSettings[0] * std::sin(x + lfoSettings[1]) + lfoSettings[3];
+        });
+    xAttachment->beginGesture();
+
+    yLFO->setFrequency(lfoSettings[6]);
+    yLFO->initialise([lfoSettings](float x)
+        {
+            return lfoSettings[4] * std::sin(x + lfoSettings[5]) + lfoSettings[7];
+        });
+    yAttachment->beginGesture();
+
+    zLFO->setFrequency(lfoSettings[10]);
+    zLFO->initialise([lfoSettings](float x)
+        {
+            return lfoSettings[8] * std::sin(x + lfoSettings[9]) + lfoSettings[11];
+        });
+    zAttachment->beginGesture();
+    
+}
+
+void SeamLess_ClientAudioProcessor::endLFOs()
+{
+    xAttachment->endGesture();
+    xLFO->reset();
+    xLFO.reset();
+    xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+
+    yAttachment->endGesture();
+    yLFO->reset();
+    yLFO.reset();
+    yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+
+    zAttachment->endGesture();
+    zLFO->reset();
+    zLFO.reset();
+    zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
+    prepareLFOs();
+}
+
+std::array<float, 12> SeamLess_ClientAudioProcessor::getLfoSettings()
+{
+    float xDepth = parameters.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
+    float xPhase = parameters.getParameterAsValue("xLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float xRate = parameters.getParameterAsValue("xLfoRate").toString().getFloatValue();
+    float xOffset = parameters.getParameterAsValue("xLfoOffset").toString().getFloatValue();
+
+    float yDepth = parameters.getParameterAsValue("yLfoDepth").toString().getFloatValue() / 10;
+    float yPhase = parameters.getParameterAsValue("yLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float yRate = parameters.getParameterAsValue("yLfoRate").toString().getFloatValue();
+    float yOffset = parameters.getParameterAsValue("yLfoOffset").toString().getFloatValue();
+
+    float zDepth = parameters.getParameterAsValue("zLfoDepth").toString().getFloatValue() / 10;
+    float zPhase = parameters.getParameterAsValue("zLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float zRate = parameters.getParameterAsValue("zLfoRate").toString().getFloatValue();
+    float zOffset = parameters.getParameterAsValue("zLfoOffset").toString().getFloatValue();
+
+    std::array<float, 12> lfoSettings = {xDepth, xPhase, xRate, xOffset, yDepth, yPhase, yRate, yOffset, zDepth, zPhase, zRate, zOffset};
+    return lfoSettings;
+}
+
 void SeamLess_ClientAudioProcessor::connectXtoParameter(juce::RangedAudioParameter& p)
 {
     xAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
@@ -575,3 +655,20 @@ void SeamLess_ClientAudioProcessor::connectZtoParameter(juce::RangedAudioParamet
     zAttachment = std::make_unique<juce::ParameterAttachment>(p, [this](float newValue) {});
 }
 
+void SeamLess_ClientAudioProcessor::connectLfosToParameters()
+{
+    xLfoRateAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("xLfoRate"), [this](float newValue) {refreshLFOs(); });
+    xLfoDepthAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("xLfoDepth"), [this](float newValue) {refreshLFOs(); });
+    xLfoPhaseAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("xLfoPhase"), [this](float newValue) {refreshLFOs(); });
+    xLfoOffsetAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("xLfoOffset"), [this](float newValue) {refreshLFOs(); });
+
+    yLfoRateAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("yLfoRate"), [this](float newValue) {refreshLFOs(); });
+    yLfoDepthAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("yLfoDepth"), [this](float newValue) {refreshLFOs(); });
+    yLfoPhaseAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("yLfoPhase"), [this](float newValue) {refreshLFOs(); });
+    yLfoOffsetAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("yLfoOffset"), [this](float newValue) {refreshLFOs(); });
+
+    zLfoRateAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoRate"), [this](float newValue) {refreshLFOs(); });
+    zLfoDepthAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoDepth"), [this](float newValue) {refreshLFOs(); });
+    zLfoPhaseAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoPhase"), [this](float newValue) {refreshLFOs(); });
+    zLfoOffsetAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoOffset"), [this](float newValue) {refreshLFOs(); });
+}

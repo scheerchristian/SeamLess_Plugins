@@ -31,7 +31,6 @@ SphericalFader::SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProc
     connectXtoParameter(*treeState.getParameter("xPos"));
     connectYtoParameter(*treeState.getParameter("yPos"));
     connectZtoParameter(*treeState.getParameter("zPos"));
-
 }
 
 SphericalFader::~SphericalFader()

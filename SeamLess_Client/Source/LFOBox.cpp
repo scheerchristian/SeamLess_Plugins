@@ -172,44 +172,9 @@ void LFOBox::connectZtoParameter(juce::RangedAudioParameter& p)
 
 void LFOBox::startLFOs()
 {
-    //audioProcessor.prepareLFOs();
-    float xDepth = treeState.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
-    float xPhase = treeState.getParameterAsValue("xLfoPhase").toString().getFloatValue() * M_PI / 180;
-    float xRate = treeState.getParameterAsValue("xLfoRate").toString().getFloatValue();
-    float xOffset = treeState.getParameterAsValue("xLfoOffset").toString().getFloatValue();
-
-    float yDepth = treeState.getParameterAsValue("yLfoDepth").toString().getFloatValue() / 10;
-    float yPhase = treeState.getParameterAsValue("yLfoPhase").toString().getFloatValue() * M_PI / 180;
-    float yRate = treeState.getParameterAsValue("yLfoRate").toString().getFloatValue();
-    float yOffset = treeState.getParameterAsValue("yLfoOffset").toString().getFloatValue();
-
-    float zDepth = treeState.getParameterAsValue("zLfoDepth").toString().getFloatValue() / 10;
-    float zPhase = treeState.getParameterAsValue("zLfoPhase").toString().getFloatValue() * M_PI / 180;
-    float zRate = treeState.getParameterAsValue("zLfoRate").toString().getFloatValue();
-    float zOffset = treeState.getParameterAsValue("zLfoOffset").toString().getFloatValue();
-
     LFOStartButton.setButtonText("Stop");
     LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessGrey); 
-    audioProcessor.xLFO->setFrequency(xRate);
-    audioProcessor.xLFO->initialise([xDepth, xPhase, xRate, xOffset](float x)
-        {
-            return xDepth * std::sin(x + xPhase) + xOffset;
-        });
-    xAttachment->beginGesture();
-  
-    audioProcessor.yLFO->setFrequency(yRate);
-    audioProcessor.yLFO->initialise([yDepth, yPhase, yRate, yOffset](float x)
-        {
-            return yDepth * std::sin(x + yPhase) + yOffset;
-        });
-    yAttachment->beginGesture();
-
-    audioProcessor.zLFO->setFrequency(zRate);
-    audioProcessor.zLFO->initialise([zDepth, zPhase, zRate, zOffset](float x)
-        {
-            return zDepth * std::sin(x + zPhase) + zOffset;
-        });
-    zAttachment->beginGesture();
+    audioProcessor.startLFOs();
 }
 
 
@@ -217,21 +182,5 @@ void LFOBox::endLFOs()
 {
     LFOStartButton.setButtonText("Start");
     LFOStartButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-
-
-    xAttachment->endGesture();
-    audioProcessor.xLFO->reset();
-    audioProcessor.xLFO.reset();
-    audioProcessor.xLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-
-    yAttachment->endGesture();
-    audioProcessor.yLFO->reset();
-    audioProcessor.yLFO.reset();
-    audioProcessor.yLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-
-    zAttachment->endGesture();
-    audioProcessor.zLFO->reset();
-    audioProcessor.zLFO.reset();
-    audioProcessor.zLFO = std::make_unique<juce::dsp::Oscillator<float>>();
-    audioProcessor.prepareLFOs();
+    audioProcessor.endLFOs();
 }
