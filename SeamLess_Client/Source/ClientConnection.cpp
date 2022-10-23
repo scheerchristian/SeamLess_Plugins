@@ -1,6 +1,6 @@
 /**
 
-    @brief Manage the connection with client plugins.
+    @brief Manages the connection to the main plugin.
     @file ClientConnection.cpp
     @date 19 Mar 2021 4:14:08pm
     @author HvC
@@ -60,16 +60,12 @@ bool ClientConnection::mainConnection()
   return this->isConnected();
 }
 
-void ClientConnection::reconnect()
-{
-//  this.connectToSocket("localhost",);
-}
-
-void ClientConnection::sendMessageToMain(juce::String msg)
+void ClientConnection::sendMessageToMain(juce::String messageType, juce::String message)
 {
     if (isConnected())
     {
-        juce::MemoryBlock mb (msg.toRawUTF8(), msg.getNumBytesAsUTF8()+1);
+        message = messageType+"/"+message;
+        juce::MemoryBlock mb (message.toRawUTF8(), message.getNumBytesAsUTF8()+1);
         sendMessage(mb);
     }
 }

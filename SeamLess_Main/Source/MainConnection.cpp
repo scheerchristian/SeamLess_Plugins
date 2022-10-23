@@ -38,7 +38,15 @@ void MainConnection::connectionLost()
 
 void MainConnection::messageReceived(const juce::MemoryBlock& msg)
 {
-    message = msg.toString();
+    juce::StringArray stringArray;
+    stringArray.addTokens(msg.toString(), "/", "§");
+    juce::String receivedMessage = msg.toString().trimCharactersAtStart(stringArray[0]+"/");
+    if (stringArray[0] == "pos")
+        posmessage = receivedMessage;
+     
+    else
+        message = receivedMessage;
+
         // const auto str = msg.toString();
         // printf("From client: %s\n", str.toRawUTF8());
 //

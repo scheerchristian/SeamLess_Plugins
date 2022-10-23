@@ -21,13 +21,24 @@
 class OutgoingConnectionComponent  : public juce::Component, juce::Timer
 {
 public:
+    /**
+     @brief Creates a component containing information about the outgoing connection.
+     */
     OutgoingConnectionComponent(SeamLess_ClientAudioProcessor *a);
     ~OutgoingConnectionComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    /**
+     Syncs sendButton checkbox state and OSC target port with the audioProcessor's values regularly.
+     */
     void timerCallback() override;
+    
+    /**
+     Updates the TextBox containing the OSC target port
+     @param newPort Port to be displayed
+     */
     void setOscTargetPortText(int newPort);
 
 private:

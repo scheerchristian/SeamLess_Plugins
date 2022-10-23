@@ -18,23 +18,37 @@ class SeamLess_MainAudioProcessor;
 class MainConnection : public juce::InterprocessConnection
 {
 public:
-
+    /**
+     @brief creates a new Client Connection
+     */
     MainConnection(juce::WaitableEvent& stop_signal, SeamLess_MainAudioProcessor *p);
 
+    /**
+     @brief gets triggered when a client is connected, prints out a info message 
+     */
     void connectionMade();
 
-    ///
-    /// \brief connectionLost
-    /// If a MainConnection object loses its connection,
-    /// it calls the processor's removeClosedConnections method
-    /// for deleting all disconnected MainConnections.
+    /**
+    @brief If a MainConnection object loses its connection, it calls the processor's removeClosedConnections method for deleting all disconnected MainConnections
+     */
     void connectionLost();
 
-
+    /**
+     @brief gets triggered if the plugin receives a message from client
+     */
     void messageReceived(const juce::MemoryBlock& msg);
+    
+    /**
+     @brief contains the latest received general message as a juce::String object
+     */
     juce::String message;
+    
+    /**
+     @brief contains the latest received source position message as a juce::String object
+     */
+    juce::String posmessage;
+
 private:
-    //SoundSource source;
     SeamLess_MainAudioProcessor *processor;
     juce::WaitableEvent& stop_signal_;
 

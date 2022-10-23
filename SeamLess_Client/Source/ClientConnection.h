@@ -19,14 +19,29 @@ class SeamLess_ClientAudioProcessor;
 class ClientConnection : public juce::InterprocessConnection
 {
 public:
-
+    /**
+     @brief creates a new connection to the main plugin
+     */
     ClientConnection(SeamLess_ClientAudioProcessor &p);
 
+    /**
+     @returns the current connection status
+     */
     bool mainConnection();
 
-    void reconnect();
-
-    void sendMessageToMain(juce::String msg);
+    /**
+     Sends a message to the connected master plugin, if a connection is established.
+     
+     The Message should be a juce::String, which does not include the character "§".
+     
+     As of 10/2022, the only used message type is "pos", for communicating the source positions to the main plugin's source viewer.
+     
+     Other message types can be added if needed.
+     
+     @param messageType Type of Message
+     @param message Message to be send
+     */
+    void sendMessageToMain(juce::String messageType, juce::String message);
 
 private:
 

@@ -20,7 +20,10 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTree
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
 
     addAndMakeVisible(source);
+<<<<<<< HEAD
     // startTimer(50); 
+=======
+>>>>>>> docstrings
     addAndMakeVisible(coordinatesLabel);
     coordinatesLabel.setText("", juce::dontSendNotification);
     coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
@@ -247,17 +250,4 @@ void TopView::showGrid(bool showGrid, bool xyzGrid)
 }
 
 
-// timer no longer needed because of parameter attachments
-/*
-void TopView::timerCallback()
-{
-    if(isUpdating == true)
-    {
-        /// @todo: scaling is hard coded
-        float x = processor->getXPos() / 20.0 + 0.5;
-        float y = processor->getYPos() / 20.0 + 0.5;
-        float z = processor->getZPos() / 20.0 + 0.5;
-        source.moveXYZ(x,y,z);
-    }
-}
-*/
+

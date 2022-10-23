@@ -506,8 +506,8 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
         float x = (float) *xPos;
         float y = (float) *yPos;
         float z = (float) *zPos;
-        juce::String ipcPos = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
-        client->sendMessageToMain(ipcPos);
+        juce::String posString = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
+        client->sendMessageToMain("pos", posString);
     }
     /*
     if (xLFO->isInitialised())

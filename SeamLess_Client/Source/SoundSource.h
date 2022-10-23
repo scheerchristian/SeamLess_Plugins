@@ -24,12 +24,20 @@ public:
 
   ~SoundSource() override;
 
+    /**
+     draws the source "ball" and the underlying shadow
+     */
   void paint (juce::Graphics&) override;
-  void resized() override;
-  void mouseDown (const juce::MouseEvent& e) override;
-  void mouseDrag (const juce::MouseEvent& e) override;
 
+/**
+ Updates the x position of the source
+ @params newValue new x coordinate
+ */
   void setXPos(float newValue);
+    /**
+     Updates the y position of the source
+     @params newValue new y coordinate
+     */
   void setYPos(float newValue);
   /*
   void moveX(double x);

@@ -18,9 +18,6 @@ TopView::TopView(SeamLess_MainAudioProcessor *p): source(0,0,0,0)
 
     processor  = p;
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
-
-    startTimer(50);
-
     
 }
 
@@ -79,35 +76,6 @@ void TopView::resized()
 
 }
 
-void TopView::mouseDown(const juce::MouseEvent& e)
-{
-    changePosition(e.getPosition());
-}
-
-
-void TopView::mouseDrag (const juce::MouseEvent& e)
-{
-    changePosition(e.getPosition());
-}
-
-void TopView::changePosition(juce::Point <int> p)
-{
-
-    int x = p.getX();
-    int y = p.getY()+0.5*getHeight();
-
-    float xPos = -20*(0.5-(float) x / (float) getWidth());
-    float yPos =  20*(0.5-(float) y / (float) getHeight())+10;
-    /*
-    processor->setXPos(xPos);
-    processor->setYPos(yPos);
-    */
-}
-
-
-void TopView::mouseUp(const juce::MouseEvent& e)
-{
-}
 
 juce::Point<float> TopView::convertMeterToPixel(float xMeter, float yMeter)
 {
@@ -121,21 +89,6 @@ juce::Point<double> TopView::convertPixelToMeter(int xPixel, int yPixel)
     double xMeter = (xPixel / getLocalBounds().getWidth()) * 20;
     double yMeter = (yPixel / getLocalBounds().getHeight()) * 20;
     return juce::Point<double>(xMeter, yMeter);
-}
-
-
-void TopView::timerCallback()
-{
-    /*
-    if(isUpdating == true)
-    {
-        /// @todo: scaling is hard coded
-        float x = processor->getXPos() / 20.0 + 0.5;
-        float y = processor->getYPos() / 20.0 + 0.5;
-        float z = processor->getZPos() / 20.0 + 0.5;
-        source.moveXYZ(x,y,z);
-    }
-    */
 }
 
 void TopView::changeLayout(bool HuFoSelected)
