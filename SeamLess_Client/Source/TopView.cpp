@@ -20,10 +20,6 @@ TopView::TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTree
     background = juce::ImageCache::getFromMemory (BinaryData::top_view_png, BinaryData::top_view_pngSize);
 
     addAndMakeVisible(source);
-<<<<<<< HEAD
-    // startTimer(50); 
-=======
->>>>>>> docstrings
     addAndMakeVisible(coordinatesLabel);
     coordinatesLabel.setText("", juce::dontSendNotification);
     coordinatesLabel.setColour(juce::Label::textColourId, juce::Colours::darkgrey);
