@@ -38,19 +38,15 @@ void MainConnection::connectionLost()
 
 void MainConnection::messageReceived(const juce::MemoryBlock& msg)
 {
+    //seperate message type from message
     juce::StringArray stringArray;
     stringArray.addTokens(msg.toString(), "/", "§");
+    juce::String messageType = stringArray[0];
     juce::String receivedMessage = msg.toString().trimCharactersAtStart(stringArray[0]+"/");
-    if (stringArray[0] == "pos")
+    //save different messages as different variables, so that they dont get overidden
+    if (messageType == "pos")
         posmessage = receivedMessage;
      
     else
         message = receivedMessage;
-
-        // const auto str = msg.toString();
-        // printf("From client: %s\n", str.toRawUTF8());
-//
-        // if (str.contains("713")) {
-        // 	stop_signal_.signal();
-        // }
 }

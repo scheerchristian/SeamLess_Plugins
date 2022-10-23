@@ -24,12 +24,14 @@ inline float radius_from_cartesian(float x, float y, float z)
 inline float azimuth_from_cartesian(float x, float y)
 {
     // avoid division by 0
-    if (x == 0 && y == 0)  
-        return 0;
-    else if (x == 0 && y > 0)
-        return -M_PI/2;
-    else if (x == 0 && y < 0)
-        return M_PI/2;
+    if (x == 0){
+        if (y == 0)
+            return 0;
+        else if (y > 0)
+            return M_PI/2;
+        else
+            return -M_PI/2;
+    }
     // right hemisphere
     else if (x > 0)
         return atan(y / x);
@@ -37,7 +39,7 @@ inline float azimuth_from_cartesian(float x, float y)
     else if (x < 0 && y >= 0)
         return (atan(y / x)+M_PI);
     // bottom left
-    else if (x < 0 && y < 0)
+    else //if (x < 0 && y < 0)
         return -(M_PI - atan(y / x));
 }
 
@@ -49,7 +51,6 @@ inline float elevation_from_cartesian(float x, float y, float z)
         return atan(z / sqrt((x * x) + (y * y)));
     else
     {
-        auto eins = (-atan(-z / sqrt((x * x) + (y * y))));
         return (-atan(-z / sqrt((x * x) + (y * y))));
     }    
 }
