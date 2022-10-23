@@ -48,7 +48,7 @@ LFOBox::LFOBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeSt
     LFONumberBox.addListener(this);
     LFONumberBox.setColour(juce::TextButton::buttonColourId, seamlessBlue);
     LFONumberBox.setComponentID("LFONumber");
-    LFONumberBox.setHelpText("Choose the coordinate to be controlled by the LFO. You can set LFOs for all 3 dimensions simutaniously. Just set each and click the Start-Button afterwards.");
+    LFONumberBox.setTooltip("Choose the coordinate to be controlled by the LFO. You can set LFOs for all 3 dimensions simutaniously. Just set each and click the Start-Button afterwards.");
     LFONumberBox.addItem("x", 1);
     LFONumberBox.addItem("y", 2);
     LFONumberBox.addItem("z", 3);

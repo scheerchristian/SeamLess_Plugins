@@ -23,9 +23,9 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     oscTargetAddressText.setColour (juce::Label::backgroundColourId, seamlessGrey);
     oscTargetAddressText.setJustificationType (juce::Justification::right);
     oscTargetAddressText.setEditable (true);
+    oscTargetAddressText.setTooltip("The target's IP-Adress.");
     oscTargetAddressText.onTextChange = [this]
     {
-
         juce::IPAddress ip(oscTargetAddressText.getText());
         juce::String s = oscTargetAddressText.getText();
         if (s == "localhost")
@@ -44,9 +44,6 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
         }
         else
             audioProcessor->setOscTargetAddress(s);
-
-        // setOscTargetAddressText(this, s);
-
     };
     
     addAndMakeVisible(titleLabel);
@@ -58,6 +55,7 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     oscTargetPortText.setColour (juce::TextEditor::backgroundColourId, seamlessGrey);
     oscTargetPortText.setSelectAllWhenFocused(true);
     oscTargetPortText.setJustification(juce::Justification::centredRight);
+    oscTargetPortText.setTooltip("The target's UDP-Port");
     //oscTargetPortText.setEditable (true);
     oscTargetPortText.setInputRestrictions(5, "0123456789");
     

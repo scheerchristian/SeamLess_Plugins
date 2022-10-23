@@ -39,6 +39,7 @@ public:
     void connectZToParameter(juce::RangedAudioParameter& p);
     
     void sliderValueChanged(juce::Slider* slider) override;
+    void buttonClicked(juce::Button* button) override;
 
     private:
     SeamLess_ClientAudioProcessor& audioProcessor;
@@ -66,6 +67,7 @@ public:
     juce::TextButton buttonLayout;
     juce::TextButton buttonGrid;
     
+    juce::TooltipWindow tooltips;
 
 
     // the zSlider gets a SliderAttachment to keep sync with its corresponding parameter in the apvts ...
@@ -73,15 +75,8 @@ public:
     // ... which also needs a ParameterAttachment which calls a callback-function in which we can update the knob inside topView, as its size depends on our z-Position
     std::unique_ptr<juce::ParameterAttachment> zAttachment; // Attachment to connect the z-Value with the RangedAudioParameter in apvts in the PluginProcessor
 
-    void buttonClicked(juce::Button* button) override;
 
     
-    //========================= deprecated =====================================================
-    // juce::Slider rSlider;
-    // juce::Label rSliderLabel;
-    // void sliderValueChanged(juce::Slider* slider) override;
-    //    juce::Slider xSlider;
-    //    juce::Slider ySlider;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SeamLess_ClientAudioProcessorEditor)
 
 };

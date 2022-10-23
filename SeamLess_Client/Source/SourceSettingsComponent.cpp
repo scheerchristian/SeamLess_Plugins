@@ -24,6 +24,7 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     addAndMakeVisible (sourceIndText);
     sourceIndText.setEditable (true);
     sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
+    sourceIndText.setTooltip("Source Index of the audio stream that corresponds to this channel. Every channel should have a unique index.");
 
     addAndMakeVisible(nameLabel);
     nameLabel.setText("SeamLess Client", juce::NotificationType::dontSendNotification);
@@ -53,9 +54,7 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     sourceIndText.setText(std::to_string(a->getSourceIndex()), juce::NotificationType::dontSendNotification);
 
 
-
     startTimer(100);
-
 }
 
 SourceSettingsComponent::~SourceSettingsComponent()

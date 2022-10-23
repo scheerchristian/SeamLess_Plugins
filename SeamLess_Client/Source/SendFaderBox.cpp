@@ -23,8 +23,11 @@ SendFaderBox::SendFaderBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
 {
 
     sendFaderWFS.setText("WFS");
+    sendFaderWFS.setTooltip("Send level for Wave Field Synthesis.");
     sendFaderHOA.setText("HOA");
+    sendFaderHOA.setTooltip("Send level for Higher Order Ambisonics.");
     sendFaderREV.setText("REV");
+    sendFaderREV.setTooltip("Send level for Reverb.");
 //    sendFaderLFE.setText("LFE");
 
     addAndMakeVisible(sendFaderHOA);

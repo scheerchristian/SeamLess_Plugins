@@ -28,28 +28,25 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     lfoBox.connectXtoParameter(*treeState.getParameter("xPos"));
     lfoBox.connectYtoParameter(*treeState.getParameter("yPos"));
     lfoBox.connectZtoParameter(*treeState.getParameter("zPos"));
-
     connectZToParameter(*treeState.getParameter("zPos"));
     
-    setSize (1000, 600);
+    // window size settings
+    setSize (1000, 600);    
     setResizable(true, true);
     setResizeLimits(675, 600, 7000, 8000);
     
-//==== BOXES =========================================================================
 
     addAndMakeVisible(topView);
 
+//==== BOXES =========================================================================
     addAndMakeVisible(sendBox);
     sendBox.setVisible(false);
-    buttonSend.setColour(juce::TextButton::buttonColourId, seamlessBlue);
 
     addAndMakeVisible(sphericalBox);
     sphericalBox.setVisible(false);
-    buttonSpherical.setColour(juce::TextButton::buttonColourId, seamlessBlue);
 
     addAndMakeVisible(lfoBox);
     lfoBox.setVisible(false);
-    buttonLFO.setColour(juce::TextButton::buttonColourId, seamlessBlue);
     
     addAndMakeVisible(connectionComponent);
     connectionComponent.setOscTargetPortText(audioProcessor.getOscTargetPort());
@@ -75,27 +72,58 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
     
 //==== BUTTONS ========================================================================
     
+    // LFO Button
     addAndMakeVisible(buttonLFO);
     buttonLFO.addListener(this);
     buttonLFO.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonLFO.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
     buttonLFO.setComponentID("lfo");
     buttonLFO.setButtonText ("LFO");
-    
+    buttonLFO.setTooltip("Control the source position with LFOs. You can assign one LFO per axis (x, y, z). Use the LFOs only to draw automations in your session. When the automation is drawn, the LFOs can be turned of. Also note that the LFOs automatically stop when you close the plugin.");
+
+    // Send Button
     addAndMakeVisible(buttonSend);
     buttonSend.addListener(this);
     buttonSend.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonSend.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
     buttonSend.setComponentID("send");
     buttonSend.setButtonText ("Send");
-    
+    buttonSend.setTooltip("Send levels for sending audio to the Ambisonics (HOA), wave field synthesis (WFS) and reverb (REV) systems.");
+
+    // Spherical Button
     addAndMakeVisible(buttonSpherical);
     buttonSpherical.addListener(this);
     buttonSpherical.setColour(juce::TextButton::buttonColourId,seamlessBlue);
     buttonSpherical.setColour(juce::ComboBox::outlineColourId,seamlessBlue);
     buttonSpherical.setComponentID("spherical");
     buttonSpherical.setButtonText ("Spherical");
-    
+    buttonSpherical.setTooltip("Control the source position with spherical coordinates.");
+
+    // Layout Button
+    addAndMakeVisible(buttonLayout);
+    buttonLayout.addListener(this);
+    buttonLayout.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+    buttonLayout.setComponentID("layout");
+    buttonLayout.setTooltip("Toggle between the scaled graphical representations of the Humboldt-Forum (HuFo) and the studio at TU Berlin.");
+    if (audioProcessor.getShapeState() == audioProcessor.HuFo)
+    {
+        buttonLayout.setButtonText("HuFo");
+        topView.changeLayout(true);
+    }
+    else
+    {
+        buttonLayout.setButtonText("Studio");
+        topView.changeLayout(false);
+    }
+
+    // Grid Button
+    addAndMakeVisible(buttonGrid);
+    buttonGrid.addListener(this);
+    buttonGrid.setColour(juce::TextButton::buttonColourId, seamlessBlue);
+    buttonGrid.setComponentID("grid");
+    buttonGrid.setTooltip("Toggle between 'no grid', 'square grid' and 'circle grid'.");
+
+
     switch (audioProcessor.getSettingsMode())
     {
     case 0:
@@ -112,24 +140,6 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
         break;
     }
 
-    addAndMakeVisible(buttonLayout);
-    buttonLayout.addListener(this);
-    buttonLayout.setColour(juce::TextButton::buttonColourId,seamlessBlue);
-    buttonLayout.setComponentID("layout");
-    if (audioProcessor.getShapeState() == audioProcessor.HuFo)
-    {
-        buttonLayout.setButtonText("HuFo");
-        topView.changeLayout(true);
-    }
-    else
-    {
-        buttonLayout.setButtonText("Studio");
-        topView.changeLayout(false);
-    }
-    addAndMakeVisible(buttonGrid);
-    buttonGrid.addListener(this);
-    buttonGrid.setColour(juce::TextButton::buttonColourId, seamlessBlue);
-    buttonGrid.setComponentID("grid");
     switch (audioProcessor.getGridState())
     {
         case 0:
@@ -145,6 +155,8 @@ SeamLess_ClientAudioProcessorEditor::SeamLess_ClientAudioProcessorEditor
             topView.showGrid(true, false);
             break;
     }
+    
+    addAndMakeVisible(tooltips);
 }
 
 SeamLess_ClientAudioProcessorEditor::~SeamLess_ClientAudioProcessorEditor()
