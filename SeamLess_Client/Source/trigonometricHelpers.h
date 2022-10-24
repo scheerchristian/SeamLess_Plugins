@@ -12,9 +12,8 @@
 
 
 #pragma once
-#include <math.h>
-#define _USE_MATH_DEFINES
-
+//#include <math.h>
+//#define _USE_MATH_DEFINES
 
 inline float radius_from_cartesian(float x, float y, float z)
 {
@@ -24,35 +23,41 @@ inline float radius_from_cartesian(float x, float y, float z)
 inline float azimuth_from_cartesian(float x, float y)
 {
     // avoid division by 0
-    if (x == 0){
+    if (x == 0)
+    {
         if (y == 0)
             return 0;
         else if (y > 0)
-            return M_PI/2;
+            return juce::MathConstants<double>::pi/2;
         else
-            return -M_PI/2;
+            return -juce::MathConstants<double>::pi/2;
     }
     // right hemisphere
     else if (x > 0)
         return atan(y / x);
     // top left
     else if (x < 0 && y >= 0)
-        return (atan(y / x)+M_PI);
+        return (atan(y / x)+juce::MathConstants<double>::pi);
     // bottom left
     else //if (x < 0 && y < 0)
-        return -(M_PI - atan(y / x));
+        return -(juce::MathConstants<double>::pi - atan(y / x));
 }
 
 inline float elevation_from_cartesian(float x, float y, float z)
 {
-    if (x == 0 && y == 0 && z == 0)
-        return 0.0f;
-    else if (z > 0)
-        return atan(z / sqrt((x * x) + (y * y)));
-    else
+    if (x == 0 && y == 0)
     {
-        return (-atan(-z / sqrt((x * x) + (y * y))));
-    }    
+        if (z == 0)
+            return 0.0f;
+        else if (z > 0)
+            return juce::MathConstants<double>::pi/2;
+        else
+            return -juce::MathConstants<double>::pi/2;
+    }
+    else if (z > 0)
+        return  atan( z / sqrt((x * x) + (y * y)));
+    else
+        return -atan(-z / sqrt((x * x) + (y * y)));
 }
 
 inline float x_from_spherical(float radius, float elevation, float azimuth)
@@ -72,11 +77,11 @@ inline float z_from_spherical(float radius, float elevation)
 
 inline float radian_to_degree(float radian)
 {
-    return radian * 180 / M_PI;
+    return radian * 180 / juce::MathConstants<double>::pi;
 }
 
 inline float degree_to_radian(float degree)
 {
-    return degree * M_PI / 180;
+    return degree * juce::MathConstants<double>::pi / 180;
 }
 #endif TRIGONOMETRIC_HELPERS

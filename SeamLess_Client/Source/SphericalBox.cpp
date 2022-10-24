@@ -7,8 +7,8 @@ SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcesso
     audioProcessor(p), treeState(apvts),
    
     rSlider(p, apvts, false, { 0, 1, true }, "radius"),
-    azimuthSlider(p, apvts, true, { 3 * M_PI / 2, 7*M_PI/2,  false }, "azimuth"),
-    elevationSlider(p, apvts, true, {0, M_PI, false }, "elevation")
+    azimuthSlider(p, apvts, true, { 3 * juce::MathConstants<double>::pi / 2, 7*juce::MathConstants<double>::pi/2,  false }, "azimuth"),
+    elevationSlider(p, apvts, true, {0, juce::MathConstants<double>::pi, false }, "elevation")
 {
     rSlider.setName("rSlider");
     azimuthSlider.setName("azimutSlider");

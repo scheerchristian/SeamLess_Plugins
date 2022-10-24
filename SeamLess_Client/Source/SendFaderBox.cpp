@@ -56,7 +56,6 @@ void SendFaderBox::paint (juce::Graphics& g)
 
 void SendFaderBox::resized()
 {
-    
     auto r = getLocalBounds().reduced(10, 10);
     
     auto sliderWidth = (r.getWidth()-20)/3 ;
@@ -73,28 +72,11 @@ void SendFaderBox::resized()
 
     auto sendFaderREVSection = r.removeFromLeft(sliderWidth);
     sendFaderREV.setBounds(sendFaderREVSection);
-
-    /*
-    const int &maxFaderWidth = std::min<int>(getWidth()/6, 60);
-    
-        sendFaderHOA.setBounds(20, 60, maxFaderWidth, getHeight() - 90);
-        sendFaderWFS.setBounds(20 + getWidth()/3 + 10 - maxFaderWidth/2, 60, maxFaderWidth, getHeight() - 90);
-        sendFaderREV.setBounds(20 + getWidth()/3 + 20 + getWidth() / 3 + 10 - maxFaderWidth, 60, maxFaderWidth, getHeight() - 90);
-    
-//    sendFaderLFE.setBounds(370,60,60,460);
-        */
 }
 
 
 void SendFaderBox::sliderValueChanged (juce::Slider* slider)
 {
-    //    if (slider == &xSlider)
-    //        xSlider.setValue (xSlider.getValue(), juce::dontSendNotification);
 
-    //    if (slider == &ySlider)
-    //        ySlider.setValue (ySlider.getValue(), juce::dontSendNotification);
-
-    //    if (slider == &zSlider)
-    //        zSlider.setValue (zSlider.getValue(), juce::dontSendNotification);
 }
 

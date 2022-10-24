@@ -44,29 +44,3 @@ void SoundSource::paint (juce::Graphics& g)
 
 void SoundSource::setXPos(float newValue) { xPos = newValue;    }
 void SoundSource::setYPos(float newValue) { yPos = newValue;    }
-
-/*
-
-void SoundSource::mouseDrag (const juce::MouseEvent& e){}
-
-void SoundSource::moveX(double x){}
-
-void SoundSource::moveY(double y){}
-
-void SoundSource::moveXY(float x, float y){}
-
-void SoundSource::moveXYZ(float x, float y, float z)
-{
-    xPos  = x*getWidth()      - (int) ((float) width/2.0);
-    yPos  = (1-y)*getHeight() - (int) ((float) width/2.0);
-    
-    width = getWidth()*0.0015*(20+z*15);
-    shadowWidth  = width*1.2*(z+1);
-    shadowOpacity = 1-(float)z*0.7;
-    repaint();
-   
-
-
-    //this->setBounds(xPos, yPos, width, height);
-}
-*/

@@ -35,7 +35,7 @@ public:
     
     void buttonClicked(juce::Button* button) override;
 
-    void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged);
+    void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged) override;
     
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);

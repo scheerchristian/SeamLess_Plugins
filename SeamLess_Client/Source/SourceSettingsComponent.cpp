@@ -96,9 +96,8 @@ void SourceSettingsComponent::timerCallback()
 {
     if(sourceIndText.isBeingEdited() == false) {
         sourceIndText.setText(juce::String(processor->getSourceIndex()), juce::dontSendNotification);
-        if (!processor->getConnectedToMain()){
+        if (!processor->getConnectedToMain())
             processor->reconnectToMainPlugin();
-        }
     }
     this->setConnectionFeedback(processor->getConnectedToMain());
 

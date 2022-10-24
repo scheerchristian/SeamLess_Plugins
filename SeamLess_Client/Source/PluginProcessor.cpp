@@ -1,6 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include <math.h>
+//#include <math.h>
 
 //==============================================================================
 
@@ -143,10 +143,8 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    auto* ph = getPlayHead();
     playSending = playInfo.getIsPlaying();
 
-    int numSamples = buffer.getNumSamples();
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
@@ -622,17 +620,17 @@ void SeamLess_ClientAudioProcessor::endLFOs()
 std::array<float, 12> SeamLess_ClientAudioProcessor::getLfoSettings()
 {
     float xDepth = parameters.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
-    float xPhase = parameters.getParameterAsValue("xLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float xPhase = parameters.getParameterAsValue("xLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
     float xRate = parameters.getParameterAsValue("xLfoRate").toString().getFloatValue();
     float xOffset = parameters.getParameterAsValue("xLfoOffset").toString().getFloatValue();
 
     float yDepth = parameters.getParameterAsValue("yLfoDepth").toString().getFloatValue() / 10;
-    float yPhase = parameters.getParameterAsValue("yLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float yPhase = parameters.getParameterAsValue("yLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
     float yRate = parameters.getParameterAsValue("yLfoRate").toString().getFloatValue();
     float yOffset = parameters.getParameterAsValue("yLfoOffset").toString().getFloatValue();
 
     float zDepth = parameters.getParameterAsValue("zLfoDepth").toString().getFloatValue() / 10;
-    float zPhase = parameters.getParameterAsValue("zLfoPhase").toString().getFloatValue() * M_PI / 180;
+    float zPhase = parameters.getParameterAsValue("zLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
     float zRate = parameters.getParameterAsValue("zLfoRate").toString().getFloatValue();
     float zOffset = parameters.getParameterAsValue("zLfoOffset").toString().getFloatValue();
 
