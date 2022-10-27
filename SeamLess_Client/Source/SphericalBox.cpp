@@ -6,11 +6,11 @@
 SphericalBox::SphericalBox(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts) :
     audioProcessor(p), treeState(apvts),
    
-    rSlider(p, apvts, false, { 0, 1, true }, "radius"),
+    radiusSlider(p, apvts, false, { 0, 1, true }, "radius"),
     azimuthSlider(p, apvts, true, { 3 * juce::MathConstants<double>::pi / 2, 7*juce::MathConstants<double>::pi/2,  false }, "azimuth"),
     elevationSlider(p, apvts, true, {0, juce::MathConstants<double>::pi, false }, "elevation")
 {
-    rSlider.setName("rSlider");
+    radiusSlider.setName("radiusSlider");
     azimuthSlider.setName("azimutSlider");
     elevationSlider.setName("elevationSlider");
     for (int i = 0; i < 3; i++)
@@ -80,7 +80,7 @@ void SphericalBox::resized()
     //r.removeFromTop(40);
 
     auto sendFaderFOASection = r.removeFromLeft(sliderWidth);
-    rSlider.setBounds(sendFaderFOASection);
+    radiusSlider.setBounds(sendFaderFOASection);
 
     r.removeFromLeft(10);
 
@@ -101,12 +101,16 @@ void SphericalBox::updateSphericalSliders(float x, float y, float z, bool alsoUp
     elevationSlider.slider.setValue(radian_to_degree(elevation_from_cartesian(x, y, z)), juce::dontSendNotification);
     if (alsoUpdateRadius == true)
     {
-        rSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+        radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
         azimuthSlider.setRadiusCritical(false);
         elevationSlider.setRadiusCritical(false);
     }
 
 }
+
+//float backupRadius;
+
+//bool backup;
 
 //==============================================================================
 //  Callback-functions for which are called when parameters in the apvts change
@@ -121,13 +125,33 @@ void SphericalBox::connectXtoParameter(juce::RangedAudioParameter& p)
             float y = treeState.getParameterAsValue("yPos").toString().getFloatValue();
             float z = treeState.getParameterAsValue("zPos").toString().getFloatValue();
 
+
             // check if spherical sliders are not sending information to avoid sync-problems
-            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+            if (radiusSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
                 updateSphericalSliders(x, y, z, true);    // update the sliders graphically
             // check if the radius slider was moved to a value > 10. If yes, update the slider-objects of azimuth and elevation
             // as they might have changed because the soundSource hit its boundaries and moved along them.
-            if (rSlider.isRadiusCritical() == true)
+            if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
+            //if ((azimuthSlider.onDrag || elevationSlider.onDrag))
+            if (azimuthSlider.onDrag || elevationSlider.onDrag)
+
+                if ( std::abs(x_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10){
+                        //backupRadius = radiusSlider.slider.getValue();
+                        //backup = true;
+                        radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                }
+                //if (( std::abs(x_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
+                   // ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
+                    // (std::abs(z_from_spherical(backupRadius, elevationSlider.slider.getValue())) <= 10)
+                //{
+                  //  backup = false;
+                    //radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
+               // }
+        
+                                /*if (radius_from_cartesian(x, y, z) > 10)
+                if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
         });
 }
 
@@ -140,12 +164,27 @@ void SphericalBox::connectYtoParameter(juce::RangedAudioParameter& p)
             float z = treeState.getParameterAsValue("zPos").toString().getFloatValue();
 
             // check if spherical sliders are not sending information to avoid sync-problems
-            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+            if (radiusSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
                 updateSphericalSliders(x, y, z, true);
             // check if the radius slider was moved to a value > 10. If yes, update the slider-objects of azimuth and elevation
             // as they might have changed because the soundSource hit its boundaries and moved along them.
-            if (rSlider.isRadiusCritical() == true)
+            if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
+            if (radiusSlider.isRadiusCritical() == true)
+                updateSphericalSliders(x, y, z, false);
+            
+            //if (radius_from_cartesian(x, y, z) > 10)
+            if (azimuthSlider.onDrag || elevationSlider.onDrag) {
+
+                if ( std::abs(y_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10){
+                    //backup = true;
+                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                }
+                /*if ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10){
+                    radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
+                }*/
+            }
+        
         });
 }
 
@@ -157,12 +196,25 @@ void SphericalBox::connectZtoParameter(juce::RangedAudioParameter& p)
             float y = treeState.getParameterAsValue("yPos").toString().getFloatValue();
             float z = newValue;
             // check if spherical sliders are not sending information to avoid sync-problems
-            if (rSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
+            if (radiusSlider.onDrag == false && azimuthSlider.onDrag == false && elevationSlider.onDrag == false)
                 updateSphericalSliders(x, y, z, true);    // update the sliders graphically
             // check if the radius slider was moved to a value > 10. If yes, update the slider-objects of azimuth and elevation
             // as they might have changed because the soundSource hit its boundaries and moved along them.
-            if (rSlider.isRadiusCritical() == true)
+            if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
+            if (azimuthSlider.onDrag || elevationSlider.onDrag)
+
+                if ( std::abs(z_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue())) > 10){
+                        //backup = true;
+                        radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                }
+        
+                /*if ( std::abs(z_from_spherical(backupRadius, elevationSlider.slider.getValue())) <= 10)
+                        radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification); */
+         
+            /*if (radius_from_cartesian(x, y, z) > 10)
+                if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
         });
 }
 

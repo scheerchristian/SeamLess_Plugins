@@ -38,7 +38,7 @@ private:
     SeamLess_ClientAudioProcessor& audioProcessor;
     juce::AudioProcessorValueTreeState& treeState;
 
-    SphericalFader rSlider;
+    SphericalFader radiusSlider;
     SphericalFader azimuthSlider;
     SphericalFader elevationSlider;
 
@@ -48,11 +48,11 @@ private:
     std::unique_ptr<juce::ParameterAttachment> zAttachment;
 
     juce::String names[3] = { "radius", "azimuth", "elevation" };
-    SphericalFader* faders[3] = { &rSlider, &azimuthSlider, &elevationSlider };
-    juce::Range<double> ranges[3] = { {0.0, 14.14}, {-180, 180}, {-90, 90} };
+    SphericalFader* faders[3] = { &radiusSlider, &azimuthSlider, &elevationSlider };
+    juce::Range<double> ranges[3] = { {0.0, 17.32}, {-180, 180}, {-90, 90} };
     juce::String suffixes[3] = { " m",juce::CharPointer_UTF8("\xc2\xb0"), juce::CharPointer_UTF8("\xc2\xb0") };
 
-    //juce::AudioProcessorValueTreeState::SliderAttachment rSliderAttachment;
+    //juce::AudioProcessorValueTreeState::SliderAttachment radiusSliderAttachment;
    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SphericalBox)
 };
