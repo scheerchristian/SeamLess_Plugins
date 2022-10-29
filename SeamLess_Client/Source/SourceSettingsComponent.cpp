@@ -54,7 +54,7 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     sourceIndText.setText(std::to_string(a->getSourceIndex()), juce::NotificationType::dontSendNotification);
 
 
-    startTimer(100);
+    startTimer(1000);
 }
 
 SourceSettingsComponent::~SourceSettingsComponent()
@@ -94,13 +94,15 @@ void SourceSettingsComponent::resized()
 
 void SourceSettingsComponent::timerCallback()
 {
-    if(sourceIndText.isBeingEdited() == false) {
+    
+    if(sourceIndText.isBeingEdited() == false) 
+    {
         sourceIndText.setText(juce::String(processor->getSourceIndex()), juce::dontSendNotification);
         if (!processor->getConnectedToMain())
             processor->reconnectToMainPlugin();
     }
     this->setConnectionFeedback(processor->getConnectedToMain());
-
+    
 }
 
 

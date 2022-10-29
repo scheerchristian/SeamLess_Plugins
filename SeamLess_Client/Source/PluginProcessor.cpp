@@ -550,8 +550,7 @@ void SeamLess_ClientAudioProcessor::setConnectedToMain(bool b)
 
 void SeamLess_ClientAudioProcessor::reconnectToMainPlugin()
 {
-    client->connectToSocket("localhost", port_nr, 5000);
-
+    client->connectToSocket("localhost", port_nr, 10);
 }
 
 void SeamLess_ClientAudioProcessor::prepareLFOs()
