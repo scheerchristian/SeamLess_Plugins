@@ -127,8 +127,8 @@ void TopView::mouseDown(const juce::MouseEvent& e)
 
     xAttachment->beginGesture();
     yAttachment->beginGesture();
-    juce::String xcoord = juce::String(round((+20 * (float)e.getPosition().getX() / (float)getWidth() - 10) * 100) / 100) + " m";
-    juce::String ycoord = juce::String(round((-20 * (float)e.getPosition().getY() / (float)getHeight() + 10) * 100) / 100) + " m";
+    juce::String xcoord = juce::String(round((treeState.getParameterAsValue("xPos").toString().getFloatValue())*100)/100)+" m";
+    juce::String ycoord = juce::String(round((treeState.getParameterAsValue("yPos").toString().getFloatValue())*100)/100)+" m";
     
     if (std::stof(xcoord.toStdString()) >= 0)
         xcoord = " "+ xcoord;
@@ -149,8 +149,8 @@ void TopView::mouseDrag (const juce::MouseEvent& e)
     auto pos = convertPixelToMeter(e.x, e.y);
     xAttachment->setValueAsPartOfGesture(pos.x);
     yAttachment->setValueAsPartOfGesture(pos.y);
-    juce::String xcoord = juce::String(round((+20*(float)e.getPosition().getX()/(float)getWidth()-10)*100)/100)+" m";
-    juce::String ycoord = juce::String(round((-20*(float)e.getPosition().getY()/(float)getWidth()+10)*100)/100)+" m";
+    juce::String xcoord = juce::String(round((treeState.getParameterAsValue("xPos").toString().getFloatValue())*100)/100)+" m";
+    juce::String ycoord = juce::String(round((treeState.getParameterAsValue("yPos").toString().getFloatValue())*100)/100)+" m";
     if (std::stof(xcoord.toStdString()) >= 0)
         xcoord = " "+ xcoord;
     if (std::stof(ycoord.toStdString()) >= 0)
@@ -235,7 +235,7 @@ void TopView::showGrid(bool showGrid, bool xyzGrid)
     if (showGrid == true) 
     {
         enableGrid = true;
-        coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colours::white);
+        coordinatesLabel.setColour(juce::Label::backgroundColourId, juce::Colour(0x70ffffff));
         
     } 
     else 

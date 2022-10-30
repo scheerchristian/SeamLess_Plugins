@@ -33,7 +33,7 @@ private:
     SeamLess_MainAudioProcessor *audioProcessor;
 
     juce::Label oscTargetAddressText;
-    juce::Label oscTargetPortText;
+    juce::TextEditor oscTargetPortText;
 
     juce::ToggleButton sendButton   {"Send OSC"};
 

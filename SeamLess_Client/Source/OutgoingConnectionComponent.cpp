@@ -59,10 +59,15 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     //oscTargetPortText.setEditable (true);
     oscTargetPortText.setInputRestrictions(5, "0123456789");
     
-    oscTargetPortText.onTextChange = [this]
+    oscTargetPortText.onReturnKey = [this]
     {
         audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
     };
+    oscTargetPortText.onFocusLost = [this]
+    {
+        audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
+    };
+    
  
     addAndMakeVisible(sendButton);
     sendButton.onClick = [this]

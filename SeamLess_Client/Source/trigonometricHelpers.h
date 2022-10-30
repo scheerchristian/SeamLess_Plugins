@@ -28,19 +28,19 @@ inline float azimuth_from_cartesian(float x, float y)
         if (y == 0)
             return 0;
         else if (y > 0)
-            return juce::MathConstants<double>::pi/2;
+            return juce::MathConstants<float>::halfPi;
         else
-            return -juce::MathConstants<double>::pi/2;
+            return -juce::MathConstants<float>::halfPi;
     }
     // right hemisphere
     else if (x > 0)
         return atan(y / x);
     // top left
     else if (x < 0 && y >= 0)
-        return (atan(y / x)+juce::MathConstants<double>::pi);
+        return (atan(y / x)+juce::MathConstants<float>::pi);
     // bottom left
     else //if (x < 0 && y < 0)
-        return -(juce::MathConstants<double>::pi - atan(y / x));
+        return -(juce::MathConstants<float>::pi - atan(y / x));
 }
 
 inline float elevation_from_cartesian(float x, float y, float z)
@@ -50,9 +50,9 @@ inline float elevation_from_cartesian(float x, float y, float z)
         if (z == 0)
             return 0.0f;
         else if (z > 0)
-            return juce::MathConstants<double>::pi/2;
+            return juce::MathConstants<float>::halfPi;
         else
-            return -juce::MathConstants<double>::pi/2;
+            return -juce::MathConstants<float>::halfPi;
     }
     else if (z > 0)
         return  atan( z / sqrt((x * x) + (y * y)));
@@ -77,11 +77,11 @@ inline float z_from_spherical(float radius, float elevation)
 
 inline float radian_to_degree(float radian)
 {
-    return radian * 180 / juce::MathConstants<double>::pi;
+    return radian * 180.0f / juce::MathConstants<float>::pi;
 }
 
 inline float degree_to_radian(float degree)
 {
-    return degree * juce::MathConstants<double>::pi / 180;
+    return degree * juce::MathConstants<float>::pi / 180.0f;
 }
 #endif TRIGONOMETRIC_HELPERS
