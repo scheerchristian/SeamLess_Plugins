@@ -690,6 +690,28 @@ void SeamLess_ClientAudioProcessor::setElevationChangedWhileRadiusWasZero(bool n
     elevationChangedWhileRadiusWasZero = newState;
 }
 
+bool SeamLess_ClientAudioProcessor::getCriticalRadius()
+{
+    return criticalRadius;
+}
+
+void SeamLess_ClientAudioProcessor::setCriticalRadius(bool newState)
+{
+    criticalRadius = newState;
+}
+
+void SeamLess_ClientAudioProcessor::setSphericalCoordinates(float radius, float azimuth, float elevation)
+{
+    currentRadius = radius;
+    currentAzimuth = azimuth;
+    currentElevation = elevation;
+}
+
+float SeamLess_ClientAudioProcessor::getCurrentRadius()
+{
+    return currentRadius;
+}
+
 float SeamLess_ClientAudioProcessor::getCurrentAzimuth()
 {
     return currentAzimuth;
@@ -708,4 +730,9 @@ void SeamLess_ClientAudioProcessor::setCurrentAzimuth(float newValue)
 void SeamLess_ClientAudioProcessor::setCurrentElevation(float newValue)
 {
     currentElevation = newValue;
+}
+
+void SeamLess_ClientAudioProcessor::setCurrentRadius(float newValue)
+{
+    currentRadius = newValue;
 }

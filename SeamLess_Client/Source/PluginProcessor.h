@@ -146,7 +146,6 @@ public:
     void endLFOs();
     std::array<float, 12> getLfoSettings();
     
-    
     float xLFOOut;
     float yLFOOut;
     float zLFOOut;
@@ -162,13 +161,18 @@ public:
     bool getElevationChangedWhileRadiusWasZero();
     void setElevationChangedWhileRadiusWasZero(bool newState);
     
+    bool getCriticalRadius();
+    void setCriticalRadius(bool newState);
 
+    void setSphericalCoordinates(float radius, float azimuth, float elevation);
+
+
+    float getCurrentRadius();
     float getCurrentAzimuth();
     float getCurrentElevation();
     void setCurrentAzimuth(float newValue);
     void setCurrentElevation(float newValue);
-    
-
+    void setCurrentRadius(float newValue);
 
 private:
 
@@ -239,10 +243,29 @@ private:
     std::atomic<float>* yPos = nullptr;
     std::atomic<float>* zPos = nullptr;
 
-    bool azimuthChangedWhileRadiusWasZero = false; // naming is our main skill
-    bool elevationChangedWhileRadiusWasZero = false;
+//==============================================================================
+// the following variables are just to keep the difficutl relation between x,y,z
+// and rad, azi, ele in synch. They are ONLY used in the sliderValueChanged() 
+// virtual function. To get information about the current state of the source
+// always check the current value in the apvts!
+//==============================================================================
+
     float currentAzimuth;
     float currentElevation;
+    float currentRadius;
+
+    float newX;
+    float newY;
+    float newZ;
+
+    /*
+    float backupAzimuth;    // store angles in case that radius becomes 0 to be able to go back to the same angles
+    float backupElevation;
+    */
+
+    bool criticalRadius = false;    // becomes true, when the radius slider gets pulled to a value > 10
+    bool azimuthChangedWhileRadiusWasZero = false; // naming is our main skill
+    bool elevationChangedWhileRadiusWasZero = false;
 
 
     std::atomic<float>* sendGainWFS = nullptr;

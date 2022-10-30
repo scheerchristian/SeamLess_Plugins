@@ -31,8 +31,7 @@ public:
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);
 
-    void updateSphericalSliders(float x, float y, float z, bool alsoUpdateRadius);
-    bool getAzimuthChangedWhileRadiusWasZero();
+    void updateSphericalSliders(float x, float y, float z);
 
 private:
 

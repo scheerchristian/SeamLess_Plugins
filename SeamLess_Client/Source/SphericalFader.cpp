@@ -73,70 +73,47 @@ void SphericalFader::sliderDragEnded(juce::Slider* fader)
 void SphericalFader::sliderValueChanged(juce::Slider* fader)
 {
     onDrag = true;
-    float currentX = treeState.getParameterAsValue("xPos").getValue().toString().getFloatValue();
-    float currentY = treeState.getParameterAsValue("yPos").getValue().toString().getFloatValue();
-    float currentZ = treeState.getParameterAsValue("zPos").getValue().toString().getFloatValue();
 
-    // store backupAngles in case that radius slider gets pulled to 0
-    if (currentX == 0 && currentY == 0 && currentZ == 0)
-    {
-        currentAzimuth = backupAzimuth;
-        currentElevation = backupElevation;
-        currentRadius = 0;
-    }
-    else if (currentX == 0 && currentY == 0)
-    {
-        currentAzimuth = backupAzimuth;
-        currentElevation = backupElevation;
-        currentRadius = std::abs(currentZ);
-    }
-    else
-    {
-        currentAzimuth = -azimuth_from_cartesian(currentX, currentY);
-        currentElevation = elevation_from_cartesian(currentX, currentY, currentZ);
-        currentRadius = radius_from_cartesian(currentX, currentY, currentZ);
-    }
-        
-    if (sliderType == "radius")
-    {
-        currentRadius = fader->getValue();
-        if (audioProcessor.getAzimuthChangedWhileRadiusWasZero() == true)
-        {
-            currentAzimuth = audioProcessor.getCurrentAzimuth();
-            currentElevation = audioProcessor.getCurrentElevation();
-        }
-    }
-    else if (sliderType == "azimuth")
-    {
-        currentAzimuth = degree_to_radian(-fader->getValue());
-        if (currentRadius == 0)
-        {
-            audioProcessor.setAzimuthChangedWhileRadiusWasZero(true);
-            audioProcessor.setCurrentAzimuth(fader->getValue());
-        }
-        else
-            audioProcessor.setAzimuthChangedWhileRadiusWasZero(false);
+    float radius = audioProcessor.getCurrentRadius();
+    float azimuth = audioProcessor.getCurrentAzimuth();
+    float elevation = audioProcessor.getCurrentElevation();
 
+    if (sliderType == "azimuth")
+    {
+        azimuth = fader->getValue();
+        audioProcessor.setCurrentAzimuth(azimuth);
     }
     else if (sliderType == "elevation")
     {
-        currentElevation = degree_to_radian(fader->getValue());
-        if (currentRadius == 0)
+        elevation = fader->getValue();
+        audioProcessor.setCurrentElevation(elevation);
+    }
+    float newX = x_from_spherical(radius, degree_to_radian(elevation), degree_to_radian(azimuth));
+    float newY = -y_from_spherical(radius, degree_to_radian(elevation), degree_to_radian(azimuth));
+    float newZ = z_from_spherical(radius, degree_to_radian(elevation));
+
+
+    if (sliderType == "radius")
+    {
+        radius = fader->getValue();
+        newX = x_from_spherical(radius, degree_to_radian(elevation), degree_to_radian(azimuth));
+        newY = -y_from_spherical(radius, degree_to_radian(elevation), degree_to_radian(azimuth));
+        newZ = z_from_spherical(radius, degree_to_radian(elevation));
+
+        if (std::abs(newX) < 10 && std::abs(newY) < 10 && std::abs(newZ) < 10)
         {
-            audioProcessor.setElevationChangedWhileRadiusWasZero(true);
-            audioProcessor.setCurrentElevation(fader->getValue());
+            audioProcessor.setCurrentRadius(radius);
         }
         else
-            audioProcessor.setElevationChangedWhileRadiusWasZero(false);
+        {
+            newX = treeState.getParameterAsValue("xPos").toString().getFloatValue();
+            newY = treeState.getParameterAsValue("yPos").toString().getFloatValue();
+            newZ = treeState.getParameterAsValue("zPos").toString().getFloatValue();
+
+            radius = radius_from_cartesian(newX, newY, newZ);
+            fader->setValue(radius, juce::dontSendNotification);
+        }
     }
-
-    backupAzimuth = currentAzimuth;
-    backupElevation = currentElevation;
-
-    newX = x_from_spherical(currentRadius, currentElevation, currentAzimuth);
-    newY = y_from_spherical(currentRadius, currentElevation, currentAzimuth);
-    newZ = z_from_spherical(currentRadius, currentElevation);
-
     if (std::isnan(newX))
         newX = 0;
     if (std::isnan(newY))
@@ -153,8 +130,8 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     // as the soundSource might hit its boundaries and move along them. 
     // When x,y,z parameters change, the callback-function inside the SphericalBox checks if criticalRadius
     // is true. If so, the slider-objects are updated to keep them in sync.
-    if (currentRadius > 10)
-        setRadiusCritical(true);
+    if (audioProcessor.getCurrentRadius() > 10)
+        audioProcessor.setCriticalRadius(true);
     onDrag = false;
 }
 
@@ -189,29 +166,4 @@ void SphericalFader::connectZtoParameter(juce::RangedAudioParameter& p)
         });
 }
 
-
-bool  SphericalFader::isRadiusCritical()
-{
-    return criticalRadius;
-}
-
-void SphericalFader::setRadiusCritical(bool newValue)
-{
-    criticalRadius = newValue;
-}
-
-float SphericalFader::getCurrentRadius()
-{
-    return currentRadius;
-}
-
-float SphericalFader::getCurrentAzimuth()
-{
-    return currentAzimuth;
-}
-
-float SphericalFader::getCurrentElevation()
-{
-    return currentElevation;
-}
 
