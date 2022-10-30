@@ -63,14 +63,15 @@ void ReverbFaderBox::paint (juce::Graphics& g)
 
     g.setColour (seamlessBlue);
     g.setFont (14.0f);
-    g.drawText ("Reverb Parameters", 10, 10, 200, 20, juce::Justification::left, true);
+    g.drawText ("Reverb Parameters", (getWidth()-100)/2, 6, 200, 20, juce::Justification::left, true);
 }
 
 
 void ReverbFaderBox::resized()
 {
-    auto box = getLocalBounds().reduced(20, 40);
-    auto r = getLocalBounds().reduced(20, 40);
+    auto box = getLocalBounds().reduced(5, 40);
+    auto r = getLocalBounds().reduced(5, 20);
+    r.setCentre(r.getCentreX()-5, r.getCentreY()+10);
     for (int i = 0; i < 10; i++)
     {   
         if (i != 0)

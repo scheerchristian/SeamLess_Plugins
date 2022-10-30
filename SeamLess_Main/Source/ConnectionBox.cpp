@@ -22,7 +22,7 @@ ConnectionBox::ConnectionBox(SeamLess_MainAudioProcessor &p) : audioProcessor(p)
     incomingPortText.setJustificationType(juce::Justification::centred);
     
     addAndMakeVisible(receiveOscButton);
-    //receiveOscButton.setButtonText("Receiving \nOSC");
+    receiveOscButton.setTooltip("Turns green when OSC messages are received.");
 
     incomingPortText.onTextChange = [this]
     {

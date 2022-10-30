@@ -47,7 +47,7 @@ SeamLess_MainAudioProcessor::SeamLess_MainAudioProcessor()
     juce::OSCReceiver::addListener(this, "/send/gain");
 
     beginWaitingForSocket(52713,"");
-    oscSender.connect("127.0.0.1", 9001);
+    oscSender.connect("127.0.0.1", 9001); // this line is added to avoid crashes when building the standalone application
     startTimer(SEND_INTERVAL);
 }
 

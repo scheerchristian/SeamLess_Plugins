@@ -20,24 +20,51 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_MainAudioProce
     oscTargetAddressText.setText("loco", juce::dontSendNotification);
     oscTargetAddressText.setColour (juce::Label::textColourId, juce::Colours::white);
     oscTargetAddressText.setColour (juce::Label::backgroundColourId, seamlessBlue);
-    //oscTargetAddressText.setJustificationType (juce::Justification::right);
+    oscTargetAddressText.setJustificationType (juce::Justification::right);
+    oscTargetAddressText.setTooltip("The target's IP-Adress.");
     oscTargetAddressText.setEditable (true);
     oscTargetAddressText.onTextChange = [this]
     {
+        juce::IPAddress ip(oscTargetAddressText.getText());
         juce::String s = oscTargetAddressText.getText();
-        audioProcessor->setOscTargetAddress(s);
+        if (s == "localhost")
+            audioProcessor->setOscTargetAddress("127.0.0.1");
+        else if (ip.isNull())   // if entered ip adress is invalid
+        {
+            juce::String messageString("IP-Adress is invalid. Please enter a valid adress. Adress is now being set to the default value 127.0.0.1");
+            
+            juce::AlertWindow::showAsync(juce::MessageBoxOptions()
+                .withIconType(juce::MessageBoxIconType::WarningIcon)
+                .withTitle("Invalid IP-Adress")
+                .withMessage(messageString)
+                .withButton("OK"),
+                nullptr);
+            audioProcessor->setOscTargetAddress("127.0.0.1");
+        }
+        else
+            audioProcessor->setOscTargetAddress(s);
     };
 
 
     addAndMakeVisible(oscTargetPortText);
     oscTargetPortText.setText("mot", juce::dontSendNotification);
-    oscTargetPortText.setColour (juce::Label::textColourId, juce::Colours::white);
-    oscTargetPortText.setColour (juce::Label::backgroundColourId, seamlessBlue);
-    //oscTargetPortText.setJustificationType (juce::Justification::right);
-    oscTargetPortText.setEditable (true);
-    oscTargetPortText.onTextChange = [this]
+    oscTargetPortText.setColour (juce::TextEditor::textColourId, juce::Colours::white);
+    oscTargetPortText.setColour (juce::TextEditor::backgroundColourId, seamlessBlue);
+    oscTargetPortText.setSelectAllWhenFocused(true);
+    oscTargetPortText.setJustification (juce::Justification::centredRight);
+    oscTargetPortText.setTooltip("The target's UDP-Port");
+    //oscTargetPortText.setEditable (true);
+    oscTargetPortText.setInputRestrictions(5, "0123456789");
+    
+    oscTargetPortText.onReturnKey = [this]
     {
         audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
+
+    };
+    oscTargetPortText.onFocusLost = [this]
+    {
+        audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
+
     };
 
     addAndMakeVisible(sendButton);
@@ -83,9 +110,6 @@ void OutgoingConnectionComponent::timerCallback()
     // update text boxes only if they are not being edited
     if(oscTargetAddressText.isBeingEdited() == false)
         oscTargetAddressText.setText(audioProcessor->getOscTargetAddress(), juce::dontSendNotification);
-
-    if(oscTargetPortText.isBeingEdited() == false)
-        oscTargetPortText.setText(juce::String(audioProcessor->getOscTargetPort()), juce::dontSendNotification);
 
     sendButton.setToggleState(audioProcessor->getSendState(), juce::dontSendNotification);
 

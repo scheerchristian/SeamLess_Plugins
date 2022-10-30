@@ -103,12 +103,12 @@ void SeamLess_MainAudioProcessorEditor::resized()
     else
         sourceViewer.setBounds(15, r.getY(), r.getWidth(), r.getWidth() + 5);
     
-    oscConnectionBox.setBounds(10, 40, getWidth()*0.25, 60);
-    connectionComponent.setBounds(10, 110, getWidth()*0.25, 100);
-    reverbFaderBox.setBounds(getWidth()*0.275, 10, getWidth()*0.72, getHeight()-20);
-    fullscreenSourceViewerButton.setBounds(10, 220, 100, 20);
+    oscConnectionBox.setBounds(10, 40, 230, 40);
+    connectionComponent.setBounds(10, 90, 230, 100);
+    reverbFaderBox.setBounds(250, 10, getWidth()-255, getHeight()-20);
+    fullscreenSourceViewerButton.setBounds(10, 200, 100, 20);
 
-    const int &maxSourceViewerSize = std::min<int>((getWidth()*0.25), getHeight()-oscConnectionBox.getHeight()-connectionComponent.getHeight()-95);
+    const int &maxSourceViewerSize = std::min<int>(oscConnectionBox.getWidth(), getHeight()-oscConnectionBox.getHeight()-connectionComponent.getHeight()-95);
     if (fullScreen == false)
     {
         sourceViewer.setBounds((reverbFaderBox.getX()-maxSourceViewerSize)/2, reverbFaderBox.getY()+reverbFaderBox.getHeight()-maxSourceViewerSize, maxSourceViewerSize, maxSourceViewerSize);
