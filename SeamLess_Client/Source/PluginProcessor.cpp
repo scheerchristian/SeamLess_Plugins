@@ -619,17 +619,17 @@ void SeamLess_ClientAudioProcessor::endLFOs()
 std::array<float, 12> SeamLess_ClientAudioProcessor::getLfoSettings()
 {
     float xDepth = parameters.getParameterAsValue("xLfoDepth").toString().getFloatValue() / 10;
-    float xPhase = parameters.getParameterAsValue("xLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
+    float xPhase = parameters.getParameterAsValue("xLfoPhase").toString().getFloatValue() * juce::MathConstants<float>::pi / 180.0f;
     float xRate = parameters.getParameterAsValue("xLfoRate").toString().getFloatValue();
     float xOffset = parameters.getParameterAsValue("xLfoOffset").toString().getFloatValue();
 
     float yDepth = parameters.getParameterAsValue("yLfoDepth").toString().getFloatValue() / 10;
-    float yPhase = parameters.getParameterAsValue("yLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
+    float yPhase = parameters.getParameterAsValue("yLfoPhase").toString().getFloatValue() * juce::MathConstants<float>::pi / 180.0f;
     float yRate = parameters.getParameterAsValue("yLfoRate").toString().getFloatValue();
     float yOffset = parameters.getParameterAsValue("yLfoOffset").toString().getFloatValue();
 
     float zDepth = parameters.getParameterAsValue("zLfoDepth").toString().getFloatValue() / 10;
-    float zPhase = parameters.getParameterAsValue("zLfoPhase").toString().getFloatValue() * juce::MathConstants<double>::pi / 180;
+    float zPhase = parameters.getParameterAsValue("zLfoPhase").toString().getFloatValue() * juce::MathConstants<float>::pi / 180.0f;
     float zRate = parameters.getParameterAsValue("zLfoRate").toString().getFloatValue();
     float zOffset = parameters.getParameterAsValue("zLfoOffset").toString().getFloatValue();
 
