@@ -156,6 +156,19 @@ public:
     void connectZtoParameter(juce::RangedAudioParameter& p);
     void connectLfosToParameters();
 
+    bool getAzimuthChangedWhileRadiusWasZero();
+    void setAzimuthChangedWhileRadiusWasZero(bool newState);
+
+    bool getElevationChangedWhileRadiusWasZero();
+    void setElevationChangedWhileRadiusWasZero(bool newState);
+    
+
+    float getCurrentAzimuth();
+    float getCurrentElevation();
+    void setCurrentAzimuth(float newValue);
+    void setCurrentElevation(float newValue);
+    
+
 
 private:
 
@@ -225,7 +238,12 @@ private:
     std::atomic<float>* xPos = nullptr;
     std::atomic<float>* yPos = nullptr;
     std::atomic<float>* zPos = nullptr;
-    
+
+    bool azimuthChangedWhileRadiusWasZero = false; // naming is our main skill
+    bool elevationChangedWhileRadiusWasZero = false;
+    float currentAzimuth;
+    float currentElevation;
+
 
     std::atomic<float>* sendGainWFS = nullptr;
     std::atomic<float>* sendGainHOA = nullptr;

@@ -57,11 +57,17 @@ void SphericalFader::setText(juce::String s)
 void SphericalFader::sliderDragStarted(juce::Slider* fader)
 {
     onDrag = true;
+    xAttachment->beginGesture();
+    yAttachment->beginGesture();
+    zAttachment->beginGesture();
 }
 
 void SphericalFader::sliderDragEnded(juce::Slider* fader)
 {
     onDrag = false;
+    xAttachment->endGesture();
+    yAttachment->endGesture();
+    zAttachment->endGesture();
 }
 
 void SphericalFader::sliderValueChanged(juce::Slider* fader)
@@ -84,11 +90,6 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
         currentElevation = backupElevation;
         currentRadius = std::abs(currentZ);
     }
-    else if (currentX == 0 && currentY == 0) //same thing for |elevation| == 90¡
-    {
-        currentAzimuth = backupAzimuth;
-        currentRadius = std::abs(currentZ);
-    }
     else
     {
         currentAzimuth = -azimuth_from_cartesian(currentX, currentY);
@@ -97,11 +98,37 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     }
         
     if (sliderType == "radius")
+    {
         currentRadius = fader->getValue();
+        if (audioProcessor.getAzimuthChangedWhileRadiusWasZero() == true)
+        {
+            currentAzimuth = audioProcessor.getCurrentAzimuth();
+            currentElevation = audioProcessor.getCurrentElevation();
+        }
+    }
     else if (sliderType == "azimuth")
+    {
         currentAzimuth = degree_to_radian(-fader->getValue());
+        if (currentRadius == 0)
+        {
+            audioProcessor.setAzimuthChangedWhileRadiusWasZero(true);
+            audioProcessor.setCurrentAzimuth(fader->getValue());
+        }
+        else
+            audioProcessor.setAzimuthChangedWhileRadiusWasZero(false);
+
+    }
     else if (sliderType == "elevation")
+    {
         currentElevation = degree_to_radian(fader->getValue());
+        if (currentRadius == 0)
+        {
+            audioProcessor.setElevationChangedWhileRadiusWasZero(true);
+            audioProcessor.setCurrentElevation(fader->getValue());
+        }
+        else
+            audioProcessor.setElevationChangedWhileRadiusWasZero(false);
+    }
 
     backupAzimuth = currentAzimuth;
     backupElevation = currentElevation;
@@ -118,9 +145,9 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
         newZ = 0;
     //needed to not get clamped values
 
-    xAttachment->setValueAsCompleteGesture(newX);
-    yAttachment->setValueAsCompleteGesture(newY);
-    zAttachment->setValueAsCompleteGesture(newZ);
+    xAttachment->setValueAsPartOfGesture(newX);
+    yAttachment->setValueAsPartOfGesture(newY);
+    zAttachment->setValueAsPartOfGesture(newZ);
     
     // if the radius slider gets dragged to a value > 10 this might result in a shift of azimuth/elevation
     // as the soundSource might hit its boundaries and move along them. 
@@ -128,7 +155,6 @@ void SphericalFader::sliderValueChanged(juce::Slider* fader)
     // is true. If so, the slider-objects are updated to keep them in sync.
     if (currentRadius > 10)
         setRadiusCritical(true);
-
     onDrag = false;
 }
 
@@ -173,3 +199,19 @@ void SphericalFader::setRadiusCritical(bool newValue)
 {
     criticalRadius = newValue;
 }
+
+float SphericalFader::getCurrentRadius()
+{
+    return currentRadius;
+}
+
+float SphericalFader::getCurrentAzimuth()
+{
+    return currentAzimuth;
+}
+
+float SphericalFader::getCurrentElevation()
+{
+    return currentElevation;
+}
+

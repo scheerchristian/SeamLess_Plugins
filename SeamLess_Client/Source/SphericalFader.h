@@ -37,6 +37,11 @@ public:
     bool isRadiusCritical();
     void setRadiusCritical(bool newValue);
 
+    float getCurrentRadius();
+    float getCurrentAzimuth();
+    float getCurrentElevation();
+
+
 private:
     juce::Label sphericalNameLabel;
     SeamLess_ClientAudioProcessor& audioProcessor;

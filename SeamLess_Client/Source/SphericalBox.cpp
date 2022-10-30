@@ -102,15 +102,16 @@ void SphericalBox::updateSphericalSliders(float x, float y, float z, bool alsoUp
     if (alsoUpdateRadius == true)
     {
         radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
-        azimuthSlider.setRadiusCritical(false);
-        elevationSlider.setRadiusCritical(false);
+
+        if (radiusSlider.getValue() != 0)
+        {
+            azimuthSlider.setRadiusCritical(false);
+            elevationSlider.setRadiusCritical(false);
+        }
+        
     }
 
 }
-
-//float backupRadius;
-
-//bool backup;
 
 //==============================================================================
 //  Callback-functions for which are called when parameters in the apvts change
@@ -134,24 +135,29 @@ void SphericalBox::connectXtoParameter(juce::RangedAudioParameter& p)
             if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
             //if ((azimuthSlider.onDrag || elevationSlider.onDrag))
-            if (azimuthSlider.onDrag || elevationSlider.onDrag)
-
-                if ( std::abs(x_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10){
+            if (radiusSlider.getCurrentRadius() != 0)
+            {
+                if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                {
+                    if (std::abs(x_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10) 
+                    {
                         //backupRadius = radiusSlider.slider.getValue();
                         //backup = true;
                         radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                    }
+                    //if (( std::abs(x_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
+                       // ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
+                        // (std::abs(z_from_spherical(backupRadius, elevationSlider.slider.getValue())) <= 10)
+                    //{
+                      //  backup = false;
+                        //radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
+                   // }
+
+                                    /*if (radius_from_cartesian(x, y, z) > 10)
+                    if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                        radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
                 }
-                //if (( std::abs(x_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
-                   // ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10) &&
-                    // (std::abs(z_from_spherical(backupRadius, elevationSlider.slider.getValue())) <= 10)
-                //{
-                  //  backup = false;
-                    //radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
-               // }
-        
-                                /*if (radius_from_cartesian(x, y, z) > 10)
-                if (azimuthSlider.onDrag || elevationSlider.onDrag)
-                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
+            }
         });
 }
 
@@ -173,16 +179,20 @@ void SphericalBox::connectYtoParameter(juce::RangedAudioParameter& p)
             if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
             
-            //if (radius_from_cartesian(x, y, z) > 10)
-            if (azimuthSlider.onDrag || elevationSlider.onDrag) {
+            if (radiusSlider.getCurrentRadius() != 0)
+            {
+                //if (radius_from_cartesian(x, y, z) > 10)
+                if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                {
 
-                if ( std::abs(y_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10){
-                    //backup = true;
-                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                    if (std::abs(y_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) > 10) {
+                        //backup = true;
+                        radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
+                    }
+                    /*if ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10){
+                        radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
+                    }*/
                 }
-                /*if ( std::abs(y_from_spherical(backupRadius, elevationSlider.slider.getValue(), azimuthSlider.slider.getValue())) <= 10){
-                    radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification);
-                }*/
             }
         
         });
@@ -202,19 +212,23 @@ void SphericalBox::connectZtoParameter(juce::RangedAudioParameter& p)
             // as they might have changed because the soundSource hit its boundaries and moved along them.
             if (radiusSlider.isRadiusCritical() == true)
                 updateSphericalSliders(x, y, z, false);
-            if (azimuthSlider.onDrag || elevationSlider.onDrag)
+            if (radiusSlider.getCurrentRadius() != 0)
+            {
+                if (azimuthSlider.onDrag || elevationSlider.onDrag)
 
-                if ( std::abs(z_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue())) > 10){
+                    if (std::abs(z_from_spherical(radiusSlider.slider.getValue(), elevationSlider.slider.getValue())) > 10)
+                    {
                         //backup = true;
                         radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);
-                }
-        
+                    }
+
                 /*if ( std::abs(z_from_spherical(backupRadius, elevationSlider.slider.getValue())) <= 10)
                         radiusSlider.slider.setValue(backupRadius, juce::dontSendNotification); */
-         
-            /*if (radius_from_cartesian(x, y, z) > 10)
-                if (azimuthSlider.onDrag || elevationSlider.onDrag)
-                    radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
+
+                        /*if (radius_from_cartesian(x, y, z) > 10)
+                            if (azimuthSlider.onDrag || elevationSlider.onDrag)
+                                radiusSlider.slider.setValue(radius_from_cartesian(x, y, z), juce::dontSendNotification);*/
+            }
         });
 }
 

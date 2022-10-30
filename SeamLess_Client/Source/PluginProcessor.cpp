@@ -669,3 +669,43 @@ void SeamLess_ClientAudioProcessor::connectLfosToParameters()
     zLfoPhaseAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoPhase"), [this](float newValue) {refreshLFOs(); });
     zLfoOffsetAttachment = std::make_unique<juce::ParameterAttachment>(*parameters.getParameter("zLfoOffset"), [this](float newValue) {refreshLFOs(); });
 }
+
+bool SeamLess_ClientAudioProcessor::getAzimuthChangedWhileRadiusWasZero()
+{
+    return azimuthChangedWhileRadiusWasZero;
+}
+
+void SeamLess_ClientAudioProcessor::setAzimuthChangedWhileRadiusWasZero(bool newState)
+{
+    azimuthChangedWhileRadiusWasZero = newState;
+}
+
+bool SeamLess_ClientAudioProcessor::getElevationChangedWhileRadiusWasZero()
+{
+    return elevationChangedWhileRadiusWasZero;
+}
+
+void SeamLess_ClientAudioProcessor::setElevationChangedWhileRadiusWasZero(bool newState)
+{
+    elevationChangedWhileRadiusWasZero = newState;
+}
+
+float SeamLess_ClientAudioProcessor::getCurrentAzimuth()
+{
+    return currentAzimuth;
+}
+
+float SeamLess_ClientAudioProcessor::getCurrentElevation()
+{
+    return currentElevation;
+}
+
+void SeamLess_ClientAudioProcessor::setCurrentAzimuth(float newValue)
+{
+    currentAzimuth = newValue;
+}
+
+void SeamLess_ClientAudioProcessor::setCurrentElevation(float newValue)
+{
+    currentElevation = newValue;
+}
