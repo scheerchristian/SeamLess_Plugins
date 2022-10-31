@@ -44,7 +44,7 @@ public:
     /**
      @brief Triggered when mouse click is registered.
      
-     Used to start a gesture and show the label displaying the coordinates
+     Used to start a gesture and show the label displaying the coordinates.
      @see mouseDrag
      @see mouseUp
      */
@@ -62,7 +62,7 @@ public:
     /**
      @brief Triggered when mouse click is finished.
      
-     Used to stop the ongoing gesture and hide the label displaying the coordinates
+     Used to stop the ongoing gesture and hide the label displaying the coordinates.
      @see mouseDown
      @see mouseDrag
      */
@@ -72,7 +72,7 @@ public:
     void connectYtoParameter(juce::RangedAudioParameter& p);
 
     /**
-     Converts two coordinates in meters to the associated pixels in the Source Viewer
+     Converts two coordinates in meters to the associated pixels in the Source Viewer.
      @param xMeter x-Coordinate in meters
      @param yMeter y-Coordinate in meters
      @see convertPixelToMeter
@@ -80,7 +80,7 @@ public:
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
     
     /**
-     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters
+     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters.
      @param xPixel x-Coordinate in pixel
      @param yPixel y-Coordinate in pixel
      @see convertMeterToPixel

@@ -31,19 +31,35 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-
+    
     void sliderValueChanged (juce::Slider* slider) override;
     
+    /**
+    @brief Called when button is clicked.
+    Depending on the current state of the button it starts or stops the LFOs.
+    @see startLFOs
+    @see endLFOs
+     */
     void buttonClicked(juce::Button* button) override;
-
+    
+    /**
+    @brief Called when the LFOBox has its selected coordinate parameter changed.
+    Selects LFO coordinate parameter in the audioProcessor and switches the sliders.
+     */
     void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged) override;
     /** @endcond */
     
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);
-
+    
+    /**
+     Ends the 3 LFOs in the audioProcessor and changes text and color of button.
+     */
     void endLFOs();
+    /**
+     Starts the 3 LFOs simultaneously in the audioProcessor and changes text and color of the button.
+     */
     void startLFOs();
    
 

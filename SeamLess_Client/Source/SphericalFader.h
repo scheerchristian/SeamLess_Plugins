@@ -32,9 +32,13 @@ public:
 
     bool onDrag = false;
 
+    /** Callback-function which is called when x parameter in the apvts change. */
     void connectXtoParameter(juce::RangedAudioParameter& p);
+    /** Callback-function which is called when y parameter in the apvts change. */
     void connectYtoParameter(juce::RangedAudioParameter& p);
+    /** Callback-function which is called when z parameter in the apvts change. */
     void connectZtoParameter(juce::RangedAudioParameter& p);
+    
 
 
 private:

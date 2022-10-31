@@ -92,7 +92,7 @@ public:
     void revSizeSend();
     void revColorSend();
 
-    /** @brief returns the current state of receiving OSC.*/
+    /** @brief Returns the current state of receiving OSC.*/
     bool getReceivingState();
     
     /**
@@ -106,16 +106,16 @@ public:
     /** @brief Sets the OSC target port to connect to. */
     void setOscTargetPort(int port);
     
-    /** @brief returns state of sending OSC */
+    /** @brief Returns state of sending OSC. */
     bool getSendState();
     
-    /** @brief sets state of sending OSC */
+    /** @brief Sets state of sending OSC */
     void setSendState(bool s);
     
-    /** @brief returns the OSC target adress */
+    /** @brief Returns the OSC target adress. */
     juce::String getOscTargetAddress();
     
-    /** @brief returns the OSC target port */
+    /** @brief Returns the OSC target port. */
     int getOscTargetPort();
     
     /**

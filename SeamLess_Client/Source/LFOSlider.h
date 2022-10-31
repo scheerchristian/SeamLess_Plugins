@@ -14,6 +14,8 @@
 class LFOSlider : public juce::Slider, juce::Slider::Listener
 {
 public:
+    /**
+     @brief Creates a LFOSlider object.*/
     LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String id);
     /** @cond PRIVATE */
     ~LFOSlider() override;
@@ -22,12 +24,21 @@ public:
     void resized() override;
     /** @endcond */
     
+    /**
+     Sets a  string as the sliders name label.
+     @param s string for name label
+    */
     void setText(juce::String s);
 
     void sliderDragStarted(juce::Slider* fader) override;
     void sliderDragEnded(juce::Slider*) override;
     void sliderValueChanged(juce::Slider*) override;
-
+    
+    /**
+     Sets a range object (double) as the sliders range and a double as the sliders stepsize.
+     @param newRange range object (double) for the sliders range
+     @param newIntervall double for the sliders stepsize
+    */
     void setSliderRange(juce::Range<double> newRange, double newInterval);
     void setSliderTextValueSuffix(juce::String newSuffix);
     void setSliderSkewFactor(double newSkewFactor);

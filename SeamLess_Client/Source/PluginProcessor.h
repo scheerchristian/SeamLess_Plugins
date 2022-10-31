@@ -70,7 +70,7 @@ public:
     void xyzPosSend();
 
     /**
-     @brief Send OSC messages for the send gains
+     @brief Send OSC messages for the send gains.
     */
     void sendGainSend();
 
@@ -108,24 +108,24 @@ public:
     void setSelectedLFO(int newState);
     enum lfosToSelect { x = 1, y = 2, z = 3 };
 
-    /** @brief returns state of connection to main */
+    /** @brief Returns state of connection to main. */
     bool getConnectedToMain();
     
-    /** @brief sets current state of connection to main */
+    /** @brief Sets current state of connection to main. */
     void setConnectedToMain(bool b);
     
-    /** @brief returns state of sending OSC to main */
+    /** @brief Returns state of sending OSC to main. */
     bool getSendState();
     
-    /** @brief sets state of sending OSC to main */
+    /** @brief Sets state of sending OSC to main. */
     void setSendState(bool s);
 
     bool getPlayState();
 
-    /** @brief returns state of send button */
+    /** @brief Returns state of send button. */
     bool getSendButtonState();
     
-    /** @brief sets state of send Button */
+    /** @brief Sets state of send Button. */
     void setSendButtonState(bool newValue);
 
     virtual void parameterChanged(const juce::String& id, float val) override;
@@ -140,10 +140,28 @@ public:
     std::unique_ptr<juce::dsp::Oscillator<float>> xLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> yLFO;
     std::unique_ptr<juce::dsp::Oscillator<float>> zLFO;
+    
+    
+    /** @brief Called before LFO processing starts.
+     */
     void prepareLFOs();
+    
+    /** @brief Called when LFO parameters are changed.
+    Ends and Restarts LFOs with the new parameters. End and Restart to keep all LFOs in Correct Phase Relations.
+    @see startLFOs
+    @see endLFOs*/
     void refreshLFOs();
+    
+    /** @brief Starts LFO modulation of x,y,z parameters with given LFO settings.
+     */
     void startLFOs();
+    
+    /** @brief Ends LFO modulation of x,y,z parameters and resets the oscillation state.
+     */
     void endLFOs();
+    
+    /** @brief Gets all four LFO Settings of each of the three LFOs (x, y and z) as an array of 12 float values.
+     */
     std::array<float, 12> getLfoSettings();
     
     float xLFOOut;

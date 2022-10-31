@@ -39,7 +39,7 @@ public:
     void changeLayout(bool HuFoSelected);
     
     /**
-     Converts two coordinates in meters to the associated pixels in the Source Viewer
+     Converts two coordinates in meters to the associated pixels in the Source Viewer.
      @param xMeter x-Coordinate in meters
      @param yMeter y-Coordinate in meters
      @see convertMeterToPixel
@@ -47,7 +47,7 @@ public:
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
     
     /**
-     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters
+     Converts two coordinates in pixels in the Source Viewer to the associated "real" coordinates in meters.
      @param xPixel x-Coordinate in pixel
      @param yPixel y-Coordinate in pixel
      @see convertPixelToMeter
@@ -55,7 +55,7 @@ public:
     juce::Point<double> convertPixelToMeter(int xPixel, int yPixel);
     
     /**
-     Moves a source in the Source Viewer
+     Moves a source in the Source Viewer.
      @param sourceID SourceID of the source to be moved
      @param x new x-coordinate of the source
      @param y new y-coordinate of the source

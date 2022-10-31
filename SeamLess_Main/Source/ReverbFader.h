@@ -28,7 +28,7 @@ public:
     /** @endcond */
 
     /**
-     Sets a  string as the faders name label
+     Sets a  string as the faders name label.
      @param s string for name label
      */
     void setText(juce::String s);

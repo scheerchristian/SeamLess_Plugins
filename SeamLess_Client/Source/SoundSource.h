@@ -25,18 +25,18 @@ public:
     ~SoundSource() override;
 
     /**
-     draws the source "ball" and the underlying shadow
+     Draws the source "ball" and the underlying shadow.
      */
     void paint (juce::Graphics&) override;
 
     /**
-     Updates the x position of the source
-     @param newValue new x coordinate
+     Updates the x position of the source.
+     @param newValue New x coordinate
      */
     void setXPos(float newValue);
     /**
-     Updates the y position of the source
-     @param newValue new y coordinate
+     Updates the y position of the source.
+     @param newValue New y coordinate
      */
     void setYPos(float newValue);
   /*

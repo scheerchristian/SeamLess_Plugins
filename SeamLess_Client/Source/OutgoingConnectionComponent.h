@@ -37,7 +37,7 @@ public:
     void timerCallback() override;
     
     /**
-     Updates the TextBox containing the OSC target port
+     Updates the TextBox containing the OSC target port.
      @param newPort Port to be displayed
      */
     void setOscTargetPortText(int newPort);

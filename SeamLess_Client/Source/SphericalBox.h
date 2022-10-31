@@ -29,10 +29,23 @@ public:
     void resized() override;
     /** @endcond */
     
+    /** Callback-functions which is called when x parameter in the apvts change. */
     void connectXtoParameter(juce::RangedAudioParameter& p);
+    /** Callback-functions which is called when y parameter in the apvts change. */
     void connectYtoParameter(juce::RangedAudioParameter& p);
+    /** Callback-functions which is called when z parameter in the apvts change. */
     void connectZtoParameter(juce::RangedAudioParameter& p);
 
+    /**
+     @brief
+     Updates values of the spherical sliders whenever x, y, z coordinate parameters are changed without the spherical sliders.
+     @param x float
+     @param y float
+     @param z float
+     @see connectXtoParameter
+     @see connectYtoParameter
+     @see connectZtoParameter
+    */
     void updateSphericalSliders(float x, float y, float z);
 
 private:

@@ -34,7 +34,7 @@ public:
     /** @endcond */
 
     /**
-     @returns the source ID of the SoundSource
+     @returns The source ID of the SoundSource
      */
     int getSourceID();
     
@@ -51,7 +51,7 @@ public:
     int getSourceWidth();
     
     /**
-     updates the coordinates which are stored in the SoundSource object.
+     Updates the coordinates which are stored in the SoundSource object.
      @param x x-coordinate of the new position
      @param y y-coordinate of the new position
      @param z z-coordinate of the new position
