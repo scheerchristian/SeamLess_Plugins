@@ -27,6 +27,8 @@ class SeamLess_MainAudioProcessor  :
 public:
     //==============================================================================
     SeamLess_MainAudioProcessor();
+    /** @cond PRIVATE */
+
     ~SeamLess_MainAudioProcessor() override;
 
     virtual void parameterChanged(const juce::String & id, float val) override;
@@ -62,21 +64,29 @@ public:
 
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
-
-    ///
-    /// \brief setStateInformation
-    /// \param data
-    /// \param sizeInBytes
-    /// Restore plugin settings from last session.
+    
+    
+    /**
+     Restore plugin settings from last session.
+     @param data
+     @param sizeInBytes
+     */
     void setStateInformation (const void* data, int sizeInBytes) override;
-
+    /** @endcond */
     //==============================================================================
+    /**
+     Changes the incoming OSC port and prints a message if the connection was successful.
+     @param p port
+     */
     void setIncomingPort(int p);
+    
+    /**
+     @returns the currently used Incomping Port for OSC messages.
+     */
     int getIncomingPort();
 
-    /// \brief removeClosedConnections
-    ///
-    /// Check for unconnected main connection objects and remove them from the vecor.
+    
+    /** Check for unconnected main connection objects and remove them from the vector. */
     void removeClosedConnections();
 
     juce::AudioProcessorValueTreeState& getState();
@@ -97,7 +107,10 @@ public:
 
     juce::String  getOscTargetAddress();
     int getOscTargetPort();
-
+/**
+    @param messageType
+    @returns the most recent message of the specified type
+ */
     juce::StringArray getIncomingMessages(juce::String messageType);
 private:
 
@@ -131,16 +144,15 @@ private:
     std::atomic<float>* revLpDb   = nullptr;
 
 
-    /// \brief oscMessageReceived
-    /// \param message
-    ///
-    /// Passes incoming OSC messages to all client instances.
-    ///
-    /// @todo: Change from string to a more efficient interprocess protocol!
+    /**
+     Passes incoming OSC messages to all client instances.
+     @param message
+     @todo: Change from string to a more efficient interprocess protocol!
+     */
     void oscMessageReceived (const juce::OSCMessage& message) override;
 
     ///
-    /// \brief receiving
+    /// @brief receiving
     /// used to indicate whether any OSC message has reached the plugin
     bool receiving;
 
