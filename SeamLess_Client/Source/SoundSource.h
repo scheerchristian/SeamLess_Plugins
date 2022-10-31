@@ -20,25 +20,25 @@ class SoundSource  : public juce::Component
 {
 public:
 
-  SoundSource();
+    SoundSource();
 
-  ~SoundSource() override;
+    ~SoundSource() override;
 
     /**
      draws the source "ball" and the underlying shadow
      */
-  void paint (juce::Graphics&) override;
+    void paint (juce::Graphics&) override;
 
-/**
- Updates the x position of the source
- @params newValue new x coordinate
- */
-  void setXPos(float newValue);
+    /**
+     Updates the x position of the source
+     @param newValue new x coordinate
+     */
+    void setXPos(float newValue);
     /**
      Updates the y position of the source
-     @params newValue new y coordinate
+     @param newValue new y coordinate
      */
-  void setYPos(float newValue);
+    void setYPos(float newValue);
   /*
   void moveX(double x);
   void moveY(double y);

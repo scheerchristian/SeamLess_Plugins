@@ -12,11 +12,13 @@ class SphericalFader : public juce::Slider, juce::Slider::Listener
 
 public:
     SphericalFader(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String type);
+    /** @cond PRIVATE */
     ~SphericalFader() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
-
+    /** @endcond*/
+    
     void setText(juce::String s);
 
     void sliderDragStarted(juce::Slider* fader) override;

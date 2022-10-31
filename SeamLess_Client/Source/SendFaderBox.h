@@ -23,14 +23,14 @@ class SendFaderBox  : public juce::Component, juce::Slider::Listener
 public:
 
     SendFaderBox(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts);
+    /** @cond PRIVATE */
     ~SendFaderBox() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
-    /// \brief sliderValueChanged
-    /// \param slider
-    /// A slider listener for all send gain sliders.
+    /** @endcond */
+    
+    /** @brief A slider listener for all send gain sliders. */
     void sliderValueChanged (juce::Slider* slider) override;
     
 private:

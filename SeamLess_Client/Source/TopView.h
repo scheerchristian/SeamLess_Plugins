@@ -26,6 +26,7 @@ public:
     /**
      @brief Creates a TopView object.*/
     TopView(SeamLess_ClientAudioProcessor *p, juce::AudioProcessorValueTreeState& apvts);
+    /** @cond PRIVATE */
     ~TopView() override;
 
     std::unique_ptr<juce::ParameterAttachment> xAttachment;
@@ -38,7 +39,8 @@ public:
      All elements belonging to the TopView component are placed onto the canvas here. Relative coordinates are needed for scalability.
      */
     void resized() override;
-
+    /** @endcond */
+    
     /**
      @brief Triggered when mouse click is registered.
      

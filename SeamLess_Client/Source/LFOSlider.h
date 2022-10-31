@@ -15,11 +15,13 @@ class LFOSlider : public juce::Slider, juce::Slider::Listener
 {
 public:
     LFOSlider(SeamLess_ClientAudioProcessor& p, juce::AudioProcessorValueTreeState& apvts, bool endless, juce::Slider::RotaryParameters rotaryParameters, juce::String id);
+    /** @cond PRIVATE */
     ~LFOSlider() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;
-
+    /** @endcond */
+    
     void setText(juce::String s);
 
     void sliderDragStarted(juce::Slider* fader) override;

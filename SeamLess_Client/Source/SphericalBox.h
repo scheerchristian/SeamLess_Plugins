@@ -22,11 +22,13 @@ class SphericalBox  : public juce::Component
 public:
 
     SphericalBox(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts);
+    /** @cond PRIVATE */
     ~SphericalBox() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    /** @endcond */
+    
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);
     void connectZtoParameter(juce::RangedAudioParameter& p);

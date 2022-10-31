@@ -30,11 +30,13 @@ class SeamLess_ClientAudioProcessorEditor  : public juce::AudioProcessorEditor,
 {
 public:
     SeamLess_ClientAudioProcessorEditor (SeamLess_ClientAudioProcessor&, juce::AudioProcessorValueTreeState&);
+    /** @cond PRIVATE */
     ~SeamLess_ClientAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    /** @endcond */
     //==============================================================================
     void connectZToParameter(juce::RangedAudioParameter& p);
     

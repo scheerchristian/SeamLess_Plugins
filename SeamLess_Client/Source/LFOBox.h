@@ -25,6 +25,7 @@ class LFOBox  : public juce::Component,
 public:
 
     LFOBox(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts);
+    /** @cond PRIVATE */
     ~LFOBox() override;
 
     void paint (juce::Graphics&) override;
@@ -36,6 +37,7 @@ public:
     void buttonClicked(juce::Button* button) override;
 
     void comboBoxChanged(juce::ComboBox* comboBoxThatHasChanged) override;
+    /** @endcond */
     
     void connectXtoParameter(juce::RangedAudioParameter& p);
     void connectYtoParameter(juce::RangedAudioParameter& p);

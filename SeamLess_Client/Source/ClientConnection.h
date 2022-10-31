@@ -19,14 +19,10 @@ class SeamLess_ClientAudioProcessor;
 class ClientConnection : public juce::InterprocessConnection
 {
 public:
-    /**
-     @brief creates a new connection to the main plugin
-     */
+    /** @brief creates a new connection to the main plugin. */
     ClientConnection(SeamLess_ClientAudioProcessor &p);
 
-    /**
-     @returns the current connection status
-     */
+    /** @brief Returns the current connection status. */
     bool mainConnection();
 
     /**

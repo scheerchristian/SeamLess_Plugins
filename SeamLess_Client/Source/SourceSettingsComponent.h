@@ -22,17 +22,17 @@ class SourceSettingsComponent  : public juce::Component, juce::Timer
 {
 public:
     SourceSettingsComponent(SeamLess_ClientAudioProcessor *a, juce::AudioProcessorValueTreeState &apvts);
+    /** @cond PRIVATE */
     ~SourceSettingsComponent() override;
 
+    void paint (juce::Graphics&) override;
+    void resized() override;
+    /** @endcond */
+    
     /**
      Sets the Connection Button to match the current state of the connection.
      @param state current connection state*/
     void setConnectionFeedback(bool state);
-
-    void paint (juce::Graphics&) override;
-    void resized() override;
-
-
 
 private:
 

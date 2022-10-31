@@ -25,11 +25,12 @@ public:
      @brief Creates a component containing information about the outgoing connection.
      */
     OutgoingConnectionComponent(SeamLess_ClientAudioProcessor *a);
+    /** @cond PRIVATE */
     ~OutgoingConnectionComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
-
+    /** @endcond*/
     /**
      Syncs sendButton checkbox state and OSC target port with the audioProcessor's values regularly.
      */
