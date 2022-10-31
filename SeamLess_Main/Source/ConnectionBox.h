@@ -21,10 +21,12 @@ class ConnectionBox  : public juce::Component , juce::Timer
 {
 public:
     ConnectionBox(SeamLess_MainAudioProcessor &p);
+    /** @cond PRIVATE */
     ~ConnectionBox() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    /** @endcond */
 
 private:
 

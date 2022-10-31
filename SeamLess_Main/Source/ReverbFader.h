@@ -20,11 +20,17 @@ class ReverbFader  : public juce::Slider
 {
 public:
     ReverbFader(SeamLess_MainAudioProcessor &p, juce::AudioProcessorValueTreeState& apvts, juce::String s);
+    /** @cond PRIVATE */
     ~ReverbFader() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    /** @endcond */
 
+    /**
+     Sets a  string as the faders name label
+     @param s string for name label
+     */
     void setText(juce::String s);
 
 private:

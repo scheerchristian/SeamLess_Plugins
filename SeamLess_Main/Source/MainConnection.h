@@ -24,7 +24,7 @@ public:
     MainConnection(juce::WaitableEvent& stop_signal, SeamLess_MainAudioProcessor *p);
 
     /**
-     @brief gets triggered when a client is connected, prints out a info message 
+     @brief gets triggered when a client is connected, prints out an info message 
      */
     void connectionMade();
 

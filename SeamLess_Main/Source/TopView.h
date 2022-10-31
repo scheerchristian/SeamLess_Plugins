@@ -19,16 +19,17 @@ class SoundSource;
 #include "SoundSource.h"
 
 //==============================================================================
-/*
-*/
+
 class TopView  : public juce::Component
 {
 public:
     TopView(SeamLess_MainAudioProcessor *p);
+    /** @cond PRIVATE */
     ~TopView() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
+    /** @endcond */
 
     
     /**
@@ -41,6 +42,7 @@ public:
      Converts two coordinates in meters to the associated pixels in the Source Viewer
      @param xMeter x-Coordinate in meters
      @param yMeter y-Coordinate in meters
+     @see convertMeterToPixel
      */
     juce::Point<float> convertMeterToPixel(float xMeter, float yMeter);
     
@@ -58,7 +60,6 @@ public:
      @param x new x-coordinate of the source
      @param y new y-coordinate of the source
      @param z new z-coordinate of the source
-     @see convertMeterToPixel
      */
     void moveSource (int sourceID, float x, float y, float z);
     
@@ -76,18 +77,25 @@ private:
     juce::ComponentDragger dragger;
 
     bool isUpdating = true;
+    
+//================ Path for HuFo layout ========================================
 
     juce::Path polygonPath;
     juce::Point<float> polygonMeter[34] = { juce::Point<float>(-6.051, 2.112), juce::Point<float>(-5.392, 2.593), juce::Point<float>(-4.695, 3.018), juce::Point<float>(-3.964, 3.382), juce::Point<float>(-3.205, 3.684), juce::Point<float>(-2.424, 3.921), juce::Point<float>(-1.625, 4.091), juce::Point<float>(-0.816, 4.194), juce::Point<float>(-0.0f, 4.228), juce::Point<float>(0.816, 4.194), juce::Point<float>(1.626, 4.091), juce::Point<float>(2.424, 3.921), juce::Point<float>(3.206, 3.684), juce::Point<float>(3.964, 3.382), juce::Point<float>(4.695, 3.017), juce::Point<float>(5.392, 2.593), juce::Point<float>(6.054, 2.107), juce::Point<float>(6.051, -2.112), juce::Point<float>(5.392, -2.593), juce::Point<float>(4.695, -3.018), juce::Point<float>(3.964, -3.382), juce::Point<float>(3.205, -3.684), juce::Point<float>(2.424, -3.921), juce::Point<float>(1.625, -4.091), juce::Point<float>(0.816, -4.194), juce::Point<float>(0.0f, -4.228), juce::Point<float>(-0.816, -4.194), juce::Point<float>(-1.626, -4.091), juce::Point<float>(-2.424	, -3.921), juce::Point<float>(-3.206, -3.684), juce::Point<float>(-3.964, -3.382), juce::Point<float>(-4.695, -3.017), juce::Point<float>(-5.392, -2.593), juce::Point<float>(-6.054, -2.107) };
     juce::Point<float> polygonPixel[34];
     
+//================ Path for TU Studio layout ===================================
+
     juce::Path TUStudioPath;
     juce::Point<float> TUStudioMeter[8] = {
         juce::Point<float>(-1.620, 3.023), juce::Point<float>(1.620, 3.023), juce::Point<float>(2.430, 1.620), juce::Point<float>(2.430, -1.620),
         juce::Point<float>(1.620, -3.023), juce::Point<float>(-1.620, -3.023), juce::Point<float>(-2.430, -1.620), juce::Point<float>(-2.430,1.620) };
     juce::Point<float> TUStudioPixel[8];
     
-    juce::String layout;
+    juce::String layout; //currently selected layout (HuFo or Studio)
+    
+//================ vectors to store SoundSources ===============================
+
     std::vector<SoundSource*> sourceVector;
     std::vector<int> registeredSources;
    

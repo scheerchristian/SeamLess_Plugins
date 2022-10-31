@@ -22,11 +22,13 @@ class SeamLess_MainAudioProcessorEditor  : public juce::AudioProcessorEditor, ju
 {
 public:
     SeamLess_MainAudioProcessorEditor (SeamLess_MainAudioProcessor&, juce::AudioProcessorValueTreeState&);
+    /** @cond PRIVATE */
     ~SeamLess_MainAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override; 
     void resized() override;
+    /** @endcond */
 
 private:
 

@@ -21,13 +21,14 @@ class OutgoingConnectionComponent  : public juce::Component, juce::Timer
 {
 public:
     OutgoingConnectionComponent(SeamLess_MainAudioProcessor *a);
+    /** @cond PRIVATE */
     ~OutgoingConnectionComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
     void timerCallback() override;
-
+    /**@endcond*/
 private:
 
     SeamLess_MainAudioProcessor *audioProcessor;

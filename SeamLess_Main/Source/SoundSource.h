@@ -27,10 +27,12 @@ public:
      @param z The inital z-position of the source
     */
     SoundSource(int ID, float x, float y, float z);
+    /** @cond PRIVATE */
     ~SoundSource() override;
 
     void paint (juce::Graphics&) override;
-    
+    /** @endcond */
+
     /**
      @returns the source ID of the SoundSource
      */

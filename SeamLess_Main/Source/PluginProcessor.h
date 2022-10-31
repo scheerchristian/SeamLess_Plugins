@@ -74,21 +74,17 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     /** @endcond */
     //==============================================================================
-    /**
-     Changes the incoming OSC port and prints a message if the connection was successful.
-     @param p port
-     */
+    /** @brief Changes the incoming OSC port and prints a message if the connection was successful. */
     void setIncomingPort(int p);
     
-    /**
-     @returns the currently used Incomping Port for OSC messages.
-     */
+    /** @brief Returns the currently used port for listening for incoming OSC messages. */
     int getIncomingPort();
 
     
-    /** Check for unconnected main connection objects and remove them from the vector. */
+    /** @brief Check for unconnected main connection objects and remove them from the vector. */
     void removeClosedConnections();
 
+    /** @brief Returns the parameters stored in the AudioProcessorValueTreeState.*/
     juce::AudioProcessorValueTreeState& getState();
 
 
@@ -96,21 +92,36 @@ public:
     void revSizeSend();
     void revColorSend();
 
+    /** @brief returns the current state of receiving OSC.*/
     bool getReceivingState();
+    
+    /**
+     @brief Enables or disables OSC receiving.
+     */
     void setReceivingState(bool s);
 
+    /** @brief Sets the OSC target adress to connect to. */
     void setOscTargetAddress(juce::String address);
+    
+    /** @brief Sets the OSC target port to connect to. */
     void setOscTargetPort(int port);
-
+    
+    /** @brief returns state of sending OSC */
     bool getSendState();
+    
+    /** @brief sets state of sending OSC */
     void setSendState(bool s);
-
-    juce::String  getOscTargetAddress();
+    
+    /** @brief returns the OSC target adress */
+    juce::String getOscTargetAddress();
+    
+    /** @brief returns the OSC target port */
     int getOscTargetPort();
-/**
+    
+    /**
     @param messageType
     @returns the most recent message of the specified type
- */
+     */
     juce::StringArray getIncomingMessages(juce::String messageType);
 private:
 

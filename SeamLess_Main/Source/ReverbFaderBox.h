@@ -26,15 +26,14 @@ class ReverbFaderBox  : public juce::Component, juce::Slider::Listener
 public:
 
     ReverbFaderBox(SeamLess_MainAudioProcessor &p, juce::AudioProcessorValueTreeState &apvts);
+    /** @cond PRIVATE */
     ~ReverbFaderBox() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    /// \brief sliderValueChanged
-    /// \param slider
-    /// A slider listener for all send gain sliders.
     void sliderValueChanged (juce::Slider* slider) override;
+    /** @endcond */
 
 private:
 
