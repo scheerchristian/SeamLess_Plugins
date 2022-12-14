@@ -143,7 +143,9 @@ void SeamLess_ClientAudioProcessor::processBlock (juce::AudioBuffer<float>& buff
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
-    playSending = playInfo.getIsPlaying();
+    auto* ph = getPlayHead();
+    ph->getCurrentPosition(playInfo);
+    playSending = playInfo.isPlaying;
 
 
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
@@ -305,15 +307,15 @@ void SeamLess_ClientAudioProcessor::sendGainSend()
     int i = (int) sourceIdx.getValue();
     juce::OSCMessage m = juce::OSCMessage("/send/gain",i, 0, 0);
 
-    float in = 20*log10((float) *sendGainHOA);
+    float in = std::pow(10,(float) *sendGainHOA/20);
     m = juce::OSCMessage("/send/gain",i, 0, in);
     sender1.send(m);
 
-    in = 20*log10((float) *sendGainWFS);
+    in = std::pow(10,(float) *sendGainWFS/20);
     m = juce::OSCMessage("/send/gain",i, 1, in);
     sender1.send(m);
 
-    in = 20*log10((float) *sendGainREV);
+    in = std::pow(10,(float) *sendGainREV/20);
     m = juce::OSCMessage("/send/gain",i, 2, in);
     sender1.send(m);
 

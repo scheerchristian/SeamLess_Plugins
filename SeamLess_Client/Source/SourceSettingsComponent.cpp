@@ -23,7 +23,10 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
 
     addAndMakeVisible (sourceIndText);
     sourceIndText.setEditable (true);
-    sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
+    if (sourceIndText.getText().getIntValue() < 1)
+        sourceIndText.setColour (juce::Label::backgroundColourId, juce::Colours::red);
+    else
+        sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
     sourceIndText.setTooltip("Source Index of the audio stream that corresponds to this channel. Every channel should have a unique index.");
 
     addAndMakeVisible(nameLabel);
@@ -35,7 +38,7 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
     mainConnectionButton.onClick = [this]
     {
-        if (mainConnectionButton.getButtonText() == "Not Connected! Click to retry.")
+        if (mainConnectionButton.getButtonText() == "Not Connected! Retrying...")
         {
             mainConnectionButton.setColour(juce::TextButton::buttonColourId, seamlessBlue);
             processor->reconnectToMainPlugin();
@@ -45,6 +48,12 @@ SourceSettingsComponent::SourceSettingsComponent(SeamLess_ClientAudioProcessor *
     sourceIndText.onTextChange = [this]
     {
         juce::String s = sourceIndText.getText();
+        if (s.getIntValue()<1)
+            sourceIndText.setColour (juce::Label::backgroundColourId, juce::Colours::red);
+        else
+            sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
+
+
         // sourceIndex.setValue( s.getIntValue());
         processor->setSourceIndex(s.getIntValue());
     };
@@ -98,6 +107,10 @@ void SourceSettingsComponent::timerCallback()
     if(sourceIndText.isBeingEdited() == false) 
     {
         sourceIndText.setText(juce::String(processor->getSourceIndex()), juce::dontSendNotification);
+        if (sourceIndText.getText().getIntValue()<1)
+            sourceIndText.setColour (juce::Label::backgroundColourId, juce::Colours::red);
+        else
+            sourceIndText.setColour (juce::Label::backgroundColourId, seamlessBlue);
         if (!processor->getConnectedToMain())
             processor->reconnectToMainPlugin();
     }
@@ -116,6 +129,6 @@ void SourceSettingsComponent::setConnectionFeedback(bool state)
   else
   {
       mainConnectionButton.setColour(juce::TextButton::buttonColourId,juce::Colours::red);
-      mainConnectionButton.setButtonText ("Not Connected! Click to retry.");
+      mainConnectionButton.setButtonText ("Not Connected! Retrying...");
   }
 }

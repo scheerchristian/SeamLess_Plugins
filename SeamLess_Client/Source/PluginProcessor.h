@@ -245,7 +245,7 @@ private:
 
 
     // used to detect play-state
-    juce::AudioPlayHead::PositionInfo playInfo;
+    juce::AudioPlayHead::CurrentPositionInfo playInfo;
 
     // manual send state (used by all instances):
     bool isSending;

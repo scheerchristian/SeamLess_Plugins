@@ -35,7 +35,7 @@ private:
 
     juce::Label oscTargetAddressText;
     juce::TextEditor oscTargetPortText;
-
+    bool portTextFocused = false;
     juce::ToggleButton sendButton   {"Send OSC"};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OutgoingConnectionComponent)

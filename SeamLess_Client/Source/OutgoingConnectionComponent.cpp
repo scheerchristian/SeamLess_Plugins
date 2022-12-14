@@ -18,7 +18,7 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
 
 
     addAndMakeVisible(oscTargetAddressText);
-    oscTargetAddressText.setText("loco", juce::dontSendNotification);
+    oscTargetAddressText.setText(audioProcessor->getOscTargetAddress(), juce::dontSendNotification);
     oscTargetAddressText.setColour (juce::Label::textColourId, juce::Colours::black);
     oscTargetAddressText.setColour (juce::Label::backgroundColourId, seamlessGrey);
     oscTargetAddressText.setJustificationType (juce::Justification::right);
@@ -28,8 +28,15 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     {
         juce::IPAddress ip(oscTargetAddressText.getText());
         juce::String s = oscTargetAddressText.getText();
+        juce::String ss = s.substring(0, 1);
         if (s == "localhost")
             audioProcessor->setOscTargetAddress("127.0.0.1");
+        else if (ss == ".")
+        {
+            juce::StringArray sa;
+            sa.addTokens(juce::IPAddress::getLocalAddress().toString(), ".", "/");
+            audioProcessor->setOscTargetAddress(juce::IPAddress::getLocalAddress().toString().trimCharactersAtEnd(sa[3])+s.trimCharactersAtStart("."));
+        }
         else if (ip.isNull())   // if entered ip adress is invalid
         {
             juce::String messageString("IP-Adress is invalid. Please enter a valid adress. Adress is now being set to the default value 127.0.0.1");
@@ -50,7 +57,7 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     titleLabel.setText("Outgoing Connection (All Client Plugins)", juce::NotificationType::dontSendNotification);
 
     addAndMakeVisible(oscTargetPortText);
-    oscTargetPortText.setText("mot", juce::dontSendNotification);
+    oscTargetPortText.setText(juce::String(audioProcessor->getOscTargetPort()), juce::dontSendNotification);
     oscTargetPortText.setColour (juce::TextEditor::textColourId, juce::Colours::black);
     oscTargetPortText.setColour (juce::TextEditor::backgroundColourId, seamlessGrey);
     oscTargetPortText.setSelectAllWhenFocused(true);
