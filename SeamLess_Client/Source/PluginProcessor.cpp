@@ -229,9 +229,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xPos", 1), "X Position", -10.0, 10.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("yPos", 1), "Y Position", -10.0, 10.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zPos", 1), "Z Position", -10.0, 10.0, 0.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", -60.0, 0.0, -60.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", -60.0, 0.0, -60.0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", -60.0, 0.0, -60.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainWFS", 1), "Send Gain: WFS", 0.0, 1.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainHOA", 1), "Send Gain: HOA", 0.0, 1.0, 0.0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("sendGainREV", 1), "Send Gain: REV", 0.0, 1.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoRate", 1), "LFO: Rate(Hz)", 0.0, 5.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoDepth", 1), "LFO: Depth(percent)", 0.0, 100.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("xLfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));

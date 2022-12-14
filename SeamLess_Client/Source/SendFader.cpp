@@ -19,7 +19,9 @@ SendFader::SendFader(SeamLess_ClientAudioProcessor &p, juce::AudioProcessorValue
     slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 30);
     slider.setColour(juce::Slider::textBoxTextColourId, juce::Colours::black);
     slider.setColour(juce::Slider::textBoxOutlineColourId, transparent);
-    slider.setTextValueSuffix(" dB");
+    slider.setRange(juce::Range<double>{0.0, 1.0}, 0.0001);
+    slider.setSkewFactor(0.5);
+    //slider.setTextValueSuffix(" dB");
     if (endless == true)
         slider.setRotaryParameters(rotaryParameters);
     addAndMakeVisible(slider);
