@@ -124,7 +124,6 @@ public:
     /** @brief Sets state of send Button. */
     void setSendButtonState(bool newValue);
 
-    virtual void parameterChanged(const juce::String& id, float val) override;
     juce::AudioProcessorValueTreeState& getState();
 
     /** @brief Retrys to connect to the main plugin if no connection is established. */

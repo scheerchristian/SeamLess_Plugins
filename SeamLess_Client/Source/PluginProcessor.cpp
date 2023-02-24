@@ -24,10 +24,11 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     settings.setProperty("sendButton", juce::var(true), nullptr);
     settings.setProperty("shapeState", juce::var(0), nullptr);
     settings.setProperty("gridState", juce::var(0), nullptr);
-    settings.setProperty("selectedLFO", juce::var(0), nullptr);
+    settings.setProperty("selectedLFO", juce::var(1), nullptr);
 
     parameters.state.addChild(settings, 0, nullptr);
 
+    
     xPos      = parameters.getRawParameterValue("xPos");
     yPos      = parameters.getRawParameterValue("yPos");
     zPos      = parameters.getRawParameterValue("zPos");
@@ -35,7 +36,7 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     sendGainWFS      = parameters.getRawParameterValue("sendGainWFS");
     sendGainHOA      = parameters.getRawParameterValue("sendGainHOA");
     sendGainREV      = parameters.getRawParameterValue("sendGainREV");
-
+    
 
     referUnautomatableParameters();
     sender1.connect(oscTargetAddress.getValue(), oscTargetPort.getValue());
@@ -126,7 +127,6 @@ void SeamLess_ClientAudioProcessor::changeProgramName (int index, const juce::St
 void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     isSending=true;
-    //processorChainLFO.prepare({ sampleRate / xLFOUpdateRate, (juce::uint32)getBlockSize(), (juce::uint32)getTotalNumInputChannels() });
     prepareLFOs();
 
 }
@@ -134,7 +134,6 @@ void SeamLess_ClientAudioProcessor::prepareToPlay (double sampleRate, int sample
 void SeamLess_ClientAudioProcessor::releaseResources()
 {
     isSending=false;
-    //processorChainLFO.reset();
     xLFO->reset();
     yLFO->reset();
 }
@@ -199,23 +198,6 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
 
             }
         }
-
-
-
-    // for additional parameters:
-    /*
-    std::unique_ptr<juce::XmlElement> xmlState2 (getXmlFromBinary (data, sizeInBytes));
-
-    if (xmlState2.get() != nullptr)
-    {
-        if (xmlState2->hasTagName ("HoFo_Client"))
-        {
-            setOscTargetPort(xmlState2->getIntAttribute("sourceIdx"));
-            oscTargetAddress = (juce::String) xmlState2->getStringAttribute("oscTargetAddress");
-            setOscTargetPort((int) xmlState2->getIntAttribute("oscTargetPort", 1.0));
-        }
-    }
-    */
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcessor::createParameters()
@@ -241,8 +223,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout SeamLess_ClientAudioProcesso
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoPhase", 1), "LFO: Phase(degree)", -180.0, 180.0, 0.0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("zLfoOffset", 1), "LFO: Offset(m)", -10.0, 10.0, 0.0));
 
-    //params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID("sourceIdx", 1), "Source Index", -1, 128, -1));    //deprecated. Is now part of xml2
-
     return { params.begin(), params.end() };
 }
 
@@ -266,23 +246,18 @@ float SeamLess_ClientAudioProcessor::getZPos()
 
 void SeamLess_ClientAudioProcessor::setXPos(float in)
 {
-    //*xPos = in;
     juce::Value val = parameters.getParameterAsValue("xPos");
     val.setValue(juce::var(in));
 }
 
 void SeamLess_ClientAudioProcessor::setYPos(float in)
 {
-    // *yPos = in;
     juce::Value val = parameters.getParameterAsValue("yPos");
-    //val.setValue(juce::var(in));
 }
 
 void SeamLess_ClientAudioProcessor::setZPos(float in)
 {
-    //*zPos = in;
     juce::Value val = parameters.getParameterAsValue("zPos");
-    //val.setValue(juce::var(in));
 }
 
 
@@ -335,11 +310,6 @@ void SeamLess_ClientAudioProcessor::setSendGain(int sendIndex, float in)
         val = parameters.getParameterAsValue("sendGainREV");
         val.setValue(juce::var(in));
         break;
-//    case 3:
-//        val = parameters.getParameterAsValue("sendGainLFE");
-//        val.setValue(juce::var(in));
-//        break;
-
     default:
         break;
     }
@@ -450,28 +420,6 @@ void SeamLess_ClientAudioProcessor::setSendButtonState(bool newValue)
     sendButtonState.setValue(newValue);
 }
 
-
-
-void SeamLess_ClientAudioProcessor::parameterChanged(const juce::String & id, float val)
-{
-    // "Note that calling this method from within
-    // AudioProcessorValueTreeState::Listener::parameterChanged()
-    // is not guaranteed to return an up-to-date value for the parameter."
-
-    //    if(id == "xPos")
-    //        xPosSend(val);
-
-    //    if(id == "yPos")
-    //        yPosSend(val);
-
-    //    if(id == "zPos")
-    //        zPosSend(val);
-
-    //    if(id=="sendGainWFS"||id=="sendGainHOA"||id=="sendGainREV"||id=="sendGainLFE")
-    //        sendGainSend(id,val);
-}
-
-
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new SeamLess_ClientAudioProcessor();
@@ -482,11 +430,6 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
 {
     if(isSending==true && playSending==true)
     {
-
-        // xPosSend();
-        // yPosSend();
-        // zPosSend();
-
         xyzPosSend();
 
         sendGainSend();
@@ -500,15 +443,6 @@ void SeamLess_ClientAudioProcessor::hiResTimerCallback()
         juce::String posString = juce::String(i)+"/"+juce::String(x)+"/"+juce::String(y)+"/"+juce::String(z);
         client->sendMessageToMain("pos", posString);
     }
-    /*
-    if (xLFO->isInitialised())
-    {
-        //xLFOOut = xLFO->processSample(0.0f);
-        //yLFOOut = yLFO->processSample(0.0f);
-        //xAttachment->setValueAsPartOfGesture(xLFOOut);
-        //yAttachment->setValueAsPartOfGesture(yLFOOut);
-    }
-    */
 }
 
 int SeamLess_ClientAudioProcessor::getGridState()
