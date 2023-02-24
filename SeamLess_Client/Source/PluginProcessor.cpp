@@ -191,11 +191,11 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
             /* load settings from binary */
             if (xmlState->getFirstChildElement()->hasAttribute("oscTargetAddress")) // check if there exists a preciously saved version of the plugin
             {
+                parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
                 referUnautomatableParameters();
                 sender1.connect(oscTargetAddress.getValue(), oscTargetPort.getValue());
                 /* Print out loaded settings */
                 DBG(xmlState->toString());
-
             }
         }
 }

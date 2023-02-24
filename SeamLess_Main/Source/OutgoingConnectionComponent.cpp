@@ -66,6 +66,8 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_MainAudioProce
     oscTargetPortText.onReturnKey = [this]
     {
         audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
+        oscTargetPortText.setEnabled(false);
+        oscTargetPortText.setEnabled(true);
 
     };
     oscTargetPortText.onFocusLost = [this]

@@ -86,6 +86,8 @@ public:
 
     /** @brief Returns the parameters stored in the AudioProcessorValueTreeState.*/
     juce::AudioProcessorValueTreeState& getState();
+    juce::ValueTree settings;
+    void referUnautomatableParameters();
 
 
     void revGainSend();
@@ -127,15 +129,15 @@ private:
 
     /// \brief incomingPort
     /// Port for incoming OSC connections to main plugin.
-    int incomingPort = 9001;
+    juce::Value incomingPort;
 
     // The AudioProcessorValueTreeState connects parameters to the GUI
     // and manages serialization
     juce::AudioProcessorValueTreeState parameters;
 
     // IP address and port are used by all instances
-    juce::String oscTargetAddress;
-    int oscTargetPort;
+    juce::Value oscTargetAddress;
+    juce::Value oscTargetPort;
     juce::OSCSender oscSender;
 
     juce::AudioPlayHead::CurrentPositionInfo playInfo;
@@ -154,6 +156,7 @@ private:
     std::atomic<float>* revLpRs   = nullptr;
     std::atomic<float>* revLpDb   = nullptr;
 
+    
 
     /**
      Passes incoming OSC messages to all client instances.

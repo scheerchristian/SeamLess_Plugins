@@ -43,11 +43,23 @@ SeamLess_MainAudioProcessor::SeamLess_MainAudioProcessor()
     juce::OSCReceiver::addListener(this, "/source/pos/x");
     juce::OSCReceiver::addListener(this, "/source/pos/y");
     juce::OSCReceiver::addListener(this, "/source/pos/z");
-
     juce::OSCReceiver::addListener(this, "/send/gain");
 
-    beginWaitingForSocket(52713,"");
-    oscSender.connect("127.0.0.1", 9001); // this line is added to avoid crashes when building the standalone application
+    settings = juce::ValueTree("Settings");
+    settings.setProperty("incomingPort", juce::var(9001), nullptr);
+    settings.setProperty("oscTargetPort", juce::var(57120), nullptr);
+    settings.setProperty("oscTargetAddress", juce::var("130.149.23.24"), nullptr);
+
+    parameters.state.addChild(settings, 0, nullptr);
+    referUnautomatableParameters();
+
+    beginWaitingForSocket(9001,"");
+    //oscSender.connect("130.149.23.24", 4455); // this line is added to avoid crashes when building the standalone application
+    auto address = oscTargetAddress.toString();
+    auto port = oscTargetPort.getValue().toString().getIntValue();
+    if (oscSender.connect(oscTargetAddress.toString(), oscTargetPort.getValue()))
+        DBG("connected.");
+
     startTimer(SEND_INTERVAL);
 }
 
@@ -177,6 +189,10 @@ juce::AudioProcessorEditor* SeamLess_MainAudioProcessor::createEditor()
 
 void SeamLess_MainAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
+    auto state = parameters.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
+    /*
     std::unique_ptr<juce::XmlElement> xml (new juce::XmlElement ("SeamLess_Main"));
     xml->setAttribute ("incomingPort", (int) incomingPort);
     copyXmlToBinary (*xml, destData);
@@ -187,23 +203,32 @@ void SeamLess_MainAudioProcessor::getStateInformation (juce::MemoryBlock& destDa
 
     xml->setAttribute ("oscTargetPort", (int) oscTargetPort);
     copyXmlToBinary (*xml, destData);
-
-
-
+    */
 }
 
 void SeamLess_MainAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
-
     if (xmlState.get() != nullptr)
     {
-        if (xmlState->hasTagName ("SeamLess_Main"))
-            setIncomingPort((int) xmlState->getIntAttribute("incomingPort", 1.0));
+        if (xmlState->hasTagName(parameters.state.getType()))
+        {
+            /* load settings from binary */
+            if (xmlState->getFirstChildElement()->hasAttribute("oscTargetAddress")) // check if there exists a preciously saved version of the plugin
+            {
+                parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+                referUnautomatableParameters();
+                oscSender.connect(oscTargetAddress.getValue().toString(), oscTargetPort.toString().getIntValue());
+                /* Print out loaded settings */
+                DBG(xmlState->toString());
+            }
+            //setIncomingPort((int)xmlState->getIntAttribute("incomingPort", 1.0));
+        }
     }
+    /*
     else
     {
-        setIncomingPort(9001);
+        //setIncomingPort(9001);
     }
 
     std::unique_ptr<juce::XmlElement> xmlState2 (getXmlFromBinary (data, sizeInBytes));
@@ -212,10 +237,23 @@ void SeamLess_MainAudioProcessor::setStateInformation (const void* data, int siz
     {
         if (xmlState2->hasTagName ("SeamLess_Main"))
         {
-            oscTargetAddress = (juce::String) xmlState2->getStringAttribute("oscTargetAddress");
-            setOscTargetPort((int) xmlState2->getIntAttribute("oscTargetPort", 1.0));
+            setOscTargetAddress((juce::String)xmlState2->getStringAttribute("oscTargetAddress", "130.149.23.24"));
+            setOscTargetPort((int) xmlState2->getIntAttribute("oscTargetPort", 57120));
+        }
+        else
+        {
+            setOscTargetAddress("130.149.23.24");
+            setOscTargetPort(57120);
         }
     }
+    else
+    {
+
+        setOscTargetAddress("130.149.23.24");
+        setOscTargetPort(57120);
+
+    }
+    */
 }
 
 
@@ -227,7 +265,6 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 void SeamLess_MainAudioProcessor::oscMessageReceived (const juce::OSCMessage& message)
 {
-
     receiving = true;
 
     int nArgs = message.size();
@@ -292,7 +329,7 @@ void SeamLess_MainAudioProcessor::setIncomingPort(int p)
 
 int SeamLess_MainAudioProcessor::getIncomingPort()
 {
-    return incomingPort;
+    return incomingPort.getValue();
 }
 
 
@@ -311,6 +348,14 @@ void SeamLess_MainAudioProcessor::removeClosedConnections()
 juce::AudioProcessorValueTreeState& SeamLess_MainAudioProcessor::getState()
 {
     return parameters;
+}
+
+void SeamLess_MainAudioProcessor::referUnautomatableParameters()
+{
+    incomingPort.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("incomingPort", nullptr));
+    oscTargetAddress.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetAddress", nullptr));
+    oscTargetPort.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetPort", nullptr));
+
 }
 
 void SeamLess_MainAudioProcessor::parameterChanged(const juce::String & id, float val)
@@ -333,27 +378,28 @@ void SeamLess_MainAudioProcessor::setOscTargetPort(int port)
 {
     oscTargetPort = port;
     oscSender.disconnect();
-    oscSender.connect(oscTargetAddress, oscTargetPort);
-    std::cout << "Switched OSC target (from port change): " << oscTargetAddress << ":" << oscTargetPort << '\n';
+    oscSender.connect(getOscTargetAddress(), port);
+    std::cout << "Switched OSC target (from port change): " << getOscTargetAddress() << ":" << getOscTargetPort() << '\n';
 }
 
 void SeamLess_MainAudioProcessor::setOscTargetAddress(juce::String address)
 {
     oscTargetAddress = address;
-    oscSender.disconnect();
-    oscSender.connect(oscTargetAddress, oscTargetPort);
-    std::cout << "Switched OSC target (from address change): " << oscTargetAddress << ":" << oscTargetPort << '\n';
+    //oscSender.disconnect();
+    oscSender.connect(address, oscTargetPort.getValue());
+    std::cout << "Switched OSC target (from address change): " << getOscTargetAddress() << ":" << getOscTargetPort() << '\n';
 }
 
 
 int SeamLess_MainAudioProcessor::getOscTargetPort()
 {
-    return oscTargetPort;
+    return oscTargetPort.getValue();
 }
 
 juce::String  SeamLess_MainAudioProcessor::getOscTargetAddress()
 {
-    return oscTargetAddress;
+    auto adress = oscTargetAddress.toString();
+    return adress;
 }
 
 bool SeamLess_MainAudioProcessor::getSendState()
