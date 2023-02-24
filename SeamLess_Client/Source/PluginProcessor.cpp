@@ -307,22 +307,17 @@ void SeamLess_ClientAudioProcessor::sendGainSend()
     int i = (int) sourceIdx.getValue();
     juce::OSCMessage m = juce::OSCMessage("/send/gain",i, 0, 0);
 
-    float in = std::pow(10,(float) *sendGainHOA/20);
+    float in = *sendGainHOA;
     m = juce::OSCMessage("/send/gain",i, 0, in);
     sender1.send(m);
 
-    in = std::pow(10,(float) *sendGainWFS/20);
+    in = *sendGainWFS;
     m = juce::OSCMessage("/send/gain",i, 1, in);
     sender1.send(m);
 
-    in = std::pow(10,(float) *sendGainREV/20);
+    in = *sendGainREV;
     m = juce::OSCMessage("/send/gain",i, 2, in);
     sender1.send(m);
-
-//    in = (float) *sendGainLFE;
-//    m = juce::OSCMessage("/send/gain",i, 3, in);
-//    sender1.send(m);
-
 }
 
 void SeamLess_ClientAudioProcessor::setSendGain(int sendIndex, float in)
