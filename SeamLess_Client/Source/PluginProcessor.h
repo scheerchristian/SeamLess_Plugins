@@ -77,6 +77,8 @@ public:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
 
 
+    virtual void parameterChanged(const juce::String& id, float val) override;
+
     void setSendGain(int sendIndex, float in);
 
     void setSourceIndex(int i);

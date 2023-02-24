@@ -291,6 +291,10 @@ void SeamLess_ClientAudioProcessor::sendGainSend()
     sender1.send(m);
 }
 
+void SeamLess_ClientAudioProcessor::parameterChanged(const juce::String& id, float val)
+{
+}
+
 void SeamLess_ClientAudioProcessor::setSendGain(int sendIndex, float in)
 {
 

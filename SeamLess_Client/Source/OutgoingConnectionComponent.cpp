@@ -63,12 +63,14 @@ OutgoingConnectionComponent::OutgoingConnectionComponent(SeamLess_ClientAudioPro
     oscTargetPortText.setSelectAllWhenFocused(true);
     oscTargetPortText.setJustification(juce::Justification::centredRight);
     oscTargetPortText.setTooltip("The target's UDP-Port");
-    //oscTargetPortText.setEditable (true);
     oscTargetPortText.setInputRestrictions(5, "0123456789");
     
     oscTargetPortText.onReturnKey = [this]
     {
         audioProcessor->setOscTargetPort(oscTargetPortText.getText().getIntValue());
+        oscTargetPortText.setEnabled(false);
+        oscTargetPortText.setEnabled(true);
+
     };
     oscTargetPortText.onFocusLost = [this]
     {
