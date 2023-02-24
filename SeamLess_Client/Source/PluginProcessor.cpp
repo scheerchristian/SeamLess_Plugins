@@ -18,8 +18,8 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
 {
     settings = juce::ValueTree("Settings");
     settings.setProperty("sourceIdx", juce::var(-1), nullptr);
-    settings.setProperty("oscTargetAddress", juce::var("127.0.0.1"), nullptr);
-    settings.setProperty("oscTargetPort", juce::var(9001), nullptr);
+    settings.setProperty("oscTargetAddress", juce::var("130.149.23.24"), nullptr);
+    settings.setProperty("oscTargetPort", juce::var(4455), nullptr);
     settings.setProperty("settingsMode", juce::var(0), nullptr);
     settings.setProperty("sendButton", juce::var(true), nullptr);
     settings.setProperty("shapeState", juce::var(0), nullptr);
@@ -35,6 +35,11 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     sendGainWFS      = parameters.getRawParameterValue("sendGainWFS");
     sendGainHOA      = parameters.getRawParameterValue("sendGainHOA");
     sendGainREV      = parameters.getRawParameterValue("sendGainREV");
+
+
+    referUnautomatableParameters();
+    sender1.connect(oscTargetAddress.getValue(), oscTargetPort.getValue());
+
 
     // add a listener for every parameter to make it trigger parameterChanged()
     parameters.addParameterListener("xPos", this);
@@ -62,8 +67,6 @@ SeamLess_ClientAudioProcessor::SeamLess_ClientAudioProcessor()
     //connectLfosToParateres(getLfo());
 
     startTimer(SEND_INTERVAL);
-
-
 }
 
 SeamLess_ClientAudioProcessor::~SeamLess_ClientAudioProcessor()
@@ -186,22 +189,15 @@ void SeamLess_ClientAudioProcessor::setStateInformation (const void* data, int s
     if (xmlState.get() != nullptr)
         if (xmlState->hasTagName (parameters.state.getType()))
         {
-            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
-            if (xmlState->getFirstChildElement()->hasAttribute("sourceIdx"))
+            /* load settings from binary */
+            if (xmlState->getFirstChildElement()->hasAttribute("oscTargetAddress")) // check if there exists a preciously saved version of the plugin
             {
-                sourceIdx.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sourceIdx", nullptr));
-                oscTargetAddress.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetAddress", nullptr));
-                oscTargetPort.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetPort", nullptr));
-                settingsMode.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("settingsMode", nullptr));
-                sendButtonState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sendButton", nullptr));
-                shapeState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("shapeState", nullptr));
-                gridState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("gridState", nullptr));
-                selectedLFO.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("selectedLFO", nullptr));
-                sender1.connect(oscTargetAddress.getValue(), 9001);
+                referUnautomatableParameters();
+                sender1.connect(oscTargetAddress.getValue(), oscTargetPort.getValue());
+                /* Print out loaded settings */
                 DBG(xmlState->toString());
+
             }
-            else
-                sender1.connect(oscTargetAddress.getValue(), 9001);
         }
 
 
@@ -732,4 +728,16 @@ void SeamLess_ClientAudioProcessor::setCurrentElevation(float newValue)
 void SeamLess_ClientAudioProcessor::setCurrentRadius(float newValue)
 {
     currentRadius = newValue;
+}
+
+void SeamLess_ClientAudioProcessor::referUnautomatableParameters()
+{
+    sourceIdx.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sourceIdx", nullptr));
+    settingsMode.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("settingsMode", nullptr));
+    sendButtonState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("sendButton", nullptr));
+    shapeState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("shapeState", nullptr));
+    gridState.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("gridState", nullptr));
+    selectedLFO.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("selectedLFO", nullptr));
+    oscTargetAddress.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetAddress", nullptr));
+    oscTargetPort.referTo(parameters.state.getChildWithName("Settings").getPropertyAsValue("oscTargetPort", nullptr));
 }

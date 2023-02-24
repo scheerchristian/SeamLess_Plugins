@@ -62,11 +62,7 @@ public:
     void setXPos(float in);
     void setYPos(float in);
     void setZPos(float in);
-    /*
-    void xPosSend();
-    void yPosSend();
-    void zPosSend();
-    */
+  
     void xyzPosSend();
 
     /**
@@ -192,6 +188,8 @@ public:
     void setCurrentElevation(float newValue);
     void setCurrentRadius(float newValue);
 
+    void referUnautomatableParameters();
+
 private:
 
     std::unique_ptr<juce::ParameterAttachment> xAttachment;
@@ -213,25 +211,10 @@ private:
     std::unique_ptr<juce::ParameterAttachment> zLfoPhaseAttachment;
     std::unique_ptr<juce::ParameterAttachment> zLfoOffsetAttachment;
 
-    //std::array<juce::String, 12> lfoSliderNames = {"xLfoRate", "xLfoDepth", "xLfoPhase", "xLfoOffset", "yLfoRate", "yLfoDepth", "yLfoPhase", "yLfoOffset", "zLfoRate", "zLfoDepth", "zLfoPhase", "zLfoOffset" };
-
-
     // for the inter com
     const int port_nr = 52713;
-
-
    
     bool connectedToMain = false;
-
-    /*
-    juce::dsp::ProcessorChain<juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>, juce::dsp::Oscillator<float>> processorChainLFO;
-    enum
-    {
-        xLFOIndex,
-        yLFOIndex,
-        zLFOIndex
-    };
-    */
 
     // Values to be stored 
     juce::Value oscTargetAddress;
@@ -262,7 +245,7 @@ private:
     std::atomic<float>* zPos = nullptr;
 
 //==============================================================================
-// the following variables are just to keep the difficutl relation between x,y,z
+// the following variables are just to keep the difficult relation between x,y,z
 // and rad, azi, ele in synch. They are ONLY used in the sliderValueChanged() 
 // virtual function. To get information about the current state of the source
 // always check the current value in the apvts!
@@ -276,10 +259,6 @@ private:
     float newY;
     float newZ;
 
-    /*
-    float backupAzimuth;    // store angles in case that radius becomes 0 to be able to go back to the same angles
-    float backupElevation;
-    */
 
     bool criticalRadius = false;    // becomes true, when the radius slider gets pulled to a value > 10
     bool azimuthChangedWhileRadiusWasZero = false; // naming is our main skill
@@ -292,15 +271,13 @@ private:
     std::atomic<float>* sendGainLFE = nullptr;
 
 
-    //juce::AudioParameterInt* sourceIdx;
-
     // The AudioProcessorValueTreeState connects parameters to the GUI
     // and manages serialization
     juce::AudioProcessorValueTreeState parameters;
     juce::ValueTree settings;
 
 
-    std::unique_ptr<ClientConnection> client;    // no longer needed due to parameterAttachments
+    std::unique_ptr<ClientConnection> client;    
 
     virtual void hiResTimerCallback() override;
 
